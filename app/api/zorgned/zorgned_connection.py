@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 import requests
 import json
 
@@ -9,8 +11,10 @@ class ZorgNedConnection:
 
     def get_voorzieningen(self, bsn):
         """ Get voorzieningen from ZorgNed based on a BSN """
-        res = requests.get(
-            '{}/getvoorzieningen?token={}&bsn={}'.format(
-                API_URL, credentials['API_KEY'], bsn))
+        params = urlencode({
+            "token": credentials['API_KEY'],
+            "bsn": bsn
+        })
+        res = requests.get('{}/getvoorzieningen?{}'.format(API_URL, params))
 
         return (res.status_code, json.loads(res.text))
