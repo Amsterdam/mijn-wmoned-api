@@ -1,5 +1,3 @@
-import json
-from pprint import pprint
 
 from flask import Flask, request
 from flask_cors import CORS
@@ -157,7 +155,6 @@ class Voorzieningen(Resource):
         )
         bsn = get_bsn_from_request(request)
         status, voorzieningen = con.get_voorzieningen(bsn)
-        print(">>", status)
 
         if status == 401:
             # api returns 401 'Token is niet geldig.'
