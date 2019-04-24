@@ -6,7 +6,8 @@ from tma_saml import FlaskServerTMATestCase
 os.environ['WMO_NED_API_KEY'] = "invalid key"
 os.environ['WMO_NED_API_URL'] = "invalid url"
 
-from ..server import app
+
+from ..server import app  # noqa: E402
 
 ZorgNedConnectionLocation = 'api.zorgned.zorgned_connection.ZorgNedConnection'
 
@@ -45,7 +46,6 @@ def get_expected_data(*args):
                     "PGBbudget": []
                 },
             ])
-
 
 
 class TestAPI(FlaskServerTMATestCase):
@@ -100,7 +100,6 @@ class TestAPI(FlaskServerTMATestCase):
         # make sure wet 2 (jeugdhulp) does not have Leverancier
         self.assertEqual(data[1]['Wet'], 2)
         self.assertFalse(data[1].get('Leverancier', False))
-
 
     def test_get_voorzieningen_invalid_saml(self):
         """ Test if an invalid SAML token gets rejected """
