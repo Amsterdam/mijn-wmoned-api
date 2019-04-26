@@ -10,4 +10,4 @@ echo "Running coverage tests"
 export COVERAGE_FILE=/tmp/.coverage
 coverage erase
 coverage run --source api/ -m unittest
-coverage report --fail-under=79
+coverage report --fail-under=90

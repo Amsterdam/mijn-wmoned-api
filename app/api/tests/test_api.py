@@ -5,6 +5,7 @@ from tma_saml import FlaskServerTMATestCase
 # prepare environment for testing
 os.environ['WMO_NED_API_KEY'] = "invalid key"
 os.environ['WMO_NED_API_URL'] = "invalid url"
+os.environ['TMA_CERTIFICATE'] = __file__  # any file, it should not be used
 
 
 from ..server import app  # noqa: E402
@@ -63,6 +64,7 @@ class TestAPI(FlaskServerTMATestCase):
     # =====================
 
     @patch(ZorgNedConnectionLocation + '.get_voorzieningen', autospec=True)
+    @patch('api.server.get_bsn_from_request', lambda x: '111222333')
     def test_get_voorzieningen(self, mocked_method):
         """
         Test if getting is allowed, if the SAML token is correctly decoded and
@@ -85,12 +87,14 @@ class TestAPI(FlaskServerTMATestCase):
         mocked_method.assert_called_once_with(ANY, self.TEST_BSN)
 
     @patch(ZorgNedConnectionLocation + '.get_voorzieningen', side_effect=get_expected_data)
+    @patch('api.server.get_bsn_from_request', lambda x: '111222333')
     def test_get_voorzieningen_jeughulp_filtered(self, mock_get_voorzieningen):
         # Create SAML headers
         SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
 
         # Call thr SPI with SAML headers
         res = self.client.get(self.VOORZIENINGEN_URL, headers=SAML_HEADERS)
+        self.assertEqual(res.status_code, 200)
 
         data = res.json
         # make sure wet 1 has the Leverancier
