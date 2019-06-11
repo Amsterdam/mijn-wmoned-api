@@ -162,7 +162,7 @@ class Voorzieningen(Resource):
         elif status == 403:
             abort(403, message="Service not available")
         elif status == 404:
-            return "BSN not found"
+            abort(424, "BSN not found")
 
         # filter out leverancier for jeugdhulp
         if status == 200:
