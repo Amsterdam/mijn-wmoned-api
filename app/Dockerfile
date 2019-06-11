@@ -11,8 +11,12 @@ RUN pip install uwsgi
 COPY /api /app/api
 COPY /requirements.txt /app
 
+COPY test.sh /app
+COPY .flake8 /app/
+
 WORKDIR /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT ["uwsgi"]
+#ENTRYPOINT ["uwsgi"]
+CMD uwsgi
