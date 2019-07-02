@@ -1,12 +1,20 @@
-
+import sentry_sdk
 from flask import Flask, request
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse, abort
 from flasgger import Swagger
+from sentry_sdk.integrations.flask import FlaskIntegration
 
-from .zorgned.config import check_env
+from .zorgned.config import check_env, SENTRY_DSN
 from .zorgned.zorgned_connection import ZorgNedConnection
 from .tma_utils import get_bsn_from_request
+
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[FlaskIntegration()],
+        with_locals=True
+    )
 
 # Init app and set CORS
 app = Flask(__name__)

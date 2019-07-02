@@ -13,3 +13,5 @@ tma-saml>=0.2
 # testing tools
 flake8
 coverage
+
+sentry-sdk[flask]

@@ -2,6 +2,7 @@
 aniso8601==7.0.0
 asn1crypto==0.24.0
 attrs==19.1.0
+blinker==1.4
 certifi==2019.6.16
 cffi==1.12.3
 chardet==3.0.4
@@ -33,6 +34,7 @@ pyrsistent==0.15.2
 pytz==2019.1
 PyYAML==5.1.1
 requests==2.22.0
+sentry-sdk==0.9.5
 signxml==2.6.0
 six==1.12.0
 tma-saml==0.2
