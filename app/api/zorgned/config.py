@@ -15,4 +15,6 @@ credentials = dict(
     API_KEY=os.getenv('WMO_NED_API_KEY')
 )
 
+SENTRY_DSN = os.getenv('SENTRY_DSN', None)
+
 API_URL = os.getenv('WMO_NED_API_URL')
