@@ -166,11 +166,11 @@ class Voorzieningen(Resource):
 
         if status == 401:
             # api returns 401 'Token is niet geldig.'
-            abort(403, message="Service not available (token)")
+            abort(403, message="Service not available (Invalid token)")
         elif status == 403:
             abort(403, message="Service not available")
         elif status == 404:
-            abort(424, "BSN not found")
+            abort(424, message="BSN not found")
 
         # filter out leverancier for jeugdhulp
         if status == 200:
