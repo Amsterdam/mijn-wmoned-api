@@ -168,12 +168,12 @@ class TestAPI(FlaskServerTMATestCase):
         # Test miscellaneous endpoints
         # ============================
 
-        def test_health_page(self):
-            """ Test if the health page lives """
-            res = self.client.get('/status/health')
-            self.assertEqual(res.json, 'OK')
+    def test_health_page(self):
+        """ Test if the health page lives """
+        res = self.client.get('/status/health')
+        self.assertEqual(res.json, 'OK')
 
-        def test_swagger(self):
-            """ Test if swagger lives """
-            res = self.client.get('/api/wmo')
-            self.assertEqual(res.status_code, 200)
+    def test_swagger(self):
+        """ Test if swagger lives """
+        res = self.client.get('/api/wmo')
+        self.assertEqual(res.status_code, 200)
