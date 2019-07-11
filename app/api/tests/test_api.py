@@ -175,5 +175,5 @@ class TestAPI(FlaskServerTMATestCase):
 
     def test_swagger(self):
         """ Test if swagger lives """
-        res = self.client.get('/api/wmo')
+        res = self.client.get('/api/wmo/')
         self.assertEqual(res.status_code, 200)
