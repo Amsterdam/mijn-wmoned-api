@@ -1,5 +1,6 @@
 import sentry_sdk
 from flask import Flask, request
+
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse, abort
 from flasgger import Swagger
@@ -170,7 +171,7 @@ class Voorzieningen(Resource):
         elif status == 403:
             abort(403, message="Service not available")
         elif status == 404:
-            abort(204, message="[]")
+            return {}, 204
 
         # filter out leverancier for jeugdhulp
         if status == 200:

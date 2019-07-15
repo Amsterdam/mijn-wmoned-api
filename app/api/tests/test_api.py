@@ -168,6 +168,19 @@ class TestAPI(FlaskServerTMATestCase):
         # Test miscellaneous endpoints
         # ============================
 
+    @patch(ZorgNedConnectionLocation + '.get_voorzieningen', autospec=True)
+    @patch('api.server.get_bsn_from_request', lambda x: '111222333')
+    def test_bsn_not_found(self, mocked_method):
+        mocked_method.return_value = (404, "bsn not found")
+
+        SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
+
+        res = self.client.get(self.VOORZIENINGEN_URL, headers=SAML_HEADERS)
+
+        # Check for a proper response
+        self.assertEqual(res.status_code, 204)
+        self.assertEqual(res.data, b'')
+
     def test_health_page(self):
         """ Test if the health page lives """
         res = self.client.get('/status/health')
