@@ -173,7 +173,7 @@ class Voorzieningen(Resource):
         elif status == 404:
             return {}, 204
 
-        # filter out leverancier for jeugdhulp
+        # At the moment we only show "wet 1" things.)
         if status == 200:
             voorzieningen = [v for v in voorzieningen if v['Wet'] == 1]
 
