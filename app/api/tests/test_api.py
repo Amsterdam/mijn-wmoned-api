@@ -124,7 +124,7 @@ class TestAPI(FlaskServerTMATestCase):
         self.assertEqual(data[0]['Wet'], 1)
         self.assertTrue(data[0].get('Leverancier', False))
 
-        # make sure wet 2 (jeugdhulp) is filtered out
+        # make sure "wet 2" (jeugdhulp) is filtered out. We only show "wet 1".
         self.assertEqual(len(data), 1)
 
     def test_get_voorzieningen_invalid_saml(self):
