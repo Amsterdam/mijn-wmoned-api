@@ -17,34 +17,57 @@ def get_expected_data(*args):
     return (200,
             [
                 {
-                    "Omschrijving": "driewielfiets 5-9 jr",
-                    "Wet": 1,
+                    "Aanvraagdatum": "2012-08-08T00:00:00",
                     "Actueel": False,
-                    "Startdatum": "2015-02-16T00:00:00",
-                    "Einddatum": "2017-05-31T00:00:00",
-                    "Volume": 1,
+                    "Beschikkingsdatum": "2012-10-05T00:00:00",
+                    "Checkdatum": None,
                     "Eenheid": "82",
                     "Frequentie": 6,
-                    "Leveringsvorm": "ZIN",
-                    "Omvang": "1 stuks per beschikking",
                     "Leverancier": "Welzorg",
-                    "Checkdatum": None,
-                    "PGBbudget": []
+                    "Leveringsvorm": "ZIN",
+                    "Omschrijving": "driewielfiets 5-9 jr",
+                    "Omvang": "1 stuks per beschikking",
+                    "Volume": 1,
+                    "VoorzieningEinddatum": None,
+                    "VoorzieningIngangsdatum": "2012-10-05T00:00:00",
+                    "Voorzieningcode": "427",
+                    "Voorzieningsoortcode": "ROL",
+                    "Wet": 1,
+                    "Levering": {
+                        "Opdrachtdatum": "2017-06-01T00:00:00",
+                        "Leverancier": "LA014",
+                        "IngangsdatumGeldigheid": "2012-10-05T00:00:00",
+                        "EinddatumGeldigheid": None,
+                        "StartdatumLeverancier": "2017-06-01T00:00:00",
+                        "EinddatumLeverancier": None,
+                    }
                 },
                 {
-                    "Omschrijving": "Specialistische jeugdhulp",
-                    "Wet": 2,
+                    "Aanvraagdatum": "2012-08-08T00:00:00",
                     "Actueel": False,
-                    "Startdatum": "2016-06-07T00:00:00",
-                    "Einddatum": "2017-06-07T00:00:00",
-                    "Volume": 9999,
-                    "Eenheid": "04",
-                    "Frequentie": 4,
-                    "Leveringsvorm": "ZIN",
-                    "Omvang": "9999 uren per maand",
-                    "Leverancier": "Cordaan",
+                    "Beschikkingsdatum": "2012-10-05T00:00:00",
                     "Checkdatum": None,
-                    "PGBbudget": []
+                    "Eenheid": "04",
+                    "Einddatum": "2017-06-07T00:00:00",
+                    "Frequentie": 4,
+                    "Leverancier": "Cordaan",
+                    "Leveringsvorm": "ZIN",
+                    "Omschrijving": "Specialistische jeugdhulp",
+                    "Omvang": "9999 uren per maand",
+                    "Volume": 9999,
+                    "VoorzieningEinddatum": None,
+                    "VoorzieningIngangsdatum": "2012-08-08T00:00:00",
+                    "Voorzieningcode": "427",
+                    "Voorzieningsoortcode": "ROL",
+                    "Wet": 2,
+                    "Levering": {
+                        "Opdrachtdatum": "2017-06-01T00:00:00",
+                        "Leverancier": "LA014",
+                        "IngangsdatumGeldigheid": "2012-10-05T00:00:00",
+                        "EinddatumGeldigheid": None,
+                        "StartdatumLeverancier": "2017-06-01T00:00:00",
+                        "EinddatumLeverancier": None,
+                    }
                 },
             ])
 
@@ -101,9 +124,8 @@ class TestAPI(FlaskServerTMATestCase):
         self.assertEqual(data[0]['Wet'], 1)
         self.assertTrue(data[0].get('Leverancier', False))
 
-        # make sure wet 2 (jeugdhulp) does not have Leverancier
-        self.assertEqual(data[1]['Wet'], 2)
-        self.assertFalse(data[1].get('Leverancier', False))
+        # make sure "wet 2" (jeugdhulp) is filtered out. We only show "wet 1".
+        self.assertEqual(len(data), 1)
 
     def test_get_voorzieningen_invalid_saml(self):
         """ Test if an invalid SAML token gets rejected """
