@@ -176,9 +176,9 @@ class Voorzieningen(Resource):
         # filter out leverancier for jeugdhulp
         if status == 200:
             voorzieningen = [v for v in voorzieningen if v['Wet'] != 2]
-            # for item in voorzieningen:
-            #     if item['Wet'] == 2:
-            #         del item['Leverancier']
+
+        if len(voorzieningen) == 0:
+            return {}, 204
 
         return voorzieningen
 
