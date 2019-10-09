@@ -86,14 +86,6 @@ class Voorzieningen(Resource):
                 type: integer
               Actueel:
                   type: boolean
-              Startdatum:
-                format: date-time
-                description: Ingangsdatum levering indien aanwezig anders ingangsdatum voorziening
-                type: string
-              Einddatum:
-                format: date-time
-                description: Einddatum levering indien aanwezig anders einddatum voorziening
-                type: string
               Volume:
                 format: int32
                 description: Volume waarin de voorziening wordt geleverd
@@ -116,41 +108,64 @@ class Voorzieningen(Resource):
                 format: date-time
                 description: Checkdatum van de voorziening
                 type: string
-              PGBbudget:
-                description: PGB informatie
-                type: array
-                items:
-                  - $ref: '#/definitions/PGB'
-                example:
-                  - jaar: 2017
-                    Ingangsdatum: "2018-11-13T15:36:20.727Z"
-                    Einddatum: "2018-11-13T15:36:20.727Z"
-                    Bedrag: 100.99
-          PGB:
-            description: PGB informatie van een jaar
+              Voorzieningsoortcode:
+                type: string
+                example: "WRA3"
+              Voorzieningcode:
+                type: string
+                example: "W70"
+              Aanvraagdatum:
+                type: string
+                format: date-time
+                example: "2019-06-05T00:00:00"
+              Beschikkingsdatum:
+                type: string
+                format: date-time
+                example: "2019-08-20T00:00:00"
+              VoorzieningIngangsdatum:
+                type: string
+                format: date-time
+                example: "2019-06-05T00:00:00"
+              VoorzieningEinddatum:
+                type: string
+                format: date-time
+                example: "2025-06-06T00:00:00"
+          Levering:
+            description: Levering
             type: object
             properties:
-              Jaar:
-                format: int32
-                description: Jaar van de informatie
-                type: integer
-              Ingangsdatum:
-                format: date-time
-                description: Ingangsdatum
+              Opdrachtdatum:
                 type: string
-              Einddatum:
                 format: date-time
-                description: Einddatum (optioneel)
+                example: "2019-08-20T17:10:11"
+              Leverancier:
                 type: string
-              Bedrag:
-                format: double
-                description: PGB budget van dat jaar
-                type: number
+                example: "LA0992"
+              IngangsdatumGeldigheid:
+                type: string
+                format: date-time
+                example: "2019-06-05T00:00:00"
+              EinddatumGeldigheid:
+                type: string
+                format: date-time
+                example: "2025-06-06T00:00:00"
+              StartdatumLeverancier:
+                type: string
+                format: date-time
+                example: "2019-10-01T00:00:00"
+              EinddatumLeverancier:
+                type: string
+                format: date-time
+                example: null
         responses:
           200:
             description: Voorzieningen successfully fetched
             schema:
               $ref: '#/definitions/Voorziening'
+          204:
+            description: BSN is not known in source data.
+          403:
+            description: Focus connection is offline
           400:
             description: Invalid SAML or BSN
         """
