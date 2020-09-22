@@ -14,7 +14,7 @@ if SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[FlaskIntegration()],
-        with_locals=True
+        with_locals=False
     )
 
 # Init app and set CORS
