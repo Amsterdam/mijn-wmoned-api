@@ -1,3 +1,5 @@
+import logging
+
 import sentry_sdk
 from flask import Flask, request
 
@@ -21,6 +23,9 @@ if SENTRY_DSN:
 app = Flask(__name__)
 api = Api(app)
 CORS(app=app)
+
+
+logger = logging.getLogger(__name__)
 
 """
 Info about Swagger
@@ -184,6 +189,7 @@ class Voorzieningen(Resource):
             # api returns 401 'Token is niet geldig.'
             abort(403, message="Service not available (Invalid token)")
         elif status == 403:
+            logger.error(f'{status} {voorzieningen}')
             abort(403, message="Service not available")
         elif status == 404:
             return {}, 204
