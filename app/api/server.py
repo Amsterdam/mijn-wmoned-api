@@ -187,10 +187,9 @@ class Voorzieningen(Resource):
 
         if status == 401:
             # api returns 401 'Token is niet geldig.'
-            logger.error(f'{status} {voorzieningen}')
+            logger.error(f'Service not available. {status} Invalid token?')
             abort(403, message="Service not available (Invalid token)")
         elif status == 403:
-            logger.error(f'{status} {voorzieningen}')
             abort(403, message="Service not available")
         elif status == 404:
             return {}, 204
