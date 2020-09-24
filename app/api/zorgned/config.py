@@ -12,9 +12,9 @@ def check_env():
 
 
 credentials = dict(
-    API_KEY=os.getenv('WMO_NED_API_KEY')
+    API_KEY=os.getenv('WMO_NED_API_KEY').strip()
 )
 
-SENTRY_DSN = os.getenv('SENTRY_DSN', None)
+SENTRY_DSN = os.getenv('SENTRY_DSN', None).strip()
 
-API_URL = os.getenv('WMO_NED_API_URL')
+API_URL = os.getenv('WMO_NED_API_URL').strip()
