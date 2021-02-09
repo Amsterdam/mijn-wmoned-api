@@ -21,7 +21,7 @@ class ZorgNedConnection:
         if log_raw:
             print(f"requesting from: {url}")
 
-        res = requests.get(url)
+        res = requests.get(url, timeout=9)
 
         if log_raw:
             print("\n\n", res.text, "\n\n")
