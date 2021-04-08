@@ -1,4 +1,3 @@
---extra-index-url https://nexus.secure.amsterdam.nl/repository/pypi-hosted/simple
 requests
 
 # flask and plugins
