@@ -80,5 +80,3 @@ Direct dependencies are specified in `requirements-root.txt`. These should not h
 
 * `pip install -r requirements-root.txt`
 * `pip freeze > requirements.txt`
-* Add back at the top in requirements.txt
- `--extra-index-url https://nexus.secure.amsterdam.nl/repository/pypi-hosted/simple`
