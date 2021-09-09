@@ -50,7 +50,7 @@ node {
 
 String BRANCH = "${env.BRANCH_NAME}"
 
-if (BRANCH == "master") {
+if (BRANCH == "master" || BRANCH == "test-acc") {
 
     node {
         stage('Push acceptance image') {
@@ -78,7 +78,9 @@ if (BRANCH == "master") {
             }
         }
     }
+}
 
+if (BRANCH == "master") {
     stage('Waiting for approval') {
         slackSend channel: '#ci-channel', color: 'warning', message: 'mijn-wmoned-api is waiting for Production Release - please confirm'
         input "Deploy to Production?"
