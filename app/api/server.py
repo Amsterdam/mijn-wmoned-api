@@ -167,7 +167,7 @@ class Voorzieningen(Resource):
           204:
             description: BSN is not known in source data.
           403:
-            description: Focus connection is offline
+            description: WMONed connection is offline
           400:
             description: Invalid SAML or BSN
         """
