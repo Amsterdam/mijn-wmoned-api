@@ -1,10 +1,11 @@
 FROM amsterdam/python
 
-MAINTAINER datapunt@amsterdaml.nl
+LABEL maintainer=datapunt@amsterdaml.nl
 
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && apt-get install -y
+RUN apt-get install nano
 RUN pip install --upgrade pip
 RUN pip install uwsgi
 
@@ -19,5 +20,4 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-#ENTRYPOINT ["uwsgi"]
 CMD uwsgi --ini /app/uwsgi.ini
