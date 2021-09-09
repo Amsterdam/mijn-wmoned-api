@@ -14,9 +14,7 @@ from .tma_utils import get_bsn_from_request
 
 if SENTRY_DSN:
     sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        integrations=[FlaskIntegration()],
-        with_locals=False
+        dsn=SENTRY_DSN, integrations=[FlaskIntegration()], with_locals=False
     )
 
 # Init app and set CORS
@@ -43,21 +41,20 @@ check_env()
 
 # Configure Swagger
 swagger_config = {
-    "headers": [
-    ],
+    "headers": [],
     "specs": [
         {
-            "endpoint": 'apispec_1',
-            "route": '/apispec_1.json',
+            "endpoint": "apispec_1",
+            "route": "/apispec_1.json",
             "rule_filter": lambda rule: True,  # all in
             "model_filter": lambda tag: True,  # all in
-            "title": "ZorgNed API"
+            "title": "ZorgNed API",
         }
     ],
     "static_url_path": "/api/wmo/static",
     # "static_folder": "static",  # must be set by user
     "swagger_ui": True,
-    "specs_route": "/api/wmo/"
+    "specs_route": "/api/wmo/",
 }
 swagger = Swagger(app, config=swagger_config)
 
@@ -66,7 +63,7 @@ con = ZorgNedConnection()
 
 
 class Voorzieningen(Resource):
-    """ Class representing the '/voorzieningen' endpoint"""
+    """Class representing the '/voorzieningen' endpoint"""
 
     def get(self):
         """
@@ -175,19 +172,19 @@ class Voorzieningen(Resource):
             description: Invalid SAML or BSN
         """
         parser = reqparse.RequestParser()
-        token_arg_name = 'x-saml-attribute-token1'
+        token_arg_name = "x-saml-attribute-token1"
         parser.add_argument(
             token_arg_name,
-            location='headers',
+            location="headers",
             required=True,
-            help='SAML token required'
+            help="SAML token required",
         )
         bsn = get_bsn_from_request(request)
         status, voorzieningen = con.get_voorzieningen(bsn)
 
         if status == 401:
             # api returns 401 'Token is niet geldig.'
-            logger.error(f'Service not available. {status} Invalid token?')
+            logger.error(f"Service not available. {status} Invalid token?")
             abort(403, message="Service not available (Invalid token)")
         elif status == 403:
             abort(403, message="Service not available")
@@ -196,7 +193,7 @@ class Voorzieningen(Resource):
 
         # At the moment we only show "wet 1" things.)
         if status == 200:
-            voorzieningen = [v for v in voorzieningen if v['Wet'] == 1]
+            voorzieningen = [v for v in voorzieningen if v["Wet"] == 1]
 
         if len(voorzieningen) == 0:
             return {}, 204
@@ -205,15 +202,15 @@ class Voorzieningen(Resource):
 
 
 class Health(Resource):
-    """ Used in deployment to check if the API lives """
+    """Used in deployment to check if the API lives"""
 
     def get(self):
-        return 'OK'
+        return "OK"
 
 
 # Add resources to the api
-api.add_resource(Voorzieningen, '/api/wmoned/voorzieningen')
-api.add_resource(Health, '/status/health')
+api.add_resource(Voorzieningen, "/api/wmoned/voorzieningen")
+api.add_resource(Health, "/status/health")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()

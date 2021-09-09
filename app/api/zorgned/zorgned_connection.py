@@ -13,10 +13,10 @@ log_raw = False
 
 
 class ZorgNedConnection:
-    """ This class represents the connection to the ZorgNed API """
+    """This class represents the connection to the ZorgNed API"""
 
     def get_voorzieningen(self, bsn):
-        """ Get voorzieningen from ZorgNed based on a BSN """
+        """Get voorzieningen from ZorgNed based on a BSN"""
         url = f"{API_URL}/getvoorzieningen?token={quote(credentials['API_KEY'])}&bsn={bsn}"
         if log_raw:
             print(f"requesting from: {url}")

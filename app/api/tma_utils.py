@@ -20,12 +20,12 @@ def get_bsn_from_request(request):
 
 
 def get_variable(var, default_value=None):
-    """ Return the environment variable """
+    """Return the environment variable"""
     return os.getenv(var, default_value)
 
 
 def get_tma_certificate():
-    """ Get the TMA certificate from a file """
-    tma_cert_location = get_variable('TMA_CERTIFICATE')
+    """Get the TMA certificate from a file"""
+    tma_cert_location = get_variable("TMA_CERTIFICATE")
     with open(tma_cert_location) as f:
         return f.read()
