@@ -25,31 +25,33 @@ def retagAndPush(String imageName, String currentTag, String newTag)
 }
 
 node {
-    stage("Checkout") {
-        checkout scm
-    }
+    stages {
+        stage("Checkout") {
+            checkout scm
+        }
 
-    stage('Test') {
-        when {
-            not {
-                anyOf {
-                    branch 'test-acc';
+        stage('Test') {
+            when {
+                not {
+                    anyOf {
+                        branch 'test-acc';
+                    }
                 }
             }
+            tryStep "test", {
+                sh "docker-compose -p focus -f app/jenkins/test/docker-compose.yml build && " +
+                "docker-compose -p focus -f app/jenkins/test/docker-compose.yml run -u root --rm test"
+            }, {
+                sh "docker-compose -p focus -f app/jenkins/test/docker-compose.yml down"
+            }
         }
-        tryStep "test", {
-            sh "docker-compose -p focus -f app/jenkins/test/docker-compose.yml build && " +
-               "docker-compose -p focus -f app/jenkins/test/docker-compose.yml run -u root --rm test"
-        }, {
-            sh "docker-compose -p focus -f app/jenkins/test/docker-compose.yml down"
-        }
-    }
 
-    stage("Build image") {
-        tryStep "build", {
-            docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
-                def image = docker.build("mijnams/wmoned:${env.BUILD_NUMBER}", "app")
-                image.push()
+        stage("Build image") {
+            tryStep "build", {
+                docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
+                    def image = docker.build("mijnams/wmoned:${env.BUILD_NUMBER}", "app")
+                    image.push()
+                }
             }
         }
     }
