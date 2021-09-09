@@ -5,6 +5,10 @@ from tma_saml import FlaskServerTMATestCase
 # prepare environment for testing
 os.environ["WMO_NED_API_KEY"] = "invalid key"
 os.environ["WMO_NED_API_URL"] = "invalid url"
+
+os.environ["WMO_NED_API_URL_V2"] = "invalid url"
+os.environ["WMO_NED_API_TOKEN"] = "invalid token"
+
 os.environ["TMA_CERTIFICATE"] = __file__  # any file, it should not be used
 
 
