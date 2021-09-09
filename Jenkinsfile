@@ -24,6 +24,8 @@ def retagAndPush(String imageName, String currentTag, String newTag)
     sh "docker push ${dockerReg}/${imageName}:${newTag}"
 }
 
+String BRANCH = "${env.BRANCH_NAME}"
+
 node {
     stage("Checkout") {
         checkout scm
@@ -49,9 +51,6 @@ node {
         }
     }
 }
-
-
-String BRANCH = "${env.BRANCH_NAME}"
 
 if (BRANCH == "master" || BRANCH == "test-acc") {
 
