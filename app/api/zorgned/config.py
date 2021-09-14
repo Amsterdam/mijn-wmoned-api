@@ -1,3 +1,4 @@
+from app.api.tma_utils import get_variable
 import os
 
 
@@ -32,3 +33,11 @@ API_URL = os.getenv("WMO_NED_API_URL", "").strip()
 API_URL_V2 = os.getenv("WMO_NED_API_URL_V2", "").strip()
 API_TOKEN_V2 = os.getenv("WMO_NED_API_TOKEN", "").strip()
 GEMEENTE_CODE = "0363"
+
+
+def get_mijn_ams_cert_path():
+    return os.getenv("MIJN_DATA_CLIENT_CERT")
+
+
+def get_mijn_ams_key_path():
+    return os.getenv("MIJN_DATA_CLIENT_KEY")
