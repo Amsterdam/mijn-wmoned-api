@@ -5,7 +5,15 @@ import logging
 import requests
 import json
 
-from .config import API_TOKEN_V2, credentials, API_URL, API_URL_V2, GEMEENTE_CODE
+from .config import (
+    API_TOKEN_V2,
+    credentials,
+    API_URL,
+    API_URL_V2,
+    GEMEENTE_CODE,
+    get_mijn_ams_cert_path,
+    get_mijn_ams_key_path,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,12 +45,14 @@ class ZorgNedConnection:
         if log_raw:
             print(f"requesting from: {url}")
 
-        headers = {"Authorization": "Token %s" % API_TOKEN_V2}
+        headers = {"Token": API_TOKEN_V2}
         headers.update(merge_headers)
 
         print("\n\n", headers, "\n\n")
 
-        res = requests.get(url, timeout=9, headers=headers)
+        cert = (get_mijn_ams_cert_path(), get_mijn_ams_key_path())
+
+        res = requests.get(url, timeout=9, headers=headers, cert=cert)
 
         if log_raw:
             print("\n\n", res.text, "\n\n")
