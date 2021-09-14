@@ -1,4 +1,3 @@
-from app.api.tma_utils import get_variable
 import os
 
 
