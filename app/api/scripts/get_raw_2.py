@@ -10,7 +10,7 @@ api.zorgned.zorgned_connection.log_raw = True
 
 con = ZorgNedConnection()
 
-headers = {}
-status, response = con.get_voorzieningen_v2(bsn, headers)
+cert_override = "./client.pem"
+status, response = con.get_voorzieningen_v2(bsn, cert_override)
 
 print(status, response)
