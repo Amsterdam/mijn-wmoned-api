@@ -38,7 +38,7 @@ class ZorgNedConnection:
 
         return (res.status_code, json.loads(res.text))
 
-    def get_voorzieningen_v2(self, bsn, cert_override):
+    def get_voorzieningen_v2(self, bsn, verify=None):
         """Get voorzieningen from ZorgNed based on a BSN"""
         url = f"{API_URL_V2}/gemeenten/{GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}/aanvragen"
 
@@ -49,13 +49,9 @@ class ZorgNedConnection:
 
         print("\n\n", headers, "\n\n")
 
-        cert = (
-            cert_override
-            if cert_override
-            else (get_mijn_ams_cert_path(), get_mijn_ams_key_path())
-        )
+        cert = (get_mijn_ams_cert_path(), get_mijn_ams_key_path())
 
-        res = requests.get(url, timeout=9, headers=headers, cert=cert)
+        res = requests.get(url, timeout=9, headers=headers, verify=verify)
 
         if log_raw:
             print("\n\n", res.text, "\n\n")
