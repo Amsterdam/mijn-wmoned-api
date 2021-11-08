@@ -1,0 +1,16 @@
+# flask and plugins
+flask
+Flask-Testing
+openapi-core
+
+requests
+python-dateutil
+
+# testing tools
+flake8
+coverage
+
+# error reporting
+sentry-sdk[flask]
+
+tma-saml>=0.4.2
