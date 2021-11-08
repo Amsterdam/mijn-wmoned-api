@@ -30,8 +30,10 @@ def get_aanvragen(bsn):
     res = requests.get(url, timeout=9, headers=headers, cert=cert)
 
     logger.debug(res)
+    response_data = res.json()
+    response_aanvragen = response_data["_embedded"]["aanvraag"]
 
-    return format_aanvragen(res.json["_embedded"]["aanvraag"])
+    return format_aanvragen(response_aanvragen)
 
 
 def get_voorzieningen(bsn):
