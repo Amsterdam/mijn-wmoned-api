@@ -1,0 +1,517 @@
+{
+    "_links": null,
+    "_embedded": {
+        "aanvraag": [
+            {
+                "_links": null,
+                "identificatie": "1250336",
+                "regeling": {
+                    "identificatie": "WMO",
+                    "omschrijving": "WMO"
+                },
+                "datumAanmelding": "2012-11-30",
+                "datumAanvraag": "2012-11-30",
+                "beschikking": {
+                    "beschikkingNummer": 300092619,
+                    "datumAfgifte": "2012-11-30",
+                    "toelichting": "geanonimiseerd",
+                    "beschikteProducten": [
+                        {
+                            "identificatie": "98734",
+                            "externe_identificatie": null,
+                            "product": {
+                                "identificatie": "12320",
+                                "productCode": "12320",
+                                "productsoortCode": "OVE",
+                                "omschrijving": "autozitje"
+                            },
+                            "productCategorie": {
+                                "code": "12",
+                                "omschrijving": "Vervoervoorzieningen"
+                            },
+                            "resultaat": "toegewezen",
+                            "toegewezenProduct": {
+                                "datumIngangGeldigheid": "2012-11-30",
+                                "datumEindeGeldigheid": null,
+                                "datumCheck": null,
+                                "actueel": true,
+                                "omvang": {
+                                    "volume": 1,
+                                    "eenheid": {
+                                        "code": "82",
+                                        "omschrijving": "Stuks (output)"
+                                    },
+                                    "frequentie": {
+                                        "code": "6",
+                                        "omschrijving": "Per beschikking"
+                                    },
+                                    "omschrijving": "1 stuks (output) per beschikking"
+                                },
+                                "leveringsvorm": "zin",
+                                "leverancier": {
+                                    "identificatie": "LH0004",
+                                    "agbcode": null,
+                                    "kvk": null,
+                                    "omschrijving": "Welzorg"
+                                },
+                                "toelichting": null,
+                                "toewijzingen": [
+                                    {
+                                        "toewijzingNummer": "681032388-320-5-1_OUD",
+                                        "toewijzingsDatumTijd": "2012-12-04T00:00:00",
+                                        "ingangsdatum": "2012-11-30",
+                                        "einddatum": "2017-05-31",
+                                        "datumOpdracht": "2012-12-04",
+                                        "leverancier": {
+                                            "identificatie": "LH0004",
+                                            "agbcode": null,
+                                            "kvk": null,
+                                            "omschrijving": "Welzorg"
+                                        },
+                                        "referentieAanbieder": null,
+                                        "redenWijziging": {
+                                            "code": "01",
+                                            "omschrijving": "Administratieve correctie"
+                                        },
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2014-04-01",
+                                                "einddatum": "2017-05-31",
+                                                "redenBeeindiging": {
+                                                    "code": "04",
+                                                    "omschrijving": "Overplaatsing"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "toewijzingNummer": "681032388-320-5-1",
+                                        "toewijzingsDatumTijd": "2017-06-01T00:00:00",
+                                        "ingangsdatum": "2012-11-30",
+                                        "einddatum": null,
+                                        "datumOpdracht": "2017-06-01",
+                                        "leverancier": {
+                                            "identificatie": "76084857",
+                                            "agbcode": "76084857",
+                                            "kvk": null,
+                                            "omschrijving": "Welzorg"
+                                        },
+                                        "referentieAanbieder": null,
+                                        "redenWijziging": null,
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2017-06-01",
+                                                "einddatum": null,
+                                                "redenBeeindiging": null
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "documenten": [
+                    {
+                        "documentidentificatie": "B31242",
+                        "omschrijving": "Toekenning hulpmiddel zonder keuze (proces 0,1)",
+                        "datumDefinitief": "2012-12-04T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B31281",
+                        "omschrijving": "WRV rapport",
+                        "datumDefinitief": "2012-12-04T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B31247",
+                        "omschrijving": "Indicatierapport AK",
+                        "datumDefinitief": "2012-12-04T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B31248",
+                        "omschrijving": "Beschikkingrapport AK",
+                        "datumDefinitief": "2012-12-04T00:00:00",
+                        "zaakidentificatie": null
+                    }
+                ]
+            },
+            {
+                "_links": null,
+                "identificatie": "1267782",
+                "regeling": {
+                    "identificatie": "WMO",
+                    "omschrijving": "WMO"
+                },
+                "datumAanmelding": "2013-01-14",
+                "datumAanvraag": "2013-01-14",
+                "beschikking": {
+                    "beschikkingNummer": 300110054,
+                    "datumAfgifte": "2013-06-17",
+                    "toelichting": "geanonimiseerd",
+                    "beschikteProducten": [
+                        {
+                            "identificatie": "106795",
+                            "externe_identificatie": null,
+                            "product": {
+                                "identificatie": "12315",
+                                "productCode": "12315",
+                                "productsoortCode": "OVE",
+                                "omschrijving": "buggy"
+                            },
+                            "productCategorie": {
+                                "code": "12",
+                                "omschrijving": "Vervoervoorzieningen"
+                            },
+                            "resultaat": "toegewezen",
+                            "toegewezenProduct": {
+                                "datumIngangGeldigheid": "2013-02-07",
+                                "datumEindeGeldigheid": null,
+                                "datumCheck": null,
+                                "actueel": true,
+                                "omvang": {
+                                    "volume": 1,
+                                    "eenheid": {
+                                        "code": "82",
+                                        "omschrijving": "Stuks (output)"
+                                    },
+                                    "frequentie": {
+                                        "code": "6",
+                                        "omschrijving": "Per beschikking"
+                                    },
+                                    "omschrijving": "1 stuks (output) per beschikking"
+                                },
+                                "leveringsvorm": "zin",
+                                "leverancier": {
+                                    "identificatie": "LH0004",
+                                    "agbcode": null,
+                                    "kvk": null,
+                                    "omschrijving": "Welzorg"
+                                },
+                                "toelichting": "geanonimiseerd",
+                                "toewijzingen": [
+                                    {
+                                        "toewijzingNummer": "681032388-315-6-1_OUD",
+                                        "toewijzingsDatumTijd": "2013-06-17T00:00:00",
+                                        "ingangsdatum": "2013-02-07",
+                                        "einddatum": "2017-05-31",
+                                        "datumOpdracht": "2013-06-17",
+                                        "leverancier": {
+                                            "identificatie": "LH0004",
+                                            "agbcode": null,
+                                            "kvk": null,
+                                            "omschrijving": "Welzorg"
+                                        },
+                                        "referentieAanbieder": null,
+                                        "redenWijziging": {
+                                            "code": "01",
+                                            "omschrijving": "Administratieve correctie"
+                                        },
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2013-07-10",
+                                                "einddatum": "2017-05-31",
+                                                "redenBeeindiging": {
+                                                    "code": "04",
+                                                    "omschrijving": "Overplaatsing"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "toewijzingNummer": "681032388-315-6-1",
+                                        "toewijzingsDatumTijd": "2017-06-01T00:00:00",
+                                        "ingangsdatum": "2013-02-07",
+                                        "einddatum": null,
+                                        "datumOpdracht": "2017-06-01",
+                                        "leverancier": {
+                                            "identificatie": "76084857",
+                                            "agbcode": "76084857",
+                                            "kvk": null,
+                                            "omschrijving": "Welzorg"
+                                        },
+                                        "referentieAanbieder": null,
+                                        "redenWijziging": null,
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2017-06-01",
+                                                "einddatum": null,
+                                                "redenBeeindiging": null
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "documenten": [
+                    {
+                        "documentidentificatie": "B62146",
+                        "omschrijving": "Opstellen productadvies door Reade",
+                        "datumDefinitief": "2013-04-03T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B82188",
+                        "omschrijving": "Toekenning hulpmiddel zonder keuze (proces 0,1)",
+                        "datumDefinitief": "2013-06-17T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B49704",
+                        "omschrijving": "Brief verdagen en opschorten positief",
+                        "datumDefinitief": "2013-02-12T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B82201",
+                        "omschrijving": "WRV rapport",
+                        "datumDefinitief": "2013-06-17T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B82193",
+                        "omschrijving": "Indicatierapport AK",
+                        "datumDefinitief": "2013-06-17T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B82194",
+                        "omschrijving": "Beschikkingrapport AK",
+                        "datumDefinitief": "2013-06-17T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B49701",
+                        "omschrijving": "Opdracht productadvies Reade route Regulier",
+                        "datumDefinitief": "2013-02-12T00:00:00",
+                        "zaakidentificatie": null
+                    }
+                ]
+            },
+            {
+                "_links": null,
+                "identificatie": "1366634",
+                "regeling": {
+                    "identificatie": "WMO",
+                    "omschrijving": "WMO"
+                },
+                "datumAanmelding": "2014-06-27",
+                "datumAanvraag": "2014-06-27",
+                "beschikking": {
+                    "beschikkingNummer": 300208745,
+                    "datumAfgifte": "2015-02-16",
+                    "toelichting": null,
+                    "beschikteProducten": [
+                        {
+                            "identificatie": "237149",
+                            "externe_identificatie": null,
+                            "product": {
+                                "identificatie": "12346",
+                                "productCode": "12346",
+                                "productsoortCode": "FIE",
+                                "omschrijving": "driewielfiets 5-9 jr"
+                            },
+                            "productCategorie": {
+                                "code": "12",
+                                "omschrijving": "Vervoervoorzieningen"
+                            },
+                            "resultaat": "toegewezen",
+                            "toegewezenProduct": {
+                                "datumIngangGeldigheid": "2015-02-16",
+                                "datumEindeGeldigheid": null,
+                                "datumCheck": null,
+                                "actueel": true,
+                                "omvang": {
+                                    "volume": 1,
+                                    "eenheid": {
+                                        "code": "82",
+                                        "omschrijving": "Stuks (output)"
+                                    },
+                                    "frequentie": {
+                                        "code": "6",
+                                        "omschrijving": "Per beschikking"
+                                    },
+                                    "omschrijving": "1 stuks (output) per beschikking"
+                                },
+                                "leveringsvorm": "zin",
+                                "leverancier": {
+                                    "identificatie": "LH0004",
+                                    "agbcode": null,
+                                    "kvk": null,
+                                    "omschrijving": "Welzorg"
+                                },
+                                "toelichting": null,
+                                "toewijzingen": [
+                                    {
+                                        "toewijzingNummer": "1030411_OUD",
+                                        "toewijzingsDatumTijd": "2015-02-26T00:00:00",
+                                        "ingangsdatum": "2015-02-16",
+                                        "einddatum": "2017-05-31",
+                                        "datumOpdracht": "2015-02-26",
+                                        "leverancier": {
+                                            "identificatie": "LH0004",
+                                            "agbcode": null,
+                                            "kvk": null,
+                                            "omschrijving": "Welzorg"
+                                        },
+                                        "referentieAanbieder": null,
+                                        "redenWijziging": {
+                                            "code": "01",
+                                            "omschrijving": "Administratieve correctie"
+                                        },
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2015-02-16",
+                                                "einddatum": "2017-05-31",
+                                                "redenBeeindiging": {
+                                                    "code": "04",
+                                                    "omschrijving": "Overplaatsing"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "toewijzingNummer": "1030411",
+                                        "toewijzingsDatumTijd": "2017-06-01T00:00:00",
+                                        "ingangsdatum": "2015-02-16",
+                                        "einddatum": null,
+                                        "datumOpdracht": "2017-06-01",
+                                        "leverancier": {
+                                            "identificatie": "76084857",
+                                            "agbcode": "76084857",
+                                            "kvk": null,
+                                            "omschrijving": "Welzorg"
+                                        },
+                                        "referentieAanbieder": null,
+                                        "redenWijziging": null,
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2017-06-01",
+                                                "einddatum": null,
+                                                "redenBeeindiging": null
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "documenten": [
+                    {
+                        "documentidentificatie": "B250616",
+                        "omschrijving": "WRV rapport",
+                        "datumDefinitief": "2015-02-26T00:00:00",
+                        "zaakidentificatie": null
+                    }
+                ]
+            },
+            {
+                "_links": null,
+                "identificatie": "1578506",
+                "regeling": {
+                    "identificatie": "WMO",
+                    "omschrijving": "WMO"
+                },
+                "datumAanmelding": "2018-04-05",
+                "datumAanvraag": "2018-04-05",
+                "beschikking": {
+                    "beschikkingNummer": 300438597,
+                    "datumAfgifte": "2018-04-25",
+                    "toelichting": "geanonimiseerd",
+                    "beschikteProducten": [
+                        {
+                            "identificatie": "474212",
+                            "externe_identificatie": null,
+                            "product": {
+                                "identificatie": "WRA",
+                                "productCode": null,
+                                "productsoortCode": "WRA",
+                                "omschrijving": "woonruimteaanpassing"
+                            },
+                            "productCategorie": {
+                                "code": "13",
+                                "omschrijving": "Woonvoorzieningen"
+                            },
+                            "resultaat": "toegewezen",
+                            "toegewezenProduct": {
+                                "datumIngangGeldigheid": "2018-04-06",
+                                "datumEindeGeldigheid": null,
+                                "datumCheck": null,
+                                "actueel": true,
+                                "omvang": {
+                                    "volume": 1,
+                                    "eenheid": {
+                                        "code": "82",
+                                        "omschrijving": "Stuks (output)"
+                                    },
+                                    "frequentie": {
+                                        "code": "6",
+                                        "omschrijving": "Per beschikking"
+                                    },
+                                    "omschrijving": "1 stuks (output) per beschikking"
+                                },
+                                "leveringsvorm": "zin",
+                                "leverancier": {
+                                    "identificatie": "11122233",
+                                    "agbcode": "11122233",
+                                    "kvk": null,
+                                    "omschrijving": "Welzorg"
+                                },
+                                "toelichting": "geanonimiseerd",
+                                "toewijzingen": [
+                                    {
+                                        "toewijzingNummer": "1577564",
+                                        "toewijzingsDatumTijd": "2018-04-26T08:24:32",
+                                        "ingangsdatum": "2018-04-06",
+                                        "einddatum": null,
+                                        "datumOpdracht": "2018-04-26",
+                                        "leverancier": {
+                                            "identificatie": "11122233",
+                                            "agbcode": "11122233",
+                                            "kvk": null,
+                                            "omschrijving": "Welzorg"
+                                        },
+                                        "referentieAanbieder": null,
+                                        "redenWijziging": null,
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2018-05-09",
+                                                "einddatum": null,
+                                                "redenBeeindiging": null
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "documenten": [
+                    {
+                        "documentidentificatie": "E391828",
+                        "omschrijving": "factuur",
+                        "datumDefinitief": "2018-06-04T08:02:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B502452",
+                        "omschrijving": "WRA beschikking Definitief",
+                        "datumDefinitief": "2018-04-25T00:00:00",
+                        "zaakidentificatie": null
+                    },
+                    {
+                        "documentidentificatie": "B502608",
+                        "omschrijving": "WRV rapport",
+                        "datumDefinitief": "2018-04-26T00:00:00",
+                        "zaakidentificatie": null
+                    }
+                ]
+            }
+        ]
+    }
+}
