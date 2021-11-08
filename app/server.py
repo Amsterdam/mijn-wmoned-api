@@ -1,6 +1,8 @@
 import json
 
 import sentry_sdk
+import app.zorgned_service as zorgned
+
 from flask import Flask, make_response
 from requests.exceptions import HTTPError
 from sentry_sdk.integrations.flask import FlaskIntegration
@@ -29,7 +31,7 @@ if SENTRY_DSN:
 @validate_openapi
 def get_voorzieningen():
     user = get_tma_user()
-    voorzieningen = get_voorzieningen(user["id"])
+    voorzieningen = zorgned.get_voorzieningen(user["id"])
     return success_response_json(voorzieningen)
 
 
