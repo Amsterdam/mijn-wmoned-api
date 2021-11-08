@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+  title: WMO / Zorgned koppel api
+  description: Dit is het koppelstuk tussen Mijn Amsterdam en WMO / Zorgned
+  version: 2.0.0
+paths:
+  /wmoned/voorzieningen:
+    parameters:
+      - name: x-saml-attribute-token1
+        in: header
+        description: TMA encoded BSN
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Returns a list of actual voorzieningen
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    $ref: '#/components/schemas/Voorzieningen'
+                  status:
+                    type: string
+                    enum:
+                      - 'OK'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /status/health:
+    get:
+      summary: returns "OK"
+      responses:
+        '200':
+          description: Returns "OK"
+          content:
+            application/json:
+              schema:
+                type: string
+                enum:
+                  - 'OK'
+components:
+  schemas:
+    Voorzieningen:
+      type: array
+      items:
+        $ref: '#/components/schemas/Voorziening'
+    Voorziening:
+      type: object
+      properties:
+        title:
+          type: string
+        dateStart:
+          $ref: '#/components/schemas/Date'
+        dateEnd:
+          $ref: '#/components/schemas/Date'
+          nullable: true
+        supplier:
+          type: string
+          nullable: true
+        isActual:
+          type: boolean
+        dateDecision:
+          $ref: '#/components/schemas/Date'
+        itemTypeCode:
+          type: string # Enum?
+        deliveryType:
+          type: string # Enum?
+        serviceDateStart:
+          $ref: '#/components/schemas/Date'
+          nullable: true
+        serviceDateEnd:
+          $ref: '#/components/schemas/Date'
+          nullable: true
+        serviceOrderDate:
+          $ref: '#/components/schemas/Date'
+          nullable: true
+    Date:
+      type: string
+      format: date
+      example: '2020-06-16'
+      nullable: true
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - 'ERROR'
+        message:
+          type: string
