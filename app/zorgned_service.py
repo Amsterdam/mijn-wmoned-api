@@ -1,17 +1,17 @@
-import datetime
-import logging
-import requests
 import json
+import logging
+
+import requests
 from dpath import util as dpath_util
 
 from app.config import (
     DATE_DECISION_FROM,
     REGELING_IDENTIFICATIE,
+    SERVER_CLIENT_CERT,
+    SERVER_CLIENT_KEY,
     ZORGNED_API_TOKEN,
     ZORGNED_API_URL,
     ZORGNED_GEMEENTE_CODE,
-    SERVER_CLIENT_CERT,
-    SERVER_CLIENT_KEY,
 )
 from app.helpers import to_date
 
