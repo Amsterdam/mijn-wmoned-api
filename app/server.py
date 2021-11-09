@@ -1,4 +1,5 @@
 import json
+import logging
 
 import sentry_sdk
 import app.zorgned_service as zorgned
@@ -8,7 +9,7 @@ from requests.exceptions import HTTPError
 from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.exceptions import NotFound
 
-from app.config import SENTRY_DSN, CustomJSONEncoder, TMAException, logger
+from app.config import SENTRY_DSN, CustomJSONEncoder, TMAException
 from app.helpers import (
     error_response_json,
     get_tma_user,
@@ -17,6 +18,7 @@ from app.helpers import (
     verify_tma_user,
 )
 
+logger = logging.getLogger(__file__)
 app = Flask(__name__)
 app.json_encoder = CustomJSONEncoder
 

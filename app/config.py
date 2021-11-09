@@ -32,14 +32,20 @@ ZORGNED_GEMEENTE_CODE = "0363"
 ZORGNED_API_TOKEN = os.getenv("WMO_NED_API_TOKEN")
 ZORGNED_API_URL = os.getenv("WMO_NED_API_URL_V2")
 
+REGELING_IDENTIFICATIE = "WMO"
+DATE_DECISION_FROM = "2017-01-01"
+
 # Server security / certificates
 SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
 SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
 
 # Set-up logging
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
-logger = logging.getLogger(__name__)
-logger.setLevel(LOG_LEVEL)
+logging.basicConfig(
+    format="%(asctime)s,%(msecs)d %(levelname)-8s [%(pathname)s:%(lineno)d in function %(funcName)s] %(message)s",
+    datefmt="%Y-%m-%d:%H:%M:%S",
+    level=LOG_LEVEL,
+)
 
 
 class CustomJSONEncoder(JSONEncoder):

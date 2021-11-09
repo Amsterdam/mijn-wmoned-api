@@ -1,63 +1,89 @@
-from datetime import datetime
+import datetime
+import logging
 import requests
 import json
 from dpath import util as dpath_util
 
 from app.config import (
+    DATE_DECISION_FROM,
+    REGELING_IDENTIFICATIE,
     ZORGNED_API_TOKEN,
     ZORGNED_API_URL,
     ZORGNED_GEMEENTE_CODE,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
-    logger,
 )
+from app.helpers import to_date
 
 
-def get_title(aanvraag_source):
-    beschikteProducten = aanvraag_source.get("beschikking", {}).get(
-        "beschikteProducten"
-    )
-    if beschikteProducten:
-        return beschikteProducten[0]["product"]["omschrijving"]
+def format_aanvraag(aanvraag_source):
+
+    beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
+
+    # TODO: Is this a correct assumption?
+    product = dpath_util.get(beschikking, "beschikteProducten/0", default=None)
+
+    if not product:
+        logging.info("Product not found %s" % json.dumps(aanvraag_source, indent=4))
+        return
+
+    toegewezen_product = dpath_util.get(product, "toegewezenProduct", default=None)
+    toewijzing = dpath_util.get(toegewezen_product, "toewijzingen", default=[])
+
+    if toewijzing:
+        toewijzing = toewijzing.pop()
+
+    levering = dpath_util.get(toewijzing, "leveringen", default=[])
+
+    if levering:
+        levering = levering.pop()
+
+    item_type_code = dpath_util.get(product, "product/productsoortCode")
+    if item_type_code:
+        item_type_code = item_type_code.upper()
+
+    delivery_type = dpath_util.get(toegewezen_product, "leveringsvorm", default=None)
+    if delivery_type:
+        delivery_type = delivery_type.upper()
+
+    aanvraag = {
+        # Beschikking
+        "dateDecision": dpath_util.get(beschikking, "datumAfgifte", default=None),
+        # Product
+        "title": dpath_util.get(product, "product/omschrijving"),
+        "itemTypeCode": item_type_code,
+        # Toegewezen product
+        "dateStart": dpath_util.get(
+            toegewezen_product, "datumIngangGeldigheid", default=None
+        ),
+        "dateEnd": dpath_util.get(
+            toegewezen_product, "datumEindeGeldigheid", default=None
+        ),
+        "isActual": dpath_util.get(toegewezen_product, "actueel", default=False),
+        "deliveryType": delivery_type,
+        "supplier": dpath_util.get(
+            toegewezen_product, "leverancier/omschrijving", default=None
+        ),
+        # Levering
+        "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht", default=None),
+        "serviceDateStart": dpath_util.get(levering, "begindatum", default=None),
+        "serviceDateEnd": dpath_util.get(levering, "einddatum", default=None),
+    }
+
+    return aanvraag
 
 
 def format_aanvragen(aanvragen_source=[]):
     aanvragen = []
 
     for aanvraag_source in aanvragen_source:
-        product = dpath_util.get(aanvraag_source, "beschikking/beschikteProducten/0")
-        toegewezen_product = dpath_util.get(product, "toegewezenProduct")
-        print(json.dumps(toegewezen_product, indent=4))
-        toewijzing = dpath_util.get(
-            toegewezen_product, "toewijzingen", default=[]
-        ).pop()
-        levering = dpath_util.get(toewijzing, "leveringen", default=[]).pop()
-
-        date_decision = dpath_util.get(toewijzing, "toewijzingsDatumTijd")
-        if date_decision:
-            date_decision = datetime.strptime(date_decision, "%Y-%m-%dT%H:%M:%S").date()
-
-        aanvraag = {
-            # Product
-            "title": dpath_util.get(product, "product/omschrijving"),
-            "itemTypeCode": dpath_util.get(product, "product/productsoortCode"),
-            # Toegewezen product
-            "dateStart": dpath_util.get(toegewezen_product, "datumIngangGeldigheid"),
-            "dateEnd": dpath_util.get(toegewezen_product, "datumEindeGeldigheid"),
-            "isActual": dpath_util.get(toegewezen_product, "actueel", default=False),
-            "deliveryType": dpath_util.get(toegewezen_product, "leveringsvorm"),
-            "supplier": dpath_util.get(toegewezen_product, "leverancier/omschrijving"),
-            # Levering
-            "dateDecision": date_decision,
-            "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht"),
-            # Leveringen
-            "serviceDateStart": dpath_util.get(levering, "begindatum"),
-            "serviceDateEnd": dpath_util.get(levering, "einddatum"),
-        }
-
-        print(aanvraag)
-
-        aanvragen.append(aanvraag)
+        regeling_id = dpath_util.get(
+            aanvraag_source, "regeling/identificatie", default=None
+        )
+        if regeling_id == REGELING_IDENTIFICATIE:
+            aanvraag_formatted = format_aanvraag(aanvraag_source)
+            if aanvraag_formatted:
+                aanvragen.append(aanvraag_formatted)
 
     return aanvragen
 
@@ -70,9 +96,10 @@ def get_aanvragen(bsn):
     cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
     res = requests.get(url, timeout=9, headers=headers, cert=cert)
 
-    logger.debug(res)
-
     response_data = res.json()
+
+    logging.debug(json.dumps(response_data, indent=4))
+
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
     return format_aanvragen(response_aanvragen)
@@ -83,7 +110,9 @@ def get_voorzieningen(bsn):
     voorzieningen = []
 
     for aanvraag in aanvragen:
-        if aanvraag["isActual"]:
+        if aanvraag["isActual"] and to_date(aanvraag["dateDecision"]) >= to_date(
+            DATE_DECISION_FROM
+        ):
             voorzieningen.append(aanvraag)
 
     return voorzieningen
