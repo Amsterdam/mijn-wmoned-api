@@ -55,7 +55,7 @@ class TestAPI(FlaskServerTMATestCase):
         api_mocked.return_value = ZorgnedApiMock(BASE_PATH + "/fixtures/aanvragen.json")
         SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
 
-        res = self.client.get("/api/wmoned/voorzieningen", headers=SAML_HEADERS)
+        res = self.client.get("/wmoned/voorzieningen", headers=SAML_HEADERS)
 
         self.assertEqual(res.status_code, 200, res.data)
         self.assertEqual(res.json["status"], "OK")
@@ -84,7 +84,7 @@ class TestAPI(FlaskServerTMATestCase):
         api_mocked.return_value = ZorgnedApiMockError()
         SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
 
-        res = self.client.get("/api/wmoned/voorzieningen", headers=SAML_HEADERS)
+        res = self.client.get("/wmoned/voorzieningen", headers=SAML_HEADERS)
 
         self.assertEqual(res.status_code, 500, res.data)
         self.assertEqual(res.json["status"], "ERROR")
@@ -95,7 +95,7 @@ class TestAPI(FlaskServerTMATestCase):
     def test_get_voorzieningen_saml_error(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMock(None)
 
-        res = self.client.get("/api/wmoned/voorzieningen", headers={})
+        res = self.client.get("/wmoned/voorzieningen", headers={})
 
         self.assertEqual(res.status_code, 400, res.data)
         self.assertEqual(res.json["status"], "ERROR")
