@@ -4,7 +4,7 @@ info:
   description: Dit is het koppelstuk tussen Mijn Amsterdam en WMO / Zorgned
   version: 2.0.0
 paths:
-  /wmoned/voorzieningen:
+  /api/wmoned/voorzieningen:
     parameters:
       - name: x-saml-attribute-token1
         in: header
