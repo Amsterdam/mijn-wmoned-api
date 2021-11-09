@@ -1,5 +1,3 @@
-from tma_saml.user_type import UserType
-
 import os
 from unittest import TestCase
 
