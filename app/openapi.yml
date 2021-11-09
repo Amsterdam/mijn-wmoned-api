@@ -59,27 +59,35 @@ components:
           type: string
         dateStart:
           $ref: '#/components/schemas/Date'
+          description: The date the request for this product was started
         dateEnd:
           $ref: '#/components/schemas/Date'
+          description: The date the request for this product was finished
           nullable: true
         supplier:
           type: string
+          description: The name of the company which supplies the product
           nullable: true
         isActual:
+          description: Is the product delivery actual
           type: boolean
         dateDecision:
+          description: The date a decision was made about the request for this product
           $ref: '#/components/schemas/Date'
         itemTypeCode:
           type: string # Enum?
         deliveryType:
           type: string # Enum?
         serviceDateStart:
+          description: The date on which the product started/delivered
           $ref: '#/components/schemas/Date'
           nullable: true
         serviceDateEnd:
+          description: The date on which the product ended/revoked
           $ref: '#/components/schemas/Date'
           nullable: true
         serviceOrderDate:
+          description: The date on which the request was made to start delivering the product
           $ref: '#/components/schemas/Date'
           nullable: true
     Date:
