@@ -28,7 +28,7 @@ if SENTRY_DSN:
     )
 
 
-@app.route("/api/wmoned/voorzieningen", methods=["GET"])
+@app.route("/wmoned/voorzieningen", methods=["GET"])
 @verify_tma_user
 @validate_openapi
 def get_voorzieningen():
