@@ -1,9 +1,11 @@
-import logging
+import json
 import os
 from unittest.mock import patch
 
 from tma_saml import FlaskServerTMATestCase
 from tma_saml.for_tests.cert_and_key import server_crt
+
+from app.config import BASE_PATH
 
 MOCK_ENV_VARIABLES = {
     "TMA_CERTIFICATE": __file__,  # any file, it should not be used
@@ -12,135 +14,22 @@ MOCK_ENV_VARIABLES = {
 }
 
 with patch.dict(os.environ, MOCK_ENV_VARIABLES):
-    from app.config import logger
     from app.server import app
 
 
 class ZorgnedApiMock:
     status_code = 200
+    response_json = None
+
+    def __init__(self, response_json):
+        if isinstance(response_json, str):
+            with open(response_json, "r") as read_file:
+                self.response_json = json.load(read_file)
+        else:
+            self.response_json = response_json
 
     def json(self):
-        return {
-            "_embedded": {
-                "aanvraag": [
-                    {
-                        "_links": None,
-                        "identificatie": "123123",
-                        "regeling": {"identificatie": "WMO", "omschrijving": "WMO"},
-                        "datumAanmelding": "2012-11-30",
-                        "datumAanvraag": "2012-11-30",
-                        "beschikking": {
-                            "beschikkingNummer": 123123123,
-                            "datumAfgifte": "2012-11-30",
-                            "toelichting": "geanonimiseerd",
-                            "beschikteProducten": [
-                                {
-                                    "identificatie": "123123",
-                                    "externe_identificatie": None,
-                                    "product": {
-                                        "identificatie": "12320",
-                                        "productCode": "12320",
-                                        "productsoortCode": "OVE",
-                                        "omschrijving": "autozitje",
-                                    },
-                                    "productCategorie": {
-                                        "code": "12",
-                                        "omschrijving": "Vervoervoorzieningen",
-                                    },
-                                    "resultaat": "toegewezen",
-                                    "toegewezenProduct": {
-                                        "datumIngangGeldigheid": "2012-11-30",
-                                        "datumEindeGeldigheid": None,
-                                        "datumCheck": None,
-                                        "actueel": True,
-                                        "omvang": {
-                                            "volume": 1,
-                                            "eenheid": {
-                                                "code": "82",
-                                                "omschrijving": "Stuks (output)",
-                                            },
-                                            "frequentie": {
-                                                "code": "6",
-                                                "omschrijving": "Per beschikking",
-                                            },
-                                            "omschrijving": "1 stuks (output) per beschikking",
-                                        },
-                                        "leveringsvorm": "zin",
-                                        "leverancier": {
-                                            "identificatie": "LH123123",
-                                            "agbcode": None,
-                                            "kvk": None,
-                                            "omschrijving": "Welzorg",
-                                        },
-                                        "toelichting": None,
-                                        "toewijzingen": [
-                                            {
-                                                "toewijzingNummer": "123123_OUD",
-                                                "toewijzingsDatumTijd": "2012-12-04T00:00:00",
-                                                "ingangsdatum": "2012-11-30",
-                                                "einddatum": "2017-05-31",
-                                                "datumOpdracht": "2012-12-04",
-                                                "leverancier": {
-                                                    "identificatie": "LH123",
-                                                    "agbcode": None,
-                                                    "kvk": None,
-                                                    "omschrijving": "Welzorg",
-                                                },
-                                                "referentieAanbieder": None,
-                                                "redenWijziging": {
-                                                    "code": "01",
-                                                    "omschrijving": "Administratieve correctie",
-                                                },
-                                                "leveringen": [
-                                                    {
-                                                        "begindatum": "2014-04-01",
-                                                        "einddatum": "2017-05-31",
-                                                        "redenBeeindiging": {
-                                                            "code": "04",
-                                                            "omschrijving": "Overplaatsing",
-                                                        },
-                                                    }
-                                                ],
-                                            },
-                                            {
-                                                "toewijzingNummer": "123123",
-                                                "toewijzingsDatumTijd": "2017-06-01T00:00:00",
-                                                "ingangsdatum": "2012-11-30",
-                                                "einddatum": None,
-                                                "datumOpdracht": "2017-06-01",
-                                                "leverancier": {
-                                                    "identificatie": "123123",
-                                                    "agbcode": "123123",
-                                                    "kvk": None,
-                                                    "omschrijving": "Welzorg",
-                                                },
-                                                "referentieAanbieder": None,
-                                                "redenWijziging": None,
-                                                "leveringen": [
-                                                    {
-                                                        "begindatum": "2017-06-01",
-                                                        "einddatum": None,
-                                                        "redenBeeindiging": None,
-                                                    }
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                }
-                            ],
-                        },
-                        "documenten": [
-                            {
-                                "documentidentificatie": "B31242",
-                                "omschrijving": "Toekenning hulpmiddel zonder keuze (proces 0,1)",
-                                "datumDefinitief": "2012-12-04T00:00:00",
-                                "zaakidentificatie": None,
-                            }
-                        ],
-                    },
-                ]
-            }
-        }
+        return self.response_json
 
 
 class ZorgnedApiMockError:
@@ -157,13 +46,13 @@ class TestAPI(FlaskServerTMATestCase):
     def setUp(self):
         """Setup app for testing"""
         self.client = self.get_tma_test_app(app)
-        logger.setLevel(logging.DEBUG)
+        self.maxDiff = None
         return app
 
     @patch("app.zorgned_service.requests.get", autospec=True)
     @patch("app.helpers.get_tma_certificate", lambda: server_crt)
     def test_get_voorzieningen(self, api_mocked):
-        api_mocked.return_value = ZorgnedApiMock()
+        api_mocked.return_value = ZorgnedApiMock(BASE_PATH + "/fixtures/aanvragen.json")
         SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
 
         res = self.client.get("/wmoned/voorzieningen", headers=SAML_HEADERS)
@@ -174,16 +63,16 @@ class TestAPI(FlaskServerTMATestCase):
             res.json["content"],
             [
                 {
-                    "title": "autozitje",
-                    "itemTypeCode": "OVE",
-                    "dateStart": "2012-11-30",
+                    "title": "woonruimteaanpassing",
+                    "itemTypeCode": "WRA",
+                    "dateStart": "2018-04-06",
                     "dateEnd": None,
                     "isActual": True,
-                    "deliveryType": "zin",
+                    "deliveryType": "ZIN",
                     "supplier": "Welzorg",
-                    "dateDecision": "2017-06-01",
-                    "serviceOrderDate": "2017-06-01",
-                    "serviceDateStart": "2017-06-01",
+                    "dateDecision": "2018-04-25",
+                    "serviceOrderDate": "2018-04-26",
+                    "serviceDateStart": "2018-05-09",
                     "serviceDateEnd": None,
                 }
             ],
@@ -204,7 +93,7 @@ class TestAPI(FlaskServerTMATestCase):
     @patch("app.zorgned_service.requests.get", autospec=True)
     @patch("app.helpers.get_tma_certificate", lambda: server_crt)
     def test_get_voorzieningen_saml_error(self, api_mocked):
-        api_mocked.return_value = ZorgnedApiMock()
+        api_mocked.return_value = ZorgnedApiMock(None)
 
         res = self.client.get("/wmoned/voorzieningen", headers={})
 

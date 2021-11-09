@@ -1,6 +1,7 @@
 import os
-from functools import wraps
 from datetime import datetime
+from functools import wraps
+
 import yaml
 from flask import g, request
 from flask.helpers import make_response
@@ -18,10 +19,7 @@ from tma_saml.tma_saml import get_user_type
 from tma_saml.user_type import UserType
 from yaml import load
 
-from app.config import (
-    BASE_PATH,
-    ENABLE_OPENAPI_VALIDATION,
-)
+from app.config import BASE_PATH, ENABLE_OPENAPI_VALIDATION
 
 openapi_spec = None
 
@@ -131,3 +129,7 @@ def success_response_json(response_content):
 
 def error_response_json(message: str, code: int = 500):
     return make_response({"status": "ERROR", "message": message}, code)
+
+
+def to_date(date_string):
+    return datetime.strptime(date_string, "%Y-%m-%d")
