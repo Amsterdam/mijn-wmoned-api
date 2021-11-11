@@ -9,11 +9,16 @@ from app.config import (
     REGELING_IDENTIFICATIE,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
-    ZORGNED_API_TOKEN,
-    ZORGNED_API_URL,
-    ZORGNED_GEMEENTE_CODE,
+    WMONED_API_URL_V2,
+    WMONED_API_KEY,
+    WMONED_API_REQUEST_TIMEOUT_SECONDS,
+    WMONED_API_TOKEN,
+    WMONED_API_URL,
+    WMONED_API_V2_ENABLED,
+    WMONED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
+from urllib.parse import quote
 
 
 def format_aanvraag(date_decision, beschikt_product):
@@ -90,21 +95,62 @@ def format_aanvragen(aanvragen_source=[]):
     return aanvragen
 
 
+def format_aanvragen_v1(aanvragen_source=[]):
+    aanvragen = []
+
+    for aanvraag_source in aanvragen_source:
+        aanvraag = {
+            "title": aanvraag_source.get("Omschrijving"),
+            "itemTypeCode": aanvraag_source.get("Voorzieningsoortcode"),
+            "dateStart": aanvraag_source.get("VoorzieningIngangsdatum"),
+            "dateEnd": aanvraag_source.get("VoorzieningEinddatum"),
+            "isActual": aanvraag_source.get("Actueel"),
+            "deliveryType": aanvraag_source.get("Leveringsvorm"),
+            "supplier": aanvraag_source.get("Leverancier"),
+            "dateDecision": aanvraag_source.get("Beschikkingsdatum"),
+            "serviceOrderDate": dpath_util.get(
+                aanvraag_source, "Levering/Opdrachtdatum"
+            ),
+            "serviceDateStart": dpath_util.get(
+                aanvraag_source, "Levering/StartdatumLeverancier"
+            ),
+            "serviceDateEnd": dpath_util.get(
+                aanvraag_source, "Levering/EinddatumLeverancier"
+            ),
+        }
+
+        aanvragen.append(aanvraag)
+
+    return aanvragen
+
+
 def get_aanvragen(bsn):
-    url = f"{ZORGNED_API_URL}/gemeenten/{ZORGNED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}/aanvragen"
 
-    headers = {"Token": ZORGNED_API_TOKEN}
+    headers = None
+    cert = None
 
-    cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
-    res = requests.get(url, timeout=9, headers=headers, cert=cert)
+    if WMONED_API_V2_ENABLED:
+        headers = {"Token": WMONED_API_TOKEN}
+        cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
+        url = f"{WMONED_API_URL_V2}/gemeenten/{WMONED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}/aanvragen"
+    else:
+        url = (
+            f"{WMONED_API_URL}/getvoorzieningen?token={quote(WMONED_API_KEY)}&bsn={bsn}"
+        )
+
+    res = requests.get(
+        url, timeout=WMONED_API_REQUEST_TIMEOUT_SECONDS, headers=headers, cert=cert
+    )
 
     response_data = res.json()
 
     logging.debug(json.dumps(response_data, indent=4))
 
-    response_aanvragen = response_data["_embedded"]["aanvraag"]
-
-    return format_aanvragen(response_aanvragen)
+    if WMONED_API_V2_ENABLED:
+        response_aanvragen = response_data["_embedded"]["aanvraag"]
+        return format_aanvragen(response_aanvragen)
+    else:
+        return format_aanvragen_v1(response_data)
 
 
 def get_voorzieningen(bsn):

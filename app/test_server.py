@@ -5,15 +5,17 @@ from unittest.mock import patch
 from tma_saml import FlaskServerTMATestCase
 from tma_saml.for_tests.cert_and_key import server_crt
 
-from app.config import BASE_PATH
-
 MOCK_ENV_VARIABLES = {
     "TMA_CERTIFICATE": __file__,  # any file, it should not be used
-    "ZORGNED_API_TOKEN": "123123",
-    "ZORGNED_API_URL": "https://some-server",
+    "WMO_NED_API_TOKEN": "123123",
+    "WMO_NED_API_URL_V2": "https://some-server",
 }
 
 with patch.dict(os.environ, MOCK_ENV_VARIABLES):
+    from app import config
+
+    BASE_PATH = config.BASE_PATH
+    config.WMONED_API_V2_ENABLED = True
     from app.server import app
 
 
