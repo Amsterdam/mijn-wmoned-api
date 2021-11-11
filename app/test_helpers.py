@@ -3,7 +3,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
 from flask.app import Flask
-from flask import json, request
+from flask import json
 from flask.wrappers import Response
 from openapi_core.spec.shortcuts import create_spec
 from yaml import load
