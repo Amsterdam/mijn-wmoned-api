@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y
 RUN pip install --upgrade pip
 RUN pip install uwsgi
 
-COPY /api /app/api
+COPY /app /app/app
 COPY /requirements.txt /app
 COPY /uwsgi.ini /app
 

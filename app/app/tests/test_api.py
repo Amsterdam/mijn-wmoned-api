@@ -10,7 +10,7 @@ os.environ['TMA_CERTIFICATE'] = __file__  # any file, it should not be used
 
 from ..server import app  # noqa: E402
 
-ZorgNedConnectionLocation = 'api.zorgned.zorgned_connection.ZorgNedConnection'
+ZorgNedConnectionLocation = 'app.zorgned.zorgned_connection.ZorgNedConnection'
 
 
 def get_expected_data(*args):
@@ -87,7 +87,7 @@ class TestAPI(FlaskServerTMATestCase):
     # =====================
 
     @patch(ZorgNedConnectionLocation + '.get_voorzieningen', autospec=True)
-    @patch('api.server.get_bsn_from_request', lambda x: '111222333')
+    @patch('app.server.get_bsn_from_request', lambda x: '111222333')
     def test_get_voorzieningen(self, mocked_method):
         """
         Test if getting is allowed, if the SAML token is correctly decoded and
@@ -110,7 +110,7 @@ class TestAPI(FlaskServerTMATestCase):
         mocked_method.assert_called_once_with(ANY, self.TEST_BSN)
 
     @patch(ZorgNedConnectionLocation + '.get_voorzieningen', side_effect=get_expected_data)
-    @patch('api.server.get_bsn_from_request', lambda x: '111222333')
+    @patch('app.server.get_bsn_from_request', lambda x: '111222333')
     def test_get_voorzieningen_jeughulp_filtered(self, mock_get_voorzieningen):
         # Create SAML headers
         SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
@@ -191,7 +191,7 @@ class TestAPI(FlaskServerTMATestCase):
         # ============================
 
     @patch(ZorgNedConnectionLocation + '.get_voorzieningen', autospec=True)
-    @patch('api.server.get_bsn_from_request', lambda x: '111222333')
+    @patch('app.server.get_bsn_from_request', lambda x: '111222333')
     def test_bsn_not_found(self, mocked_method):
         mocked_method.return_value = (404, "bsn not found")
 
