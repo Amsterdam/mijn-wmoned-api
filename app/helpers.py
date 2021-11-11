@@ -135,4 +135,4 @@ def to_date(date_string):
     if "T00" in date_string:
         return datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%S").date()
 
-    return datetime.strptime(date_string, "%Y-%m-%d")
+    return datetime.strptime(date_string, "%Y-%m-%d").date()
