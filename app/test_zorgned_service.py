@@ -1,16 +1,38 @@
-import os
 from unittest import TestCase
 
 from unittest.mock import patch
+from app.test_server import ZorgnedApiMock
 
-from app.zorgned_service import format_aanvraag, format_aanvragen, get_voorzieningen
-
-
-@patch.dict(
-    os.environ,
-    {},
+from app.zorgned_service import (
+    format_aanvraag,
+    format_aanvragen,
+    get_aanvragen,
+    get_voorzieningen,
 )
+
+
 class ZorgnedServiceTest(TestCase):
+    @patch("app.zorgned_service.format_aanvragen")
+    @patch("app.zorgned_service.requests.get")
+    def test_get_aanvragen(self, get_mock, format_mock):
+        get_mock.return_value = ZorgnedApiMock(
+            {"_embedded": {"aanvraag": [{"foo": "bar"}]}}
+        )
+        format_mock.return_value = []
+
+        aanvragen = get_aanvragen(123)
+
+        self.assertEqual(aanvragen, [])
+
+        format_mock.assert_called_with([{"foo": "bar"}])
+
+    @patch("app.zorgned_service.requests.get")
+    def test_get_aanvragen_fail(self, get_mock):
+        get_mock.return_value = ZorgnedApiMock(None)
+
+        with self.assertRaises(TypeError):
+            get_aanvragen(123)
+
     def format_aanvraag_partial(self):
 
         self.maxDiff = None
