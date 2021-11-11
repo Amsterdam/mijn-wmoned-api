@@ -146,29 +146,121 @@ class ZorgnedServiceTest(TestCase):
         }
         self.assertEqual(source1_formatted, source1_formatted_expected)
 
-    @patch("app.zorgned_service.format_aanvraag")
-    def test_format_aanvragen(self, format_aanvraag_mock):
-
-        aanvraag = {"title": "Foo", "itemTypeCode": "BAR"}
-
-        format_aanvraag_mock.return_value = aanvraag
-
+    def test_format_aanvragen(self):
         source1 = [
             {
                 "regeling": {"identificatie": "WMO", "omschrijving": "WMO"},
-            },
-            {
-                "regeling": {"identificatie": "BLAP", "omschrijving": "WMO"},
-            },
-            {
-                "regeling": {"identificatie": "WMO", "omschrijving": "WMO"},
-            },
+                "beschikking": {
+                    "datumAfgifte": "2012-11-30",
+                    "beschikteProducten": [
+                        {
+                            "product": {
+                                "productsoortCode": "OVE",
+                                "omschrijving": "autozitje",
+                            },
+                            "toegewezenProduct": {
+                                "actueel": True,
+                                "leveringsvorm": "zin",
+                                "leverancier": {"omschrijving": "Welzorg"},
+                                "datumIngangGeldigheid": "2014-07-03",
+                                "datumEindeGeldigheid": "2014-09-03",
+                                "toewijzingen": [
+                                    {
+                                        "datumOpdracht": "2012-12-04",
+                                        "leverancier": {"omschrijving": "Welzorg"},
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2014-04-01",
+                                                "einddatum": "2017-05-31",
+                                            }
+                                        ],
+                                    },
+                                    {
+                                        "datumOpdracht": "2017-05-01",
+                                        "leverancier": {"omschrijving": "Welzorg"},
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2017-06-01",
+                                                "einddatum": "2018-02-23",
+                                            }
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
+                        {
+                            "product": {
+                                "productsoortCode": "OVE",
+                                "omschrijving": "ander-dingetje",
+                            },
+                            "toegewezenProduct": {
+                                "actueel": True,
+                                "leveringsvorm": "zin",
+                                "leverancier": {"omschrijving": "Anderzorg"},
+                                "datumIngangGeldigheid": "2014-07-03",
+                                "datumEindeGeldigheid": "2014-09-03",
+                                "toewijzingen": [
+                                    {
+                                        "datumOpdracht": "2012-12-04",
+                                        "leverancier": {"omschrijving": "Anderzorg"},
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2014-04-01",
+                                                "einddatum": "2017-05-31",
+                                            }
+                                        ],
+                                    },
+                                    {
+                                        "datumOpdracht": "2017-05-01",
+                                        "leverancier": {"omschrijving": "Anderzorg"},
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2017-06-01",
+                                                "einddatum": "2018-02-23",
+                                            }
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+                "documenten": [],
+            }
         ]
 
         source1_formatted = format_aanvragen(source1)
 
+        aanvraag1 = {
+            "title": "autozitje",
+            "itemTypeCode": "OVE",
+            "dateStart": "2014-07-03",
+            "dateEnd": "2014-09-03",
+            "isActual": True,
+            "deliveryType": "ZIN",
+            "supplier": "Welzorg",
+            "dateDecision": "2012-11-30",
+            "serviceOrderDate": "2017-05-01",
+            "serviceDateStart": "2017-06-01",
+            "serviceDateEnd": "2018-02-23",
+        }
+
+        aanvraag2 = {
+            "title": "ander-dingetje",
+            "itemTypeCode": "OVE",
+            "dateStart": "2014-07-03",
+            "dateEnd": "2014-09-03",
+            "isActual": True,
+            "deliveryType": "ZIN",
+            "supplier": "Anderzorg",
+            "dateDecision": "2012-11-30",
+            "serviceOrderDate": "2017-05-01",
+            "serviceDateStart": "2017-06-01",
+            "serviceDateEnd": "2018-02-23",
+        }
+
         self.assertEqual(len(source1_formatted), 2)
-        self.assertEqual(source1_formatted, [aanvraag, aanvraag])
+        self.assertEqual(source1_formatted, [aanvraag1, aanvraag2])
 
     @patch(
         "app.zorgned_service.get_aanvragen",
@@ -177,7 +269,7 @@ class ZorgnedServiceTest(TestCase):
                 {"isActual": False, "dateDecision": "2018-01-01"},
             ],
             [
-                {"isActual": True, "dateDecision": "2016-12-31"},
+                {"isActual": True, "dateDecision": "1999-12-31"},
             ],
             [
                 {"isActual": True, "dateDecision": "2017-01-01"},

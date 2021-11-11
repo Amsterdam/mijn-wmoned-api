@@ -16,18 +16,11 @@ from app.config import (
 from app.helpers import to_date
 
 
-def format_aanvraag(aanvraag_source):
+def format_aanvraag(date_decision, beschikt_product):
 
-    beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
-
-    # TODO: Is this a correct assumption?
-    product = dpath_util.get(beschikking, "beschikteProducten/0", default=None)
-
-    if not product:
-        logging.info("Product not found %s" % json.dumps(aanvraag_source, indent=4))
-        return
-
-    toegewezen_product = dpath_util.get(product, "toegewezenProduct", default=None)
+    toegewezen_product = dpath_util.get(
+        beschikt_product, "toegewezenProduct", default=None
+    )
     toewijzing = dpath_util.get(toegewezen_product, "toewijzingen", default=[])
 
     if toewijzing:
@@ -38,7 +31,7 @@ def format_aanvraag(aanvraag_source):
     if levering:
         levering = levering.pop()
 
-    item_type_code = dpath_util.get(product, "product/productsoortCode")
+    item_type_code = dpath_util.get(beschikt_product, "product/productsoortCode")
     if item_type_code:
         item_type_code = item_type_code.upper()
 
@@ -48,9 +41,9 @@ def format_aanvraag(aanvraag_source):
 
     aanvraag = {
         # Beschikking
-        "dateDecision": dpath_util.get(beschikking, "datumAfgifte", default=None),
+        "dateDecision": date_decision,
         # Product
-        "title": dpath_util.get(product, "product/omschrijving"),
+        "title": dpath_util.get(beschikt_product, "product/omschrijving"),
         "itemTypeCode": item_type_code,
         # Toegewezen product
         "dateStart": dpath_util.get(
@@ -80,10 +73,19 @@ def format_aanvragen(aanvragen_source=[]):
         regeling_id = dpath_util.get(
             aanvraag_source, "regeling/identificatie", default=None
         )
+
         if regeling_id == REGELING_IDENTIFICATIE:
-            aanvraag_formatted = format_aanvraag(aanvraag_source)
-            if aanvraag_formatted:
-                aanvragen.append(aanvraag_formatted)
+            beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
+            date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
+            beschikte_producten = dpath_util.get(
+                beschikking, "beschikteProducten", default=[]
+            )
+
+            for beschikt_product in beschikte_producten:
+                aanvraag_formatted = format_aanvraag(date_decision, beschikt_product)
+
+                if aanvraag_formatted:
+                    aanvragen.append(aanvraag_formatted)
 
     return aanvragen
 
