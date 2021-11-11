@@ -40,7 +40,7 @@ SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
 SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
 
 # Set-up logging
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+LOG_LEVEL = os.getenv("LOG_LEVEL", "ERROR").upper()
 logging.basicConfig(
     format="%(asctime)s,%(msecs)d %(levelname)-8s [%(pathname)s:%(lineno)d in function %(funcName)s] %(message)s",
     datefmt="%Y-%m-%d:%H:%M:%S",
