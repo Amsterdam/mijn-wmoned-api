@@ -132,4 +132,7 @@ def error_response_json(message: str, code: int = 500):
 
 
 def to_date(date_string):
+    if "T00" in date_string:
+        return datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%S").date()
+
     return datetime.strptime(date_string, "%Y-%m-%d")
