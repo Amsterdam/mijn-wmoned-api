@@ -112,10 +112,10 @@ def format_aanvragen_v1(aanvragen_source=[]):
                 aanvraag_source, "Levering/Opdrachtdatum"
             ),
             "serviceDateStart": dpath_util.get(
-                aanvraag_source, "Levering/StartdatumLeverancier"
+                aanvraag_source, "Levering/StartdatumLeverancier", default=None
             ),
             "serviceDateEnd": dpath_util.get(
-                aanvraag_source, "Levering/EinddatumLeverancier"
+                aanvraag_source, "Levering/EinddatumLeverancier", default=None
             ),
         }
 
