@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import date, datetime
 from functools import wraps
 
 import yaml
@@ -131,8 +131,14 @@ def error_response_json(message: str, code: int = 500):
     return make_response({"status": "ERROR", "message": message}, code)
 
 
-def to_date(date_string):
-    if "T00" in date_string:
-        return datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%S").date()
+def to_date(date_input):
+    if isinstance(date_input, date):
+        return date_input
 
-    return datetime.strptime(date_string, "%Y-%m-%d").date()
+    if isinstance(date_input, datetime):
+        return date_input.date()
+
+    if "T00" in date_input:
+        return datetime.strptime(date_input, "%Y-%m-%dT%H:%M:%S").date()
+
+    return datetime.strptime(date_input, "%Y-%m-%d").date()

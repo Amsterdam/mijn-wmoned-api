@@ -99,24 +99,34 @@ def format_aanvragen_v1(aanvragen_source=[]):
     aanvragen = []
 
     for aanvraag_source in aanvragen_source:
+        date_start = aanvraag_source.get("VoorzieningIngangsdatum")
+        date_end = aanvraag_source.get("VoorzieningEinddatum")
+        date_decision = aanvraag_source.get("Beschikkingsdatum")
+        service_order_date = dpath_util.get(
+            aanvraag_source, "Levering/Opdrachtdatum", default=None
+        )
+        service_date_start = dpath_util.get(
+            aanvraag_source, "Levering/StartdatumLeverancier", default=None
+        )
+        service_date_end = dpath_util.get(
+            aanvraag_source, "Levering/EinddatumLeverancier", default=None
+        )
         aanvraag = {
             "title": aanvraag_source.get("Omschrijving"),
             "itemTypeCode": aanvraag_source.get("Voorzieningsoortcode"),
-            "dateStart": aanvraag_source.get("VoorzieningIngangsdatum"),
-            "dateEnd": aanvraag_source.get("VoorzieningEinddatum"),
+            "dateStart": to_date(date_start) if date_start else None,
+            "dateEnd": to_date(date_end) if date_end else None,
             "isActual": aanvraag_source.get("Actueel"),
             "deliveryType": aanvraag_source.get("Leveringsvorm"),
             "supplier": aanvraag_source.get("Leverancier"),
-            "dateDecision": aanvraag_source.get("Beschikkingsdatum"),
-            "serviceOrderDate": dpath_util.get(
-                aanvraag_source, "Levering/Opdrachtdatum", default=None
-            ),
-            "serviceDateStart": dpath_util.get(
-                aanvraag_source, "Levering/StartdatumLeverancier", default=None
-            ),
-            "serviceDateEnd": dpath_util.get(
-                aanvraag_source, "Levering/EinddatumLeverancier", default=None
-            ),
+            "dateDecision": to_date(date_decision) if date_decision else None,
+            "serviceOrderDate": to_date(service_order_date)
+            if service_order_date
+            else None,
+            "serviceDateStart": to_date(service_date_start)
+            if service_date_start
+            else None,
+            "serviceDateEnd": to_date(service_date_end) if service_date_end else None,
         }
 
         aanvragen.append(aanvraag)
