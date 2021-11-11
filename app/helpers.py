@@ -138,7 +138,7 @@ def to_date(date_input):
     if isinstance(date_input, datetime):
         return date_input.date()
 
-    if "T00" in date_input:
+    if "T" in date_input:
         return datetime.strptime(date_input, "%Y-%m-%dT%H:%M:%S").date()
 
     return datetime.strptime(date_input, "%Y-%m-%d").date()
