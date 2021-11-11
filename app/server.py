@@ -1,14 +1,8 @@
 import json
 import logging
 
-import sentry_sdk
 import app.zorgned_service as zorgned
-
-from flask import Flask, make_response
-from requests.exceptions import HTTPError
-from sentry_sdk.integrations.flask import FlaskIntegration
-from werkzeug.exceptions import NotFound
-
+import sentry_sdk
 from app.config import SENTRY_DSN, CustomJSONEncoder, TMAException
 from app.helpers import (
     error_response_json,
@@ -17,8 +11,11 @@ from app.helpers import (
     validate_openapi,
     verify_tma_user,
 )
+from flask import Flask, make_response
+from requests.exceptions import HTTPError
+from sentry_sdk.integrations.flask import FlaskIntegration
+from werkzeug.exceptions import NotFound
 
-logger = logging.getLogger(__file__)
 app = Flask(__name__)
 app.json_encoder = CustomJSONEncoder
 
@@ -52,7 +49,7 @@ def handle_error(error):
     msg_server_error = "Server error occurred"
     msg_404_error = "Not found"
 
-    logger.exception(error)
+    logging.exception(error)
 
     if isinstance(error, NotFound):
         return error_response_json(msg_404_error, 404)
