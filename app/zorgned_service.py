@@ -168,8 +168,10 @@ def get_voorzieningen(bsn):
     voorzieningen = []
 
     for aanvraag in aanvragen:
-        if aanvraag["isActual"] and to_date(aanvraag["dateDecision"]) >= to_date(
-            DATE_DECISION_FROM
+        if (
+            aanvraag.get("serviceDateStart")
+            and aanvraag.get("dateDecision")
+            and to_date(aanvraag["dateDecision"]) >= to_date(DATE_DECISION_FROM)
         ):
             voorzieningen.append(aanvraag)
 

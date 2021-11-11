@@ -273,22 +273,56 @@ class ZorgnedServiceTest(TestCase):
                 {"isActual": False, "dateDecision": "2018-01-01"},
             ],
             [
-                {"isActual": True, "dateDecision": "1999-12-31"},
+                {
+                    "isActual": False,
+                    "dateDecision": "2018-01-01",
+                    "serviceDateStart": "2018-02-01",
+                },
             ],
             [
-                {"isActual": True, "dateDecision": "2017-01-01"},
+                {
+                    "isActual": True,
+                    "dateDecision": "1999-12-31",
+                    "serviceDateStart": "2000-02-01",
+                },
+            ],
+            [
+                {
+                    "isActual": True,
+                    "dateDecision": "2017-01-01",
+                    "serviceDateStart": "2017-02-01",
+                },
             ],
         ],
     )
     def test_get_voorzieningen(self, *mocks):
 
+        voorzieningen0 = get_voorzieningen(123)
+        self.assertEqual(voorzieningen0, [])
+
         voorzieningen1 = get_voorzieningen(123)
-        self.assertEqual(voorzieningen1, [])
+        self.assertEqual(
+            voorzieningen1,
+            [
+                {
+                    "isActual": False,
+                    "dateDecision": "2018-01-01",
+                    "serviceDateStart": "2018-02-01",
+                }
+            ],
+        )
 
         voorzieningen2 = get_voorzieningen(123)
         self.assertEqual(voorzieningen2, [])
 
         voorzieningen3 = get_voorzieningen(123)
         self.assertEqual(
-            voorzieningen3, [{"isActual": True, "dateDecision": "2017-01-01"}]
+            voorzieningen3,
+            [
+                {
+                    "isActual": True,
+                    "dateDecision": "2017-01-01",
+                    "serviceDateStart": "2017-02-01",
+                }
+            ],
         )
