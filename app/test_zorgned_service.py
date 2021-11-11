@@ -1,8 +1,13 @@
+import os
 from unittest import TestCase
-
 from unittest.mock import patch
+
 from app.test_server import ZorgnedApiMock
 
+from app import config
+
+BASE_PATH = config.BASE_PATH
+config.WMONED_API_V2_ENABLED = True
 from app.zorgned_service import (
     format_aanvraag,
     format_aanvragen,
