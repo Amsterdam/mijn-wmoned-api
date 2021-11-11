@@ -109,7 +109,7 @@ def format_aanvragen_v1(aanvragen_source=[]):
             "supplier": aanvraag_source.get("Leverancier"),
             "dateDecision": aanvraag_source.get("Beschikkingsdatum"),
             "serviceOrderDate": dpath_util.get(
-                aanvraag_source, "Levering/Opdrachtdatum"
+                aanvraag_source, "Levering/Opdrachtdatum", default=None
             ),
             "serviceDateStart": dpath_util.get(
                 aanvraag_source, "Levering/StartdatumLeverancier", default=None
