@@ -38,7 +38,7 @@ WMONED_API_TOKEN = os.getenv("WMO_NED_API_TOKEN")
 WMONED_API_URL_V2 = os.getenv("WMO_NED_API_URL_V2")
 
 REGELING_IDENTIFICATIE = "WMO"
-DATE_DECISION_FROM = "2000-01-01"  # TODO: Determine correct date
+DATE_DECISION_FROM = "2018-01-01"  # TODO: Determine correct date
 
 # Server security / certificates
 SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")

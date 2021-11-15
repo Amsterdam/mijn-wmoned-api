@@ -1,3 +1,5 @@
+import datetime
+import json
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -7,6 +9,7 @@ from app.test_server import ZorgnedApiMock
 from app.zorgned_service import (
     format_aanvraag,
     format_aanvragen,
+    format_aanvragen_v1,
     get_aanvragen,
     get_voorzieningen,
 )
@@ -326,3 +329,25 @@ class ZorgnedServiceTest(TestCase):
                 }
             ],
         )
+
+    def test_format_voorzieningen_v1(self):
+
+        self.maxDiff = None
+
+        with open(f"{BASE_PATH}/fixtures/v1_old.json", "r") as file_contents:
+            input = json.load(file_contents)
+
+        def defaultconverter(o):
+            if isinstance(o, datetime.date):
+                return o.__str__()
+
+        output_formatted = json.loads(
+            json.dumps(format_aanvragen_v1(input), default=defaultconverter)
+        )
+
+        # output_formatted = sorted(output_formatted, key=lambda x: x["title"])
+
+        with open(f"{BASE_PATH}/fixtures/v1_new.json", "r") as file_contents:
+            expected_output = json.load(file_contents)
+
+        self.assertEqual(output_formatted, expected_output)

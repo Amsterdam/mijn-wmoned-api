@@ -102,6 +102,10 @@ def format_aanvragen_v1(aanvragen_source=[]):
         date_start = aanvraag_source.get("VoorzieningIngangsdatum")
         date_end = aanvraag_source.get("VoorzieningEinddatum")
         date_decision = aanvraag_source.get("Beschikkingsdatum")
+
+        if to_date(date_decision) < to_date(DATE_DECISION_FROM):
+            continue
+
         service_order_date = dpath_util.get(
             aanvraag_source, "Levering/Opdrachtdatum", default=None
         )
