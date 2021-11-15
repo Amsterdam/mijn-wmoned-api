@@ -321,13 +321,7 @@ class ZorgnedServiceTest(TestCase):
         voorzieningen3 = get_voorzieningen(123)
         self.assertEqual(
             voorzieningen3,
-            [
-                {
-                    "isActual": True,
-                    "dateDecision": "2017-01-01",
-                    "serviceDateStart": "2017-02-01",
-                }
-            ],
+            [],
         )
 
     def test_format_voorzieningen_v1(self):
