@@ -60,7 +60,7 @@ if (BRANCH == "test-acc" || BRANCH == "master") {
     }
 }
 
-if (BRANCH == "master") {
+if (BRANCH == "production-release") {
     stage("Waiting for approval") {
         input "Deploy to Production?"
     }
