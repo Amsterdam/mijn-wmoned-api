@@ -152,6 +152,10 @@ def get_aanvragen(bsn):
         url, timeout=WMONED_API_REQUEST_TIMEOUT_SECONDS, headers=headers, cert=cert
     )
 
+    # Weird use of http status codes in V1 api. The 404 is returned in the case a user doesn't have any content in the remote system.
+    if not WMONED_API_V2_ENABLED and res.status_code == 404:
+        return []
+
     response_data = res.json()
 
     logging.debug(json.dumps(response_data, indent=4))
