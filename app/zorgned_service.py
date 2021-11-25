@@ -1,3 +1,4 @@
+from datetime import date, datetime
 import json
 import logging
 
@@ -26,15 +27,16 @@ def format_aanvraag(date_decision, beschikt_product):
     toegewezen_product = dpath_util.get(
         beschikt_product, "toegewezenProduct", default=None
     )
-    toewijzing = dpath_util.get(toegewezen_product, "toewijzingen", default=[])
+    is_actual = dpath_util.get(toegewezen_product, "actueel", default=False)
 
-    if toewijzing:
-        toewijzing = toewijzing.pop()
+    toewijzingen = dpath_util.get(toegewezen_product, "toewijzingen", default=[])
 
-    levering = dpath_util.get(toewijzing, "leveringen", default=[])
+    if is_actual:
+        toewijzingen.sort(key=lambda x: x["ingangsdatum"] or date.min, reverse=True)
+    else:
+        toewijzingen.sort(key=lambda x: x["einddatum"] or date.min, reverse=True)
 
-    if levering:
-        levering = levering.pop()
+    toewijzing = toewijzingen[0] if toewijzingen else None
 
     item_type_code = dpath_util.get(beschikt_product, "product/productsoortCode")
     if item_type_code:
@@ -57,15 +59,15 @@ def format_aanvraag(date_decision, beschikt_product):
         "dateEnd": dpath_util.get(
             toegewezen_product, "datumEindeGeldigheid", default=None
         ),
-        "isActual": dpath_util.get(toegewezen_product, "actueel", default=False),
+        "isActual": is_actual,
         "deliveryType": delivery_type,
         "supplier": dpath_util.get(
             toegewezen_product, "leverancier/omschrijving", default=None
         ),
         # Levering
         "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht", default=None),
-        "serviceDateStart": dpath_util.get(levering, "begindatum", default=None),
-        "serviceDateEnd": dpath_util.get(levering, "einddatum", default=None),
+        "serviceDateStart": dpath_util.get(toewijzing, "ingangsdatum", default=None),
+        "serviceDateEnd": dpath_util.get(toewijzing, "einddatum", default=None),
     }
 
     return aanvraag
@@ -184,4 +186,20 @@ def get_voorzieningen(bsn):
             "maxeinddatum": DATE_END_NOT_OLDER_THAN,
         }
 
-    return get_aanvragen(bsn, query_params)
+    aanvragen = get_aanvragen(bsn, query_params)
+
+    voorzieningen = []
+
+    for aanvraag_source in aanvragen:
+        if (
+            aanvraag_source.get("dateStart")
+            and to_date(aanvraag_source.get("dateStart")) <= date.today()
+            # and (
+            #     not aanvraag_source.get("serviceDateEnd")  # Not ended yet
+            #     or to_date(aanvraag_source.get("serviceDateEnd"))
+            #     >= to_date(DATE_END_NOT_OLDER_THAN)
+            # )
+        ):
+            voorzieningen.append(aanvraag_source)
+
+    return voorzieningen

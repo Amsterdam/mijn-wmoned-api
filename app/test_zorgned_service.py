@@ -174,6 +174,8 @@ class ZorgnedServiceTest(TestCase):
                                 "toewijzingen": [
                                     {
                                         "datumOpdracht": "2012-12-04",
+                                        "ingangsdatum": "2014-04-01",
+                                        "einddatum": "2017-05-31",
                                         "leverancier": {"omschrijving": "Welzorg"},
                                         "leveringen": [
                                             {
@@ -184,6 +186,8 @@ class ZorgnedServiceTest(TestCase):
                                     },
                                     {
                                         "datumOpdracht": "2017-05-01",
+                                        "ingangsdatum": "2017-06-01",
+                                        "einddatum": "2018-02-23",
                                         "leverancier": {"omschrijving": "Welzorg"},
                                         "leveringen": [
                                             {
@@ -209,23 +213,17 @@ class ZorgnedServiceTest(TestCase):
                                 "toewijzingen": [
                                     {
                                         "datumOpdracht": "2012-12-04",
+                                        "ingangsdatum": "2014-04-01",
+                                        "einddatum": "2017-05-31",
                                         "leverancier": {"omschrijving": "Anderzorg"},
-                                        "leveringen": [
-                                            {
-                                                "begindatum": "2014-04-01",
-                                                "einddatum": "2017-05-31",
-                                            }
-                                        ],
+                                        "leveringen": [],
                                     },
                                     {
                                         "datumOpdracht": "2017-05-01",
+                                        "ingangsdatum": "2017-06-01",
+                                        "einddatum": "2018-02-23",
                                         "leverancier": {"omschrijving": "Anderzorg"},
-                                        "leveringen": [
-                                            {
-                                                "begindatum": "2017-06-01",
-                                                "einddatum": "2018-02-23",
-                                            }
-                                        ],
+                                        "leveringen": [],
                                     },
                                 ],
                             },
