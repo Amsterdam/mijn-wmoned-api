@@ -18,7 +18,7 @@ from app.config import (
     WMONED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
-from urllib.parse import quote
+from urllib.parse import quote, urljoin
 
 
 def format_aanvraag(date_decision, beschikt_product):
@@ -146,10 +146,13 @@ def get_aanvragen(bsn):
     if WMONED_API_V2_ENABLED:
         headers = {"Token": WMONED_API_TOKEN}
         cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
-        url = f"{WMONED_API_URL_V2}/gemeenten/{WMONED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}/aanvragen"
+        url = urljoin(
+            WMONED_API_URL_V2,
+            f"/gemeenten/{WMONED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}/aanvragen",
+        )
     else:
-        url = (
-            f"{WMONED_API_URL}/getvoorzieningen?token={quote(WMONED_API_KEY)}&bsn={bsn}"
+        url = urljoin(
+            WMONED_API_URL, f"/getvoorzieningen?token={quote(WMONED_API_KEY)}&bsn={bsn}"
         )
 
     res = requests.get(
