@@ -5,7 +5,7 @@ import requests
 from dpath import util as dpath_util
 
 from app.config import (
-    DATE_DECISION_FROM,
+    DATE_END_NOT_OLDER_THAN,
     REGELING_IDENTIFICATIE,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
@@ -101,11 +101,11 @@ def format_aanvragen_v1(aanvragen_source=[]):
     for aanvraag_source in aanvragen_source:
         date_start = aanvraag_source.get("VoorzieningIngangsdatum")
         date_end = aanvraag_source.get("VoorzieningEinddatum")
-        date_decision = aanvraag_source.get("Beschikkingsdatum")
 
-        if to_date(date_decision) < to_date(DATE_DECISION_FROM):
+        if date_end and to_date(date_end) < to_date(DATE_END_NOT_OLDER_THAN):
             continue
 
+        date_decision = aanvraag_source.get("Beschikkingsdatum")
         service_order_date = dpath_util.get(
             aanvraag_source, "Levering/Opdrachtdatum", default=None
         )
@@ -138,7 +138,7 @@ def format_aanvragen_v1(aanvragen_source=[]):
     return aanvragen
 
 
-def get_aanvragen(bsn):
+def get_aanvragen(bsn, query_params=None):
 
     headers = None
     cert = None
@@ -153,11 +153,15 @@ def get_aanvragen(bsn):
         )
 
     res = requests.get(
-        url, timeout=WMONED_API_REQUEST_TIMEOUT_SECONDS, headers=headers, cert=cert
+        url,
+        timeout=WMONED_API_REQUEST_TIMEOUT_SECONDS,
+        headers=headers,
+        cert=cert,
+        params=query_params,
     )
 
     # Weird use of http status codes in V1 api. The 404 is returned in the case a user doesn't have any content in the remote system.
-    if not WMONED_API_V2_ENABLED and res.status_code == 404:
+    if res.status_code == 404 and not WMONED_API_V2_ENABLED:
         return []
 
     response_data = res.json()
@@ -172,15 +176,12 @@ def get_aanvragen(bsn):
 
 
 def get_voorzieningen(bsn):
-    aanvragen = get_aanvragen(bsn)
-    voorzieningen = []
+    query_params = None
 
-    for aanvraag in aanvragen:
-        if (
-            aanvraag.get("serviceDateStart")
-            and aanvraag.get("dateDecision")
-            and to_date(aanvraag["dateDecision"]) >= to_date(DATE_DECISION_FROM)
-        ):
-            voorzieningen.append(aanvraag)
+    if WMONED_API_V2_ENABLED:
+        query_params = {
+            "resultaat": "toegewezen",
+            "maxeinddatum": DATE_END_NOT_OLDER_THAN,
+        }
 
-    return voorzieningen
+    return get_aanvragen(bsn, query_params)
