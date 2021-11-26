@@ -61,10 +61,23 @@ class TestAPI(FlaskServerTMATestCase):
 
         self.assertEqual(res.status_code, 200, res.data)
         self.assertEqual(res.json["status"], "OK")
-        print("\n\n\n", res.json["content"], "\n\n\n")
+
         self.assertEqual(
             res.json["content"],
             [
+                {
+                    "dateDecision": "2012-11-30",
+                    "dateEnd": None,
+                    "dateStart": "2012-11-30",
+                    "deliveryType": "ZIN",
+                    "isActual": True,
+                    "itemTypeCode": "OVE",
+                    "serviceDateEnd": None,
+                    "serviceDateStart": "2017-06-01",
+                    "serviceOrderDate": "2017-06-01",
+                    "supplier": "Welzorg",
+                    "title": "autozitje",
+                },
                 {
                     "dateDecision": "2013-06-17",
                     "dateEnd": None,
@@ -72,8 +85,8 @@ class TestAPI(FlaskServerTMATestCase):
                     "deliveryType": "ZIN",
                     "isActual": False,
                     "itemTypeCode": "OVE",
-                    "serviceDateEnd": "2021-09-13",
-                    "serviceDateStart": "2013-02-07",
+                    "serviceDateEnd": "2021-09-27",
+                    "serviceDateStart": "2017-06-01",
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "buggy",
@@ -85,8 +98,8 @@ class TestAPI(FlaskServerTMATestCase):
                     "deliveryType": "ZIN",
                     "isActual": False,
                     "itemTypeCode": "FIE",
-                    "serviceDateEnd": "2021-09-13",
-                    "serviceDateStart": "2015-02-16",
+                    "serviceDateEnd": "2021-09-27",
+                    "serviceDateStart": "2017-06-01",
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "driewielfiets 5-9 jr",
@@ -99,7 +112,7 @@ class TestAPI(FlaskServerTMATestCase):
                     "isActual": False,
                     "itemTypeCode": "ROL",
                     "serviceDateEnd": None,
-                    "serviceDateStart": "2021-08-24",
+                    "serviceDateStart": None,
                     "serviceOrderDate": "2021-08-30",
                     "supplier": "Welzorg",
                     "title": "handbewogen kinderrolstoel",
@@ -112,23 +125,10 @@ class TestAPI(FlaskServerTMATestCase):
                     "isActual": True,
                     "itemTypeCode": "WRA",
                     "serviceDateEnd": None,
-                    "serviceDateStart": "2018-04-06",
+                    "serviceDateStart": "2018-05-09",
                     "serviceOrderDate": "2018-04-26",
                     "supplier": "Welzorg",
                     "title": "woonruimteaanpassing",
-                },
-                {
-                    "dateDecision": "2012-04-25",
-                    "dateEnd": None,
-                    "dateStart": "2012-04-25",
-                    "deliveryType": "ZIN",
-                    "isActual": False,
-                    "itemTypeCode": "RWD",
-                    "serviceDateEnd": None,
-                    "serviceDateStart": None,
-                    "serviceOrderDate": None,
-                    "supplier": None,
-                    "title": "badzitje",
                 },
             ],
         )

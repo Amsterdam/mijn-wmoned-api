@@ -4,7 +4,7 @@
         "aanvraag": [
             {
                 "_links": null,
-                "identificatie": "123321",
+                "identificatie": "1250336",
                 "regeling": {
                     "identificatie": "WMO",
                     "omschrijving": "WMO"
@@ -12,15 +12,15 @@
                 "datumAanmelding": "2012-11-30",
                 "datumAanvraag": "2012-11-30",
                 "beschikking": {
-                    "beschikkingNummer": 123123123,
+                    "beschikkingNummer": 123123123123,
                     "datumAfgifte": "2012-11-30",
                     "toelichting": "geanonimiseerd",
                     "beschikteProducten": [
                         {
-                            "identificatie": "123321",
+                            "identificatie": "98734",
                             "externe_identificatie": null,
                             "product": {
-                                "identificatie": "123321",
+                                "identificatie": "12320",
                                 "productCode": "12320",
                                 "productsoortCode": "OVE",
                                 "omschrijving": "autozitje"
@@ -49,7 +49,7 @@
                                 },
                                 "leveringsvorm": "zin",
                                 "leverancier": {
-                                    "identificatie": "899876",
+                                    "identificatie": "LH0004",
                                     "agbcode": null,
                                     "kvk": null,
                                     "omschrijving": "Welzorg"
@@ -57,13 +57,13 @@
                                 "toelichting": null,
                                 "toewijzingen": [
                                     {
-                                        "toewijzingNummer": "1233222113",
+                                        "toewijzingNummer": "098765432",
                                         "toewijzingsDatumTijd": "2012-12-04T00:00:00",
                                         "ingangsdatum": "2012-11-30",
                                         "einddatum": "2017-05-31",
                                         "datumOpdracht": "2012-12-04",
                                         "leverancier": {
-                                            "identificatie": "899876",
+                                            "identificatie": "LH0004",
                                             "agbcode": null,
                                             "kvk": null,
                                             "omschrijving": "Welzorg"
@@ -85,14 +85,14 @@
                                         ]
                                     },
                                     {
-                                        "toewijzingNummer": "1233222113",
+                                        "toewijzingNummer": "098765432",
                                         "toewijzingsDatumTijd": "2017-06-01T00:00:00",
                                         "ingangsdatum": "2012-11-30",
                                         "einddatum": null,
                                         "datumOpdracht": "2017-06-01",
                                         "leverancier": {
-                                            "identificatie": "123321",
-                                            "agbcode": "564323456567",
+                                            "identificatie": "76084857",
+                                            "agbcode": "76084857",
                                             "kvk": null,
                                             "omschrijving": "Welzorg"
                                         },
@@ -111,243 +111,11 @@
                         }
                     ]
                 },
-                "documenten": [
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Toekenning hulpmiddel zonder keuze (proces 0,1)",
-                        "datumDefinitief": "2012-12-04T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "WRV rapport",
-                        "datumDefinitief": "2012-12-04T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Indicatierapport AK",
-                        "datumDefinitief": "2012-12-04T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Beschikkingrapport AK",
-                        "datumDefinitief": "2012-12-04T00:00:00",
-                        "zaakidentificatie": null
-                    }
-                ]
+                "documenten": []
             },
             {
                 "_links": null,
-                "identificatie": "123321",
-                "regeling": {
-                    "identificatie": "WMO",
-                    "omschrijving": "WMO"
-                },
-                "datumAanmelding": "2014-06-27",
-                "datumAanvraag": "2014-06-27",
-                "beschikking": {
-                    "beschikkingNummer": 123123123,
-                    "datumAfgifte": "2014-09-17",
-                    "toelichting": "geanonimiseerd",
-                    "beschikteProducten": [
-                        {
-                            "identificatie": "123321",
-                            "externe_identificatie": null,
-                            "product": {
-                                "identificatie": "123321",
-                                "productCode": "12310",
-                                "productsoortCode": "OVE",
-                                "omschrijving": "kinderspeelvoertuig"
-                            },
-                            "productCategorie": {
-                                "code": "12",
-                                "omschrijving": "Vervoervoorzieningen"
-                            },
-                            "resultaat": "toegewezen",
-                            "toegewezenProduct": {
-                                "datumIngangGeldigheid": "2014-07-03",
-                                "datumEindeGeldigheid": null,
-                                "datumCheck": null,
-                                "actueel": false,
-                                "omvang": {
-                                    "volume": 1,
-                                    "eenheid": {
-                                        "code": "82",
-                                        "omschrijving": "Stuks (output)"
-                                    },
-                                    "frequentie": {
-                                        "code": "6",
-                                        "omschrijving": "Per beschikking"
-                                    },
-                                    "omschrijving": "1 stuks (output) per beschikking"
-                                },
-                                "leveringsvorm": "zin",
-                                "leverancier": {
-                                    "identificatie": "899876",
-                                    "agbcode": null,
-                                    "kvk": null,
-                                    "omschrijving": "Welzorg"
-                                },
-                                "toelichting": "geanonimiseerd",
-                                "toewijzingen": [
-                                    {
-                                        "toewijzingNummer": "1233222113",
-                                        "toewijzingsDatumTijd": "2014-09-22T00:00:00",
-                                        "ingangsdatum": "2014-07-03",
-                                        "einddatum": "2014-07-03",
-                                        "datumOpdracht": "2014-09-22",
-                                        "leverancier": {
-                                            "identificatie": "899876",
-                                            "agbcode": null,
-                                            "kvk": null,
-                                            "omschrijving": "Welzorg"
-                                        },
-                                        "referentieAanbieder": null,
-                                        "redenWijziging": null,
-                                        "leveringen": []
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "documenten": [
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Brief verdagen en opschorten positief",
-                        "datumDefinitief": "2014-07-09T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "WRV rapport",
-                        "datumDefinitief": "2014-09-22T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Opdracht productadvies Reade route Regulier",
-                        "datumDefinitief": "2014-07-09T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Toekenning hulpmiddel kind (proces 0,1)",
-                        "datumDefinitief": "2014-09-22T00:00:00",
-                        "zaakidentificatie": null
-                    }
-                ]
-            },
-            {
-                "_links": null,
-                "identificatie": "123321",
-                "regeling": {
-                    "identificatie": "WMO",
-                    "omschrijving": "WMO"
-                },
-                "datumAanmelding": "2011-02-01",
-                "datumAanvraag": "2011-02-01",
-                "beschikking": {
-                    "beschikkingNummer": 123123123,
-                    "datumAfgifte": "2011-04-21",
-                    "toelichting": null,
-                    "beschikteProducten": [
-                        {
-                            "identificatie": "123321",
-                            "externe_identificatie": null,
-                            "product": {
-                                "identificatie": "123321",
-                                "productCode": "13925",
-                                "productsoortCode": "RWD",
-                                "omschrijving": "douchestoel"
-                            },
-                            "productCategorie": {
-                                "code": "13",
-                                "omschrijving": "Woonvoorzieningen"
-                            },
-                            "resultaat": "toegewezen",
-                            "toegewezenProduct": {
-                                "datumIngangGeldigheid": "2011-04-21",
-                                "datumEindeGeldigheid": null,
-                                "datumCheck": null,
-                                "actueel": false,
-                                "omvang": {
-                                    "volume": 1,
-                                    "eenheid": {
-                                        "code": "82",
-                                        "omschrijving": "Stuks (output)"
-                                    },
-                                    "frequentie": {
-                                        "code": "6",
-                                        "omschrijving": "Per beschikking"
-                                    },
-                                    "omschrijving": "1 stuks (output) per beschikking"
-                                },
-                                "leveringsvorm": "zin",
-                                "leverancier": {
-                                    "identificatie": "899876",
-                                    "agbcode": null,
-                                    "kvk": null,
-                                    "omschrijving": "Beenhakker"
-                                },
-                                "toelichting": null,
-                                "toewijzingen": [
-                                    {
-                                        "toewijzingNummer": "1233222113",
-                                        "toewijzingsDatumTijd": "2012-10-26T00:00:00",
-                                        "ingangsdatum": "2011-04-21",
-                                        "einddatum": "2012-05-15",
-                                        "datumOpdracht": "2012-10-26",
-                                        "leverancier": {
-                                            "identificatie": "899876",
-                                            "agbcode": null,
-                                            "kvk": null,
-                                            "omschrijving": "Beenhakker"
-                                        },
-                                        "referentieAanbieder": null,
-                                        "redenWijziging": null,
-                                        "leveringen": [
-                                            {
-                                                "begindatum": "2011-04-21",
-                                                "einddatum": "2012-05-15",
-                                                "redenBeeindiging": {
-                                                    "code": "03",
-                                                    "omschrijving": "Overig"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "documenten": [
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Inname document AK proces 0,1",
-                        "datumDefinitief": "2012-10-26T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Indicatierapport AK",
-                        "datumDefinitief": "2012-10-26T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Beschikkingrapport AK",
-                        "datumDefinitief": "2012-10-26T00:00:00",
-                        "zaakidentificatie": null
-                    }
-                ]
-            },
-            {
-                "_links": null,
-                "identificatie": "123321",
+                "identificatie": "1267782",
                 "regeling": {
                     "identificatie": "WMO",
                     "omschrijving": "WMO"
@@ -355,15 +123,15 @@
                 "datumAanmelding": "2013-01-14",
                 "datumAanvraag": "2013-01-14",
                 "beschikking": {
-                    "beschikkingNummer": 123123123,
+                    "beschikkingNummer": 123123123123,
                     "datumAfgifte": "2013-06-17",
                     "toelichting": "geanonimiseerd",
                     "beschikteProducten": [
                         {
-                            "identificatie": "123321",
+                            "identificatie": "106795",
                             "externe_identificatie": null,
                             "product": {
-                                "identificatie": "123321",
+                                "identificatie": "12315",
                                 "productCode": "12315",
                                 "productsoortCode": "OVE",
                                 "omschrijving": "buggy"
@@ -392,7 +160,7 @@
                                 },
                                 "leveringsvorm": "zin",
                                 "leverancier": {
-                                    "identificatie": "899876",
+                                    "identificatie": "LH0004",
                                     "agbcode": null,
                                     "kvk": null,
                                     "omschrijving": "Welzorg"
@@ -400,13 +168,13 @@
                                 "toelichting": "geanonimiseerd",
                                 "toewijzingen": [
                                     {
-                                        "toewijzingNummer": "1233222113",
+                                        "toewijzingNummer": "098765432",
                                         "toewijzingsDatumTijd": "2013-06-17T00:00:00",
                                         "ingangsdatum": "2013-02-07",
                                         "einddatum": "2017-05-31",
                                         "datumOpdracht": "2013-06-17",
                                         "leverancier": {
-                                            "identificatie": "899876",
+                                            "identificatie": "LH0004",
                                             "agbcode": null,
                                             "kvk": null,
                                             "omschrijving": "Welzorg"
@@ -428,14 +196,14 @@
                                         ]
                                     },
                                     {
-                                        "toewijzingNummer": "1233222113",
+                                        "toewijzingNummer": "098765432",
                                         "toewijzingsDatumTijd": "2017-06-01T00:00:00",
                                         "ingangsdatum": "2013-02-07",
                                         "einddatum": "2021-09-13",
                                         "datumOpdracht": "2017-06-01",
                                         "leverancier": {
-                                            "identificatie": "123321",
-                                            "agbcode": "33322344",
+                                            "identificatie": "76084857",
+                                            "agbcode": "76084857",
                                             "kvk": null,
                                             "omschrijving": "Welzorg"
                                         },
@@ -457,54 +225,11 @@
                         }
                     ]
                 },
-                "documenten": [
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Opstellen productadvies door Reade",
-                        "datumDefinitief": "2013-04-03T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Toekenning hulpmiddel zonder keuze (proces 0,1)",
-                        "datumDefinitief": "2013-06-17T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Brief verdagen en opschorten positief",
-                        "datumDefinitief": "2013-02-12T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "WRV rapport",
-                        "datumDefinitief": "2013-06-17T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Indicatierapport AK",
-                        "datumDefinitief": "2013-06-17T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Beschikkingrapport AK",
-                        "datumDefinitief": "2013-06-17T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Opdracht productadvies Reade route Regulier",
-                        "datumDefinitief": "2013-02-12T00:00:00",
-                        "zaakidentificatie": null
-                    }
-                ]
+                "documenten": []
             },
             {
                 "_links": null,
-                "identificatie": "123321",
+                "identificatie": "1366634",
                 "regeling": {
                     "identificatie": "WMO",
                     "omschrijving": "WMO"
@@ -512,15 +237,15 @@
                 "datumAanmelding": "2014-06-27",
                 "datumAanvraag": "2014-06-27",
                 "beschikking": {
-                    "beschikkingNummer": 123123123,
+                    "beschikkingNummer": 123123123123,
                     "datumAfgifte": "2015-02-16",
                     "toelichting": null,
                     "beschikteProducten": [
                         {
-                            "identificatie": "123321",
+                            "identificatie": "237149",
                             "externe_identificatie": null,
                             "product": {
-                                "identificatie": "123321",
+                                "identificatie": "12346",
                                 "productCode": "12346",
                                 "productsoortCode": "FIE",
                                 "omschrijving": "driewielfiets 5-9 jr"
@@ -549,7 +274,7 @@
                                 },
                                 "leveringsvorm": "zin",
                                 "leverancier": {
-                                    "identificatie": "899876",
+                                    "identificatie": "LH0004",
                                     "agbcode": null,
                                     "kvk": null,
                                     "omschrijving": "Welzorg"
@@ -557,13 +282,13 @@
                                 "toelichting": null,
                                 "toewijzingen": [
                                     {
-                                        "toewijzingNummer": "1233222113",
+                                        "toewijzingNummer": "098765432",
                                         "toewijzingsDatumTijd": "2015-02-26T00:00:00",
                                         "ingangsdatum": "2015-02-16",
                                         "einddatum": "2017-05-31",
                                         "datumOpdracht": "2015-02-26",
                                         "leverancier": {
-                                            "identificatie": "899876",
+                                            "identificatie": "LH0004",
                                             "agbcode": null,
                                             "kvk": null,
                                             "omschrijving": "Welzorg"
@@ -585,14 +310,14 @@
                                         ]
                                     },
                                     {
-                                        "toewijzingNummer": "1233222113",
+                                        "toewijzingNummer": "098765432",
                                         "toewijzingsDatumTijd": "2017-06-01T00:00:00",
                                         "ingangsdatum": "2015-02-16",
                                         "einddatum": "2021-09-13",
                                         "datumOpdracht": "2017-06-01",
                                         "leverancier": {
-                                            "identificatie": "123321",
-                                            "agbcode": "564323456567",
+                                            "identificatie": "76084857",
+                                            "agbcode": "76084857",
                                             "kvk": null,
                                             "omschrijving": "Welzorg"
                                         },
@@ -614,18 +339,11 @@
                         }
                     ]
                 },
-                "documenten": [
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "WRV rapport",
-                        "datumDefinitief": "2015-02-26T00:00:00",
-                        "zaakidentificatie": null
-                    }
-                ]
+                "documenten": []
             },
             {
                 "_links": null,
-                "identificatie": "123321",
+                "identificatie": "1946840",
                 "regeling": {
                     "identificatie": "WMO",
                     "omschrijving": "WMO"
@@ -633,15 +351,15 @@
                 "datumAanmelding": "2021-08-25",
                 "datumAanvraag": "2021-07-12",
                 "beschikking": {
-                    "beschikkingNummer": 123123123,
+                    "beschikkingNummer": 123123123123,
                     "datumAfgifte": "2021-08-26",
                     "toelichting": "geanonimiseerd",
                     "beschikteProducten": [
                         {
-                            "identificatie": "123321",
+                            "identificatie": "746512",
                             "externe_identificatie": null,
                             "product": {
-                                "identificatie": "123321",
+                                "identificatie": "11326",
                                 "productCode": "11326",
                                 "productsoortCode": "ROL",
                                 "omschrijving": "handbewogen kinderrolstoel"
@@ -670,22 +388,22 @@
                                 },
                                 "leveringsvorm": "zin",
                                 "leverancier": {
-                                    "identificatie": "123321",
-                                    "agbcode": "564323456567",
+                                    "identificatie": "76084857",
+                                    "agbcode": "76084857",
                                     "kvk": null,
                                     "omschrijving": "Welzorg"
                                 },
                                 "toelichting": null,
                                 "toewijzingen": [
                                     {
-                                        "toewijzingNummer": "1233222113",
+                                        "toewijzingNummer": "098765432",
                                         "toewijzingsDatumTijd": "2021-08-30T13:51:35",
                                         "ingangsdatum": "2021-08-24",
                                         "einddatum": null,
                                         "datumOpdracht": "2021-08-30",
                                         "leverancier": {
-                                            "identificatie": "123321",
-                                            "agbcode": "564323456567",
+                                            "identificatie": "76084857",
+                                            "agbcode": "76084857",
                                             "kvk": null,
                                             "omschrijving": "Welzorg"
                                         },
@@ -698,24 +416,11 @@
                         }
                     ]
                 },
-                "documenten": [
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "WRV rapport",
-                        "datumDefinitief": "2021-08-30T13:58:10",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Toekenning hulpmiddel kind (proces 0,1)",
-                        "datumDefinitief": "2021-08-30T13:51:22",
-                        "zaakidentificatie": null
-                    }
-                ]
+                "documenten": []
             },
             {
                 "_links": null,
-                "identificatie": "123321",
+                "identificatie": "1578506",
                 "regeling": {
                     "identificatie": "WMO",
                     "omschrijving": "WMO"
@@ -723,12 +428,12 @@
                 "datumAanmelding": "2018-04-05",
                 "datumAanvraag": "2018-04-05",
                 "beschikking": {
-                    "beschikkingNummer": 123123123,
+                    "beschikkingNummer": 123123123123,
                     "datumAfgifte": "2018-04-25",
                     "toelichting": "geanonimiseerd",
                     "beschikteProducten": [
                         {
-                            "identificatie": "123321",
+                            "identificatie": "474212",
                             "externe_identificatie": null,
                             "product": {
                                 "identificatie": "WRA",
@@ -760,7 +465,7 @@
                                 },
                                 "leveringsvorm": "zin",
                                 "leverancier": {
-                                    "identificatie": "123321",
+                                    "identificatie": "11122233",
                                     "agbcode": "11122233",
                                     "kvk": null,
                                     "omschrijving": "Welzorg"
@@ -768,13 +473,13 @@
                                 "toelichting": "geanonimiseerd",
                                 "toewijzingen": [
                                     {
-                                        "toewijzingNummer": "1233222113",
+                                        "toewijzingNummer": "098765432",
                                         "toewijzingsDatumTijd": "2018-04-26T08:24:32",
                                         "ingangsdatum": "2018-04-06",
                                         "einddatum": null,
                                         "datumOpdracht": "2018-04-26",
                                         "leverancier": {
-                                            "identificatie": "123321",
+                                            "identificatie": "11122233",
                                             "agbcode": "11122233",
                                             "kvk": null,
                                             "omschrijving": "Welzorg"
@@ -794,24 +499,11 @@
                         }
                     ]
                 },
-                "documenten": [
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "WRA beschikking Definitief",
-                        "datumDefinitief": "2018-04-25T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "WRV rapport",
-                        "datumDefinitief": "2018-04-26T00:00:00",
-                        "zaakidentificatie": null
-                    }
-                ]
+                "documenten": []
             },
             {
                 "_links": null,
-                "identificatie": "123321",
+                "identificatie": "1582162",
                 "regeling": {
                     "identificatie": "WMO",
                     "omschrijving": "WMO"
@@ -819,12 +511,12 @@
                 "datumAanmelding": "2017-10-06",
                 "datumAanvraag": "2017-10-06",
                 "beschikking": {
-                    "beschikkingNummer": 123123123,
+                    "beschikkingNummer": 123123123123,
                     "datumAfgifte": "2018-01-31",
                     "toelichting": "geanonimiseerd",
                     "beschikteProducten": [
                         {
-                            "identificatie": "123321",
+                            "identificatie": "190271",
                             "externe_identificatie": null,
                             "product": {
                                 "identificatie": "WRA",
@@ -841,266 +533,7 @@
                         }
                     ]
                 },
-                "documenten": [
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Brief verdagen en opschorten positief",
-                        "datumDefinitief": "2018-01-11T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Wonen Afwijzende beschikking",
-                        "datumDefinitief": "2018-01-31T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Memo om aanvullende informatie indicatiebureau",
-                        "datumDefinitief": "2018-01-11T00:00:00",
-                        "zaakidentificatie": null
-                    },
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Memo afwijkende beschikking aan indicatiebureau",
-                        "datumDefinitief": "2018-02-05T00:00:00",
-                        "zaakidentificatie": null
-                    }
-                ]
-            },
-            {
-                "_links": null,
-                "identificatie": "123321",
-                "regeling": {
-                    "identificatie": "WMO",
-                    "omschrijving": "WMO"
-                },
-                "datumAanmelding": "2011-02-01",
-                "datumAanvraag": "2011-02-01",
-                "beschikking": {
-                    "beschikkingNummer": 123123123,
-                    "datumAfgifte": "2012-04-25",
-                    "toelichting": null,
-                    "beschikteProducten": [
-                        {
-                            "identificatie": "123321",
-                            "externe_identificatie": null,
-                            "product": {
-                                "identificatie": "123321",
-                                "productCode": "13922",
-                                "productsoortCode": "RWD",
-                                "omschrijving": "badzitje"
-                            },
-                            "productCategorie": {
-                                "code": "13",
-                                "omschrijving": "Woonvoorzieningen"
-                            },
-                            "resultaat": "toegewezen",
-                            "toegewezenProduct": {
-                                "datumIngangGeldigheid": "2012-04-25",
-                                "datumEindeGeldigheid": null,
-                                "datumCheck": null,
-                                "actueel": false,
-                                "omvang": {
-                                    "volume": 1,
-                                    "eenheid": {
-                                        "code": "82",
-                                        "omschrijving": "Stuks (output)"
-                                    },
-                                    "frequentie": {
-                                        "code": "6",
-                                        "omschrijving": "Per beschikking"
-                                    },
-                                    "omschrijving": "1 stuks (output) per beschikking"
-                                },
-                                "leveringsvorm": "zin",
-                                "leverancier": null,
-                                "toelichting": null,
-                                "toewijzingen": []
-                            }
-                        }
-                    ]
-                },
-                "documenten": null
-            },
-            {
-                "_links": null,
-                "identificatie": "123321",
-                "regeling": {
-                    "identificatie": "WMO",
-                    "omschrijving": "WMO"
-                },
-                "datumAanmelding": "2011-02-01",
-                "datumAanvraag": "2011-02-01",
-                "beschikking": {
-                    "beschikkingNummer": 123123123,
-                    "datumAfgifte": "2012-04-25",
-                    "toelichting": null,
-                    "beschikteProducten": [
-                        {
-                            "identificatie": "123321",
-                            "externe_identificatie": null,
-                            "product": {
-                                "identificatie": "123321",
-                                "productCode": "11325",
-                                "productsoortCode": "ROL",
-                                "omschrijving": "kinderduwwandelwagen"
-                            },
-                            "productCategorie": {
-                                "code": "11",
-                                "omschrijving": "Rolstoelen"
-                            },
-                            "resultaat": "toegewezen",
-                            "toegewezenProduct": {
-                                "datumIngangGeldigheid": "2012-04-25",
-                                "datumEindeGeldigheid": null,
-                                "datumCheck": null,
-                                "actueel": false,
-                                "omvang": {
-                                    "volume": 1,
-                                    "eenheid": {
-                                        "code": "82",
-                                        "omschrijving": "Stuks (output)"
-                                    },
-                                    "frequentie": {
-                                        "code": "6",
-                                        "omschrijving": "Per beschikking"
-                                    },
-                                    "omschrijving": "1 stuks (output) per beschikking"
-                                },
-                                "leveringsvorm": "zin",
-                                "leverancier": {
-                                    "identificatie": "899876",
-                                    "agbcode": null,
-                                    "kvk": null,
-                                    "omschrijving": "Beenhakker"
-                                },
-                                "toelichting": null,
-                                "toewijzingen": [
-                                    {
-                                        "toewijzingNummer": "1233222113",
-                                        "toewijzingsDatumTijd": "2011-04-04T00:00:00",
-                                        "ingangsdatum": "2012-04-25",
-                                        "einddatum": "2012-04-25",
-                                        "datumOpdracht": "2011-04-04",
-                                        "leverancier": {
-                                            "identificatie": "899876",
-                                            "agbcode": null,
-                                            "kvk": null,
-                                            "omschrijving": "Beenhakker"
-                                        },
-                                        "referentieAanbieder": null,
-                                        "redenWijziging": null,
-                                        "leveringen": [
-                                            {
-                                                "begindatum": "2011-04-04",
-                                                "einddatum": "2012-05-15",
-                                                "redenBeeindiging": {
-                                                    "code": "03",
-                                                    "omschrijving": "Overig"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "documenten": null
-            },
-            {
-                "_links": null,
-                "identificatie": "123321",
-                "regeling": {
-                    "identificatie": "WMO",
-                    "omschrijving": "WMO"
-                },
-                "datumAanmelding": "2011-02-08",
-                "datumAanvraag": "2011-02-08",
-                "beschikking": {
-                    "beschikkingNummer": 123123123,
-                    "datumAfgifte": "2011-03-09",
-                    "toelichting": "geanonimiseerd",
-                    "beschikteProducten": [
-                        {
-                            "identificatie": "123321",
-                            "externe_identificatie": null,
-                            "product": {
-                                "identificatie": "123321",
-                                "productCode": "12320",
-                                "productsoortCode": "OVE",
-                                "omschrijving": "autozitje"
-                            },
-                            "productCategorie": {
-                                "code": "12",
-                                "omschrijving": "Vervoervoorzieningen"
-                            },
-                            "resultaat": "toegewezen",
-                            "toegewezenProduct": {
-                                "datumIngangGeldigheid": "2011-03-09",
-                                "datumEindeGeldigheid": null,
-                                "datumCheck": null,
-                                "actueel": false,
-                                "omvang": {
-                                    "volume": 1,
-                                    "eenheid": {
-                                        "code": "82",
-                                        "omschrijving": "Stuks (output)"
-                                    },
-                                    "frequentie": {
-                                        "code": "6",
-                                        "omschrijving": "Per beschikking"
-                                    },
-                                    "omschrijving": "1 stuks (output) per beschikking"
-                                },
-                                "leveringsvorm": "zin",
-                                "leverancier": {
-                                    "identificatie": "899876",
-                                    "agbcode": null,
-                                    "kvk": null,
-                                    "omschrijving": "Beenhakker"
-                                },
-                                "toelichting": null,
-                                "toewijzingen": [
-                                    {
-                                        "toewijzingNummer": "1233222113",
-                                        "toewijzingsDatumTijd": "2011-04-14T00:00:00",
-                                        "ingangsdatum": "2011-03-09",
-                                        "einddatum": "2012-12-04",
-                                        "datumOpdracht": "2011-04-14",
-                                        "leverancier": {
-                                            "identificatie": "899876",
-                                            "agbcode": null,
-                                            "kvk": null,
-                                            "omschrijving": "Beenhakker"
-                                        },
-                                        "referentieAanbieder": null,
-                                        "redenWijziging": null,
-                                        "leveringen": [
-                                            {
-                                                "begindatum": "2011-04-14",
-                                                "einddatum": "2012-12-18",
-                                                "redenBeeindiging": {
-                                                    "code": "03",
-                                                    "omschrijving": "Overig"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "documenten": [
-                    {
-                        "documentidentificatie": "xxxxxx",
-                        "omschrijving": "Intrekken na selectieadvies / vervangend middel",
-                        "datumDefinitief": "2012-12-04T00:00:00",
-                        "zaakidentificatie": null
-                    }
-                ]
+                "documenten": []
             }
         ]
     }

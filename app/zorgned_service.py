@@ -6,6 +6,7 @@ import requests
 from dpath import util as dpath_util
 
 from app.config import (
+    BESCHIKT_PRODUCT_RESULTAAT,
     DATE_END_NOT_OLDER_THAN,
     REGELING_IDENTIFICATIE,
     SERVER_CLIENT_CERT,
@@ -18,7 +19,7 @@ from app.config import (
     WMONED_API_V2_ENABLED,
     WMONED_GEMEENTE_CODE,
 )
-from app.helpers import to_date
+from app.helpers import to_date, to_date_time
 from urllib.parse import quote
 
 
@@ -30,13 +31,12 @@ def format_aanvraag(date_decision, beschikt_product):
     is_actual = dpath_util.get(toegewezen_product, "actueel", default=False)
 
     toewijzingen = dpath_util.get(toegewezen_product, "toewijzingen", default=[])
+    # Take last toewijzing from incoming data
+    toewijzing = toewijzingen.pop() if toewijzingen else None
 
-    if is_actual:
-        toewijzingen.sort(key=lambda x: x["ingangsdatum"] or date.min, reverse=True)
-    else:
-        toewijzingen.sort(key=lambda x: x["einddatum"] or date.min, reverse=True)
-
-    toewijzing = toewijzingen[0] if toewijzingen else None
+    leveringen = dpath_util.get(toewijzing, "leveringen", default=[])
+    # Take last levering from incoming data
+    levering = leveringen.pop() if leveringen else None
 
     item_type_code = dpath_util.get(beschikt_product, "product/productsoortCode")
     if item_type_code:
@@ -66,8 +66,8 @@ def format_aanvraag(date_decision, beschikt_product):
         ),
         # Levering
         "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht", default=None),
-        "serviceDateStart": dpath_util.get(toewijzing, "ingangsdatum", default=None),
-        "serviceDateEnd": dpath_util.get(toewijzing, "einddatum", default=None),
+        "serviceDateStart": dpath_util.get(levering, "begindatum", default=None),
+        "serviceDateEnd": dpath_util.get(levering, "einddatum", default=None),
     }
 
     return aanvraag
@@ -81,7 +81,8 @@ def format_aanvragen(aanvragen_source=[]):
             aanvraag_source, "regeling/identificatie", default=None
         )
 
-        if regeling_id == REGELING_IDENTIFICATIE:
+        # Only select products with certain regeling
+        if regeling_id in REGELING_IDENTIFICATIE:
             beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
             date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
             beschikte_producten = dpath_util.get(
@@ -89,10 +90,14 @@ def format_aanvragen(aanvragen_source=[]):
             )
 
             for beschikt_product in beschikte_producten:
-                aanvraag_formatted = format_aanvraag(date_decision, beschikt_product)
+                # Only select products with certain result
+                if beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT:
+                    aanvraag_formatted = format_aanvraag(
+                        date_decision, beschikt_product
+                    )
 
-                if aanvraag_formatted:
-                    aanvragen.append(aanvraag_formatted)
+                    if aanvraag_formatted:
+                        aanvragen.append(aanvraag_formatted)
 
     return aanvragen
 
@@ -182,7 +187,6 @@ def get_voorzieningen(bsn):
 
     if WMONED_API_V2_ENABLED:
         query_params = {
-            "resultaat": "toegewezen",
             "maxeinddatum": DATE_END_NOT_OLDER_THAN,
         }
 
@@ -194,11 +198,6 @@ def get_voorzieningen(bsn):
         if (
             aanvraag_source.get("dateStart")
             and to_date(aanvraag_source.get("dateStart")) <= date.today()
-            # and (
-            #     not aanvraag_source.get("serviceDateEnd")  # Not ended yet
-            #     or to_date(aanvraag_source.get("serviceDateEnd"))
-            #     >= to_date(DATE_END_NOT_OLDER_THAN)
-            # )
         ):
             voorzieningen.append(aanvraag_source)
 

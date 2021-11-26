@@ -165,6 +165,7 @@ class ZorgnedServiceTest(TestCase):
                                 "productsoortCode": "OVE",
                                 "omschrijving": "autozitje",
                             },
+                            "resultaat": "toegewezen",
                             "toegewezenProduct": {
                                 "actueel": True,
                                 "leveringsvorm": "zin",
@@ -204,6 +205,7 @@ class ZorgnedServiceTest(TestCase):
                                 "productsoortCode": "OVE",
                                 "omschrijving": "ander-dingetje",
                             },
+                            "resultaat": "toegewezen",
                             "toegewezenProduct": {
                                 "actueel": True,
                                 "leveringsvorm": "zin",
@@ -216,14 +218,24 @@ class ZorgnedServiceTest(TestCase):
                                         "ingangsdatum": "2014-04-01",
                                         "einddatum": "2017-05-31",
                                         "leverancier": {"omschrijving": "Anderzorg"},
-                                        "leveringen": [],
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2014-04-01",
+                                                "einddatum": "2017-05-31",
+                                            }
+                                        ],
                                     },
                                     {
                                         "datumOpdracht": "2017-05-01",
                                         "ingangsdatum": "2017-06-01",
                                         "einddatum": "2018-02-23",
                                         "leverancier": {"omschrijving": "Anderzorg"},
-                                        "leveringen": [],
+                                        "leveringen": [
+                                            {
+                                                "begindatum": "2017-06-01",
+                                                "einddatum": "2018-02-23",
+                                            }
+                                        ],
                                     },
                                 ],
                             },
@@ -277,7 +289,7 @@ class ZorgnedServiceTest(TestCase):
                 {
                     "isActual": False,
                     "dateDecision": "2018-01-01",
-                    "serviceDateStart": "2018-02-01",
+                    "dateStart": "2018-02-01",
                 },
             ],
             [
@@ -291,7 +303,8 @@ class ZorgnedServiceTest(TestCase):
                 {
                     "isActual": True,
                     "dateDecision": "2017-01-01",
-                    "serviceDateStart": "2017-02-01",
+                    "serviceDateStart": None,
+                    "dateStart": "2022-02-01",
                 },
             ],
         ],
@@ -308,7 +321,7 @@ class ZorgnedServiceTest(TestCase):
                 {
                     "isActual": False,
                     "dateDecision": "2018-01-01",
-                    "serviceDateStart": "2018-02-01",
+                    "dateStart": "2018-02-01",
                 }
             ],
         )
@@ -336,8 +349,6 @@ class ZorgnedServiceTest(TestCase):
         output_formatted = json.loads(
             json.dumps(format_aanvragen_v1(input), default=defaultconverter)
         )
-
-        # output_formatted = sorted(output_formatted, key=lambda x: x["title"])
 
         with open(f"{BASE_PATH}/fixtures/v1_new.json", "r") as file_contents:
             expected_output = json.load(file_contents)
