@@ -61,6 +61,7 @@ class TestAPI(FlaskServerTMATestCase):
 
         self.assertEqual(res.status_code, 200, res.data)
         self.assertEqual(res.json["status"], "OK")
+
         self.assertEqual(
             res.json["content"],
             [
@@ -76,19 +77,6 @@ class TestAPI(FlaskServerTMATestCase):
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "autozitje",
-                },
-                {
-                    "dateDecision": "2011-04-21",
-                    "dateEnd": None,
-                    "dateStart": "2011-04-21",
-                    "deliveryType": "ZIN",
-                    "isActual": False,
-                    "itemTypeCode": "RWD",
-                    "serviceDateEnd": "2012-05-15",
-                    "serviceDateStart": "2011-04-21",
-                    "serviceOrderDate": "2012-10-26",
-                    "supplier": "Beenhakker",
-                    "title": "douchestoel",
                 },
                 {
                     "dateDecision": "2013-06-17",
@@ -117,6 +105,19 @@ class TestAPI(FlaskServerTMATestCase):
                     "title": "driewielfiets 5-9 jr",
                 },
                 {
+                    "dateDecision": "2021-08-26",
+                    "dateEnd": None,
+                    "dateStart": "2021-08-24",
+                    "deliveryType": "ZIN",
+                    "isActual": False,
+                    "itemTypeCode": "ROL",
+                    "serviceDateEnd": None,
+                    "serviceDateStart": None,
+                    "serviceOrderDate": "2021-08-30",
+                    "supplier": "Welzorg",
+                    "title": "handbewogen kinderrolstoel",
+                },
+                {
                     "dateDecision": "2018-04-25",
                     "dateEnd": None,
                     "dateStart": "2018-04-06",
@@ -128,32 +129,6 @@ class TestAPI(FlaskServerTMATestCase):
                     "serviceOrderDate": "2018-04-26",
                     "supplier": "Welzorg",
                     "title": "woonruimteaanpassing",
-                },
-                {
-                    "dateDecision": "2012-04-25",
-                    "dateEnd": None,
-                    "dateStart": "2012-04-25",
-                    "deliveryType": "ZIN",
-                    "isActual": False,
-                    "itemTypeCode": "ROL",
-                    "serviceDateEnd": "2012-05-15",
-                    "serviceDateStart": "2011-04-04",
-                    "serviceOrderDate": "2011-04-04",
-                    "supplier": "Beenhakker",
-                    "title": "kinderduwwandelwagen",
-                },
-                {
-                    "dateDecision": "2011-03-09",
-                    "dateEnd": None,
-                    "dateStart": "2011-03-09",
-                    "deliveryType": "ZIN",
-                    "isActual": False,
-                    "itemTypeCode": "OVE",
-                    "serviceDateEnd": "2012-12-18",
-                    "serviceDateStart": "2011-04-14",
-                    "serviceOrderDate": "2011-04-14",
-                    "supplier": "Beenhakker",
-                    "title": "autozitje",
                 },
             ],
         )

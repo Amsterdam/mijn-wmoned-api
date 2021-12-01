@@ -142,3 +142,10 @@ def to_date(date_input):
         return datetime.strptime(date_input, "%Y-%m-%dT%H:%M:%S").date()
 
     return datetime.strptime(date_input, "%Y-%m-%d").date()
+
+
+def to_date_time(date_input):
+    if isinstance(date_input, datetime):
+        return date_input
+
+    return datetime.strptime(date_input, "%Y-%m-%dT%H:%M:%S")

@@ -1,9 +1,11 @@
 from sys import argv
 import json
 from app.zorgned_service import get_voorzieningen
-
+from app import config
 
 bsn = argv[1]
+
+config.WMONED_API_V2_ENABLED = True
 
 response = get_voorzieningen(bsn)
 

@@ -1,3 +1,5 @@
+import datetime
+import json
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -7,6 +9,7 @@ from app.test_server import ZorgnedApiMock
 from app.zorgned_service import (
     format_aanvraag,
     format_aanvragen,
+    format_aanvragen_v1,
     get_aanvragen,
     get_voorzieningen,
 )
@@ -162,6 +165,7 @@ class ZorgnedServiceTest(TestCase):
                                 "productsoortCode": "OVE",
                                 "omschrijving": "autozitje",
                             },
+                            "resultaat": "toegewezen",
                             "toegewezenProduct": {
                                 "actueel": True,
                                 "leveringsvorm": "zin",
@@ -171,6 +175,8 @@ class ZorgnedServiceTest(TestCase):
                                 "toewijzingen": [
                                     {
                                         "datumOpdracht": "2012-12-04",
+                                        "ingangsdatum": "2014-04-01",
+                                        "einddatum": "2017-05-31",
                                         "leverancier": {"omschrijving": "Welzorg"},
                                         "leveringen": [
                                             {
@@ -181,6 +187,8 @@ class ZorgnedServiceTest(TestCase):
                                     },
                                     {
                                         "datumOpdracht": "2017-05-01",
+                                        "ingangsdatum": "2017-06-01",
+                                        "einddatum": "2018-02-23",
                                         "leverancier": {"omschrijving": "Welzorg"},
                                         "leveringen": [
                                             {
@@ -197,6 +205,7 @@ class ZorgnedServiceTest(TestCase):
                                 "productsoortCode": "OVE",
                                 "omschrijving": "ander-dingetje",
                             },
+                            "resultaat": "toegewezen",
                             "toegewezenProduct": {
                                 "actueel": True,
                                 "leveringsvorm": "zin",
@@ -206,6 +215,8 @@ class ZorgnedServiceTest(TestCase):
                                 "toewijzingen": [
                                     {
                                         "datumOpdracht": "2012-12-04",
+                                        "ingangsdatum": "2014-04-01",
+                                        "einddatum": "2017-05-31",
                                         "leverancier": {"omschrijving": "Anderzorg"},
                                         "leveringen": [
                                             {
@@ -216,6 +227,8 @@ class ZorgnedServiceTest(TestCase):
                                     },
                                     {
                                         "datumOpdracht": "2017-05-01",
+                                        "ingangsdatum": "2017-06-01",
+                                        "einddatum": "2018-02-23",
                                         "leverancier": {"omschrijving": "Anderzorg"},
                                         "leveringen": [
                                             {
@@ -276,7 +289,7 @@ class ZorgnedServiceTest(TestCase):
                 {
                     "isActual": False,
                     "dateDecision": "2018-01-01",
-                    "serviceDateStart": "2018-02-01",
+                    "dateStart": "2018-02-01",
                 },
             ],
             [
@@ -290,7 +303,8 @@ class ZorgnedServiceTest(TestCase):
                 {
                     "isActual": True,
                     "dateDecision": "2017-01-01",
-                    "serviceDateStart": "2017-02-01",
+                    "serviceDateStart": None,
+                    "dateStart": "2022-02-01",
                 },
             ],
         ],
@@ -307,7 +321,7 @@ class ZorgnedServiceTest(TestCase):
                 {
                     "isActual": False,
                     "dateDecision": "2018-01-01",
-                    "serviceDateStart": "2018-02-01",
+                    "dateStart": "2018-02-01",
                 }
             ],
         )
@@ -318,11 +332,25 @@ class ZorgnedServiceTest(TestCase):
         voorzieningen3 = get_voorzieningen(123)
         self.assertEqual(
             voorzieningen3,
-            [
-                {
-                    "isActual": True,
-                    "dateDecision": "2017-01-01",
-                    "serviceDateStart": "2017-02-01",
-                }
-            ],
+            [],
         )
+
+    def test_format_voorzieningen_v1(self):
+
+        self.maxDiff = None
+
+        with open(f"{BASE_PATH}/fixtures/v1_old.json", "r") as file_contents:
+            input = json.load(file_contents)
+
+        def defaultconverter(o):
+            if isinstance(o, datetime.date):
+                return o.__str__()
+
+        output_formatted = json.loads(
+            json.dumps(format_aanvragen_v1(input), default=defaultconverter)
+        )
+
+        with open(f"{BASE_PATH}/fixtures/v1_new.json", "r") as file_contents:
+            expected_output = json.load(file_contents)
+
+        self.assertEqual(output_formatted, expected_output)
