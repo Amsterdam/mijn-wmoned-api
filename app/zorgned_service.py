@@ -1,3 +1,4 @@
+from datetime import date, datetime
 import json
 import logging
 
@@ -5,7 +6,8 @@ import requests
 from dpath import util as dpath_util
 
 from app.config import (
-    DATE_DECISION_FROM,
+    BESCHIKT_PRODUCT_RESULTAAT,
+    DATE_END_NOT_OLDER_THAN,
     REGELING_IDENTIFICATIE,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
@@ -17,7 +19,7 @@ from app.config import (
     WMONED_API_V2_ENABLED,
     WMONED_GEMEENTE_CODE,
 )
-from app.helpers import to_date
+from app.helpers import to_date, to_date_time
 from urllib.parse import quote
 
 
@@ -26,15 +28,15 @@ def format_aanvraag(date_decision, beschikt_product):
     toegewezen_product = dpath_util.get(
         beschikt_product, "toegewezenProduct", default=None
     )
-    toewijzing = dpath_util.get(toegewezen_product, "toewijzingen", default=[])
+    is_actual = dpath_util.get(toegewezen_product, "actueel", default=False)
 
-    if toewijzing:
-        toewijzing = toewijzing.pop()
+    toewijzingen = dpath_util.get(toegewezen_product, "toewijzingen", default=[])
+    # Take last toewijzing from incoming data
+    toewijzing = toewijzingen.pop() if toewijzingen else None
 
-    levering = dpath_util.get(toewijzing, "leveringen", default=[])
-
-    if levering:
-        levering = levering.pop()
+    leveringen = dpath_util.get(toewijzing, "leveringen", default=[])
+    # Take last levering from incoming data
+    levering = leveringen.pop() if leveringen else None
 
     item_type_code = dpath_util.get(beschikt_product, "product/productsoortCode")
     if item_type_code:
@@ -57,7 +59,7 @@ def format_aanvraag(date_decision, beschikt_product):
         "dateEnd": dpath_util.get(
             toegewezen_product, "datumEindeGeldigheid", default=None
         ),
-        "isActual": dpath_util.get(toegewezen_product, "actueel", default=False),
+        "isActual": is_actual,
         "deliveryType": delivery_type,
         "supplier": dpath_util.get(
             toegewezen_product, "leverancier/omschrijving", default=None
@@ -79,7 +81,8 @@ def format_aanvragen(aanvragen_source=[]):
             aanvraag_source, "regeling/identificatie", default=None
         )
 
-        if regeling_id == REGELING_IDENTIFICATIE:
+        # Only select products with certain regeling
+        if regeling_id in REGELING_IDENTIFICATIE:
             beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
             date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
             beschikte_producten = dpath_util.get(
@@ -87,10 +90,14 @@ def format_aanvragen(aanvragen_source=[]):
             )
 
             for beschikt_product in beschikte_producten:
-                aanvraag_formatted = format_aanvraag(date_decision, beschikt_product)
+                # Only select products with certain result
+                if beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT:
+                    aanvraag_formatted = format_aanvraag(
+                        date_decision, beschikt_product
+                    )
 
-                if aanvraag_formatted:
-                    aanvragen.append(aanvraag_formatted)
+                    if aanvraag_formatted:
+                        aanvragen.append(aanvraag_formatted)
 
     return aanvragen
 
@@ -101,6 +108,10 @@ def format_aanvragen_v1(aanvragen_source=[]):
     for aanvraag_source in aanvragen_source:
         date_start = aanvraag_source.get("VoorzieningIngangsdatum")
         date_end = aanvraag_source.get("VoorzieningEinddatum")
+
+        if date_end and to_date(date_end) < to_date(DATE_END_NOT_OLDER_THAN):
+            continue
+
         date_decision = aanvraag_source.get("Beschikkingsdatum")
         service_order_date = dpath_util.get(
             aanvraag_source, "Levering/Opdrachtdatum", default=None
@@ -134,7 +145,7 @@ def format_aanvragen_v1(aanvragen_source=[]):
     return aanvragen
 
 
-def get_aanvragen(bsn):
+def get_aanvragen(bsn, query_params=None):
 
     headers = None
     cert = None
@@ -149,11 +160,15 @@ def get_aanvragen(bsn):
         )
 
     res = requests.get(
-        url, timeout=WMONED_API_REQUEST_TIMEOUT_SECONDS, headers=headers, cert=cert
+        url,
+        timeout=WMONED_API_REQUEST_TIMEOUT_SECONDS,
+        headers=headers,
+        cert=cert,
+        params=query_params,
     )
 
     # Weird use of http status codes in V1 api. The 404 is returned in the case a user doesn't have any content in the remote system.
-    if not WMONED_API_V2_ENABLED and res.status_code == 404:
+    if res.status_code == 404 and not WMONED_API_V2_ENABLED:
         return []
 
     response_data = res.json()
@@ -168,15 +183,22 @@ def get_aanvragen(bsn):
 
 
 def get_voorzieningen(bsn):
-    aanvragen = get_aanvragen(bsn)
+    query_params = None
+
+    if WMONED_API_V2_ENABLED:
+        query_params = {
+            "maxeinddatum": DATE_END_NOT_OLDER_THAN,
+        }
+
+    aanvragen = get_aanvragen(bsn, query_params)
+
     voorzieningen = []
 
-    for aanvraag in aanvragen:
+    for aanvraag_source in aanvragen:
         if (
-            aanvraag.get("serviceDateStart")
-            and aanvraag.get("dateDecision")
-            and to_date(aanvraag["dateDecision"]) >= to_date(DATE_DECISION_FROM)
+            aanvraag_source.get("dateStart")
+            and to_date(aanvraag_source.get("dateStart")) <= date.today()
         ):
-            voorzieningen.append(aanvraag)
+            voorzieningen.append(aanvraag_source)
 
     return voorzieningen
