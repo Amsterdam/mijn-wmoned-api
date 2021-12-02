@@ -45,6 +45,8 @@ def format_aanvraag(date_decision, beschikt_product):
     delivery_type = dpath_util.get(toegewezen_product, "leveringsvorm", default=None)
     if delivery_type:
         delivery_type = delivery_type.upper()
+    else:
+        return None
 
     aanvraag = {
         # Beschikking

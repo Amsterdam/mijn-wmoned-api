@@ -135,6 +135,19 @@ class TestAPI(FlaskServerTMATestCase):
 
     @patch("app.zorgned_service.requests.get", autospec=True)
     @patch("app.helpers.get_tma_certificate", lambda: server_crt)
+    def test_get_voorzieningen_2(self, api_mocked):
+        api_mocked.return_value = ZorgnedApiMock(
+            BASE_PATH + "/fixtures/aanvragen-2.json"
+        )
+        SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
+
+        res = self.client.get("/api/wmoned/voorzieningen", headers=SAML_HEADERS)
+
+        self.assertEqual(res.status_code, 200, res.data)
+        self.assertEqual(res.json["status"], "OK")
+
+    @patch("app.zorgned_service.requests.get", autospec=True)
+    @patch("app.helpers.get_tma_certificate", lambda: server_crt)
     def test_get_voorzieningen_error(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMockError()
         SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)

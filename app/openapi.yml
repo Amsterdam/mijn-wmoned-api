@@ -61,8 +61,10 @@ components:
           $ref: '#/components/schemas/Date'
           description: The date the request for this product was started
         dateEnd:
-          $ref: '#/components/schemas/Date'
           description: The date the request for this product was finished
+          type: string
+          format: date
+          example: '2020-06-16'
           nullable: true
         supplier:
           type: string
@@ -73,28 +75,37 @@ components:
           type: boolean
         dateDecision:
           description: The date a decision was made about the request for this product
-          $ref: '#/components/schemas/Date'
+          type: string
+          format: date
+          example: '2020-06-16'
+          nullable: true
         itemTypeCode:
           type: string # Enum?
         deliveryType:
           type: string # Enum?
         serviceDateStart:
           description: The date on which the product started/delivered
-          $ref: '#/components/schemas/Date'
+          type: string
+          format: date
+          example: '2020-06-16'
           nullable: true
         serviceDateEnd:
           description: The date on which the product ended/revoked
-          $ref: '#/components/schemas/Date'
+          type: string
+          format: date
+          example: '2020-06-16'
           nullable: true
         serviceOrderDate:
           description: The date on which the request was made to start delivering the product
-          $ref: '#/components/schemas/Date'
+          type: string
+          format: date
+          example: '2020-06-16'
           nullable: true
+
     Date:
       type: string
       format: date
       example: '2020-06-16'
-      nullable: true
     ErrorResponse:
       type: object
       properties:
