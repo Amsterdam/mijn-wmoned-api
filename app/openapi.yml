@@ -58,8 +58,10 @@ components:
         title:
           type: string
         dateStart:
-          $ref: '#/components/schemas/Date'
           description: The date the request for this product was started
+          type: string
+          format: date
+          example: '2020-06-16'
         dateEnd:
           description: The date the request for this product was finished
           type: string
@@ -101,11 +103,6 @@ components:
           format: date
           example: '2020-06-16'
           nullable: true
-
-    Date:
-      type: string
-      format: date
-      example: '2020-06-16'
     ErrorResponse:
       type: object
       properties:

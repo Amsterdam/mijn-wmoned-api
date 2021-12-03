@@ -83,7 +83,7 @@ class ZorgnedServiceTest(TestCase):
                 "dateStart": None,
                 "dateEnd": None,
                 "isActual": False,
-                "deliveryType": None,
+                "deliveryType": "",
                 "supplier": None,
                 "dateDecision": None,
                 "serviceOrderDate": None,
