@@ -42,11 +42,9 @@ def format_aanvraag(date_decision, beschikt_product):
     if item_type_code:
         item_type_code = item_type_code.upper()
 
-    delivery_type = dpath_util.get(toegewezen_product, "leveringsvorm", default=None)
+    delivery_type = dpath_util.get(toegewezen_product, "leveringsvorm", default="")
     if delivery_type:
         delivery_type = delivery_type.upper()
-    else:
-        return None
 
     aanvraag = {
         # Beschikking
