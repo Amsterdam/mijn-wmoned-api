@@ -79,27 +79,19 @@ def format_aanvragen(aanvragen_source=[]):
     aanvragen = []
 
     for aanvraag_source in aanvragen_source:
-        regeling_id = dpath_util.get(
-            aanvraag_source, "regeling/identificatie", default=None
+        beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
+        date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
+        beschikte_producten = dpath_util.get(
+            beschikking, "beschikteProducten", default=[]
         )
 
-        # Only select products with certain regeling
-        if regeling_id in REGELING_IDENTIFICATIE:
-            beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
-            date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
-            beschikte_producten = dpath_util.get(
-                beschikking, "beschikteProducten", default=[]
-            )
+        for beschikt_product in beschikte_producten:
+            # Only select products with certain result
+            if beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT:
+                aanvraag_formatted = format_aanvraag(date_decision, beschikt_product)
 
-            for beschikt_product in beschikte_producten:
-                # Only select products with certain result
-                if beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT:
-                    aanvraag_formatted = format_aanvraag(
-                        date_decision, beschikt_product
-                    )
-
-                    if aanvraag_formatted:
-                        aanvragen.append(aanvraag_formatted)
+                if aanvraag_formatted:
+                    aanvragen.append(aanvraag_formatted)
 
     return aanvragen
 
@@ -190,6 +182,7 @@ def get_voorzieningen(bsn):
     if WMONED_API_V2_ENABLED:
         query_params = {
             "maxeinddatum": DATE_END_NOT_OLDER_THAN,
+            "regeling": REGELING_IDENTIFICATIE,
         }
 
     aanvragen = get_aanvragen(bsn, query_params)
