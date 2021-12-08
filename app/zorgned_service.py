@@ -82,16 +82,19 @@ def format_aanvragen(aanvragen_source=[]):
         beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
         date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
         beschikte_producten = dpath_util.get(
-            beschikking, "beschikteProducten", default=[]
+            beschikking, "beschikteProducten", default=None
         )
 
-        for beschikt_product in beschikte_producten:
-            # Only select products with certain result
-            if beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT:
-                aanvraag_formatted = format_aanvraag(date_decision, beschikt_product)
+        if beschikte_producten:
+            for beschikt_product in beschikte_producten:
+                # Only select products with certain result
+                if beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT:
+                    aanvraag_formatted = format_aanvraag(
+                        date_decision, beschikt_product
+                    )
 
-                if aanvraag_formatted:
-                    aanvragen.append(aanvraag_formatted)
+                    if aanvraag_formatted:
+                        aanvragen.append(aanvraag_formatted)
 
     return aanvragen
 
