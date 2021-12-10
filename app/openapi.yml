@@ -3,6 +3,13 @@ info:
   title: WMO / Zorgned koppel api
   description: Dit is het koppelstuk tussen Mijn Amsterdam en WMO / Zorgned
   version: 2.0.0
+servers:
+  - url: http://localhost
+    description: Development server
+  - url: https://mijn.acc.amsterdam.nl/api
+    description: Acceptance server
+  - url: https://mijn.amsterdam.nl/api
+    description: Production server
 paths:
   /api/wmoned/voorzieningen:
     parameters:
@@ -15,7 +22,7 @@ paths:
     get:
       summary: Returns a list of actual voorzieningen
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -23,35 +30,35 @@ paths:
                 type: object
                 properties:
                   content:
-                    $ref: '#/components/schemas/Voorzieningen'
+                    $ref: "#/components/schemas/Voorzieningen"
                   status:
                     type: string
                     enum:
-                      - 'OK'
+                      - "OK"
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /status/health:
     get:
       summary: returns "OK"
       responses:
-        '200':
+        "200":
           description: Returns "OK"
           content:
             application/json:
               schema:
                 type: string
                 enum:
-                  - 'OK'
+                  - "OK"
 components:
   schemas:
     Voorzieningen:
       type: array
       items:
-        $ref: '#/components/schemas/Voorziening'
+        $ref: "#/components/schemas/Voorziening"
     Voorziening:
       type: object
       properties:
@@ -61,12 +68,12 @@ components:
           description: The date the request for this product was started
           type: string
           format: date
-          example: '2020-06-16'
+          example: "2020-06-16"
         dateEnd:
           description: The date the request for this product was finished
           type: string
           format: date
-          example: '2020-06-16'
+          example: "2020-06-16"
           nullable: true
         supplier:
           type: string
@@ -79,7 +86,7 @@ components:
           description: The date a decision was made about the request for this product
           type: string
           format: date
-          example: '2020-06-16'
+          example: "2020-06-16"
           nullable: true
         itemTypeCode:
           type: string # Enum?
@@ -89,19 +96,19 @@ components:
           description: The date on which the product started/delivered
           type: string
           format: date
-          example: '2020-06-16'
+          example: "2020-06-16"
           nullable: true
         serviceDateEnd:
           description: The date on which the product ended/revoked
           type: string
           format: date
-          example: '2020-06-16'
+          example: "2020-06-16"
           nullable: true
         serviceOrderDate:
           description: The date on which the request was made to start delivering the product
           type: string
           format: date
-          example: '2020-06-16'
+          example: "2020-06-16"
           nullable: true
     ErrorResponse:
       type: object
@@ -109,6 +116,6 @@ components:
         status:
           type: string
           enum:
-            - 'ERROR'
+            - "ERROR"
         message:
           type: string
