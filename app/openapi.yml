@@ -3,13 +3,10 @@ info:
   title: WMO / Zorgned koppel api
   description: Dit is het koppelstuk tussen Mijn Amsterdam en WMO / Zorgned
   version: 2.0.0
-servers:
-  - url: http://localhost
-    description: Development server
-  - url: https://mijn.acc.amsterdam.nl/api
-    description: Acceptance server
-  - url: https://mijn.amsterdam.nl/api
-    description: Production server
+  contact:
+    email: datapunt@amsterdam.nl
+    name: Datapunt Support
+    url: https://data.amsterdam.nl/
 paths:
   /api/wmoned/voorzieningen:
     parameters:
