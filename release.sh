@@ -6,7 +6,7 @@ BRANCH="production-release"
 
 git fetch origin && \
 git fetch origin -t && \
-git checkout -b "$BRANCH" origin/main && \
+git checkout -b "$BRANCH" origin/master && \
 
 echo "Fetched origin, created release-branch."
 
@@ -55,6 +55,6 @@ git branch -m "$BRANCH" && \
 echo "Pushing $BRANCH" && \
 git push origin --follow-tags "$BRANCH" && \
 
-echo "Don't forget to merge to main and Approve the deploy to the production environment!"
+echo "Don't forget to merge to master and Approve the deploy to the production environment!"
 
 exit 0
