@@ -41,6 +41,39 @@ REGELING_IDENTIFICATIE = "wmo"
 BESCHIKT_PRODUCT_RESULTAAT = ["toegewezen"]
 DATE_END_NOT_OLDER_THAN = "2018-01-01"
 
+PRODUCTEN_A = {
+    "ZIN": [
+        "AO1",
+        "AO2",
+        "AO3",
+        "AO4",
+        "AO5",
+        "AO6",
+        "AO7",
+        "AO8",
+        "BSW",
+        "DBA",
+        "DBH",
+        "DBL",
+        "DBS",
+        "KVB",
+        "MAO",
+        "WMH",
+    ],
+    "": ["AO2", "AO5", "DBS", "KVB", "WMH"],
+}
+
+PRODUCTEN_B = {
+    "ZIN": ["AAN", "AUT", "FIE", "GBW", "OVE", "ROL", "RWD", "RWT", "SCO"],
+    "": ["AAN", "FIE"],
+}
+
+PRODUCTEN_C = {
+    "ZIN": ["ZIN", "WRA", "WRA1", "WRA2", "WRA3", "WRA4", "WRA5"],
+}
+
+PRODUCTS_WITH_DELIVERY = [PRODUCTEN_A, PRODUCTEN_B, PRODUCTEN_C]
+
 # Server security / certificates
 SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
 SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
