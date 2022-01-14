@@ -6,6 +6,7 @@ import requests
 from dpath import util as dpath_util
 
 from app.config import (
+    PRODUCTS_WITH_DELIVERY,
     BESCHIKT_PRODUCT_RESULTAAT,
     DATE_END_NOT_OLDER_THAN,
     REGELING_IDENTIFICATIE,
@@ -179,6 +180,30 @@ def get_aanvragen(bsn, query_params=None):
         return format_aanvragen_v1(response_data)
 
 
+def has_start_date_in_past(aanvraag_source):
+    return (
+        aanvraag_source.get("dateStart")
+        and to_date(aanvraag_source.get("dateStart")) <= date.today()
+    )
+
+
+def is_valid_product(aanvraag_source):
+    delivery_type = aanvraag_source.get("deliveryType", "").upper()
+    item_type_code = aanvraag_source.get("itemTypeCode", "").upper()
+
+    # Check de producten die een levering zouden moeten hebben om als "toegewezen voorziening" bestempeld te kunnen worden
+    # Een product kan toegewezen zijn maar nog geen geaccepteerde levering bevatten. In dit geval tonen wij deze nog niet.
+    # B.v in het geval van een woonruimteaanpassing kun je je afvragen, is deze huidig als de aanpassing nog niet is uitgevoerd?
+    for delivery_combo in PRODUCTS_WITH_DELIVERY:
+        product_item_type_codes = delivery_combo.get(delivery_type)
+        if product_item_type_codes:
+            if item_type_code in product_item_type_codes:
+                return True if aanvraag_source.get("serviceDateStart") else False
+
+    # Alle andere producten mogen door, ongeacht deze een levering hebben.
+    return True
+
+
 def get_voorzieningen(bsn):
     query_params = None
 
@@ -193,9 +218,11 @@ def get_voorzieningen(bsn):
     voorzieningen = []
 
     for aanvraag_source in aanvragen:
-        if (
-            aanvraag_source.get("dateStart")
-            and to_date(aanvraag_source.get("dateStart")) <= date.today()
+        # De toegwezen voorzieningen worden gefilterd op basis van de volgende 2 selecteicriteria:
+        # 1. Is er een startdatum van toewijzing en ligt deze in het verleden
+        # 2. Is de status van de aanvraag procedure compleet genoeg om te tonen
+        if has_start_date_in_past(aanvraag_source) and is_valid_product(
+            aanvraag_source
         ):
             voorzieningen.append(aanvraag_source)
 
