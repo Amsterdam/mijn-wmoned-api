@@ -120,12 +120,16 @@ def format_aanvragen_v1(aanvragen_source=[]):
         service_date_end = dpath_util.get(
             aanvraag_source, "Levering/EinddatumLeverancier", default=None
         )
+
+        # TODO: Deze Flag moet aangepast worden in het geval van toegewezen beschikkingen zonder levering.
+        is_actual = aanvraag_source.get("Actueel")
+
         aanvraag = {
             "title": aanvraag_source.get("Omschrijving"),
             "itemTypeCode": aanvraag_source.get("Voorzieningsoortcode"),
             "dateStart": to_date(date_start) if date_start else None,
             "dateEnd": to_date(date_end) if date_end else None,
-            "isActual": aanvraag_source.get("Actueel"),
+            "isActual": is_actual,
             "deliveryType": aanvraag_source.get("Leveringsvorm"),
             "supplier": aanvraag_source.get("Leverancier"),
             "dateDecision": to_date(date_decision) if date_decision else None,
