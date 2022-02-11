@@ -25,8 +25,7 @@ def is_product_with_delivery(aanvraag_formatted):
     delivery_type = aanvraag_formatted.get("deliveryType", "").upper()
     item_type_code = aanvraag_formatted.get("itemTypeCode", "").upper()
 
-    # Check de producten die een levering zouden moeten hebben om als "toegewezen / actuele voorziening" bestempeld te kunnen worden
-    # Een product kan toegewezen zijn maar nog geen geaccepteerde levering bevatten.
+    # This check matches the products that should/can/will receive a delivery of goods/service/product (eventually).
     if delivery_type in PRODUCTS_WITH_DELIVERY:
         product_item_type_codes = PRODUCTS_WITH_DELIVERY[delivery_type]
         return item_type_code in product_item_type_codes
@@ -164,9 +163,6 @@ def get_voorzieningen(bsn):
     voorzieningen = []
 
     for aanvraag_source in aanvragen:
-        # De toegwezen voorzieningen worden gefilterd op basis van de volgende 2 selecteicriteria:
-        # 1. Is er een startdatum van toewijzing en ligt deze in het verleden
-        # 2. Is de status van de aanvraag procedure compleet genoeg om te tonen
         if has_start_date_in_past(aanvraag_source):
             voorzieningen.append(aanvraag_source)
 
