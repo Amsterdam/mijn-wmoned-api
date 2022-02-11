@@ -13,15 +13,25 @@ from app.config import (
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
     WMONED_API_URL_V2,
-    WMONED_API_KEY,
     WMONED_API_REQUEST_TIMEOUT_SECONDS,
     WMONED_API_TOKEN,
-    WMONED_API_URL,
-    WMONED_API_V2_ENABLED,
     WMONED_GEMEENTE_CODE,
 )
 from app.helpers import to_date, to_date_time
 from urllib.parse import quote
+
+
+def is_product_with_delivery(aanvraag_formatted):
+    delivery_type = aanvraag_formatted.get("deliveryType", "").upper()
+    item_type_code = aanvraag_formatted.get("itemTypeCode", "").upper()
+
+    # Check de producten die een levering zouden moeten hebben om als "toegewezen / actuele voorziening" bestempeld te kunnen worden
+    # Een product kan toegewezen zijn maar nog geen geaccepteerde levering bevatten.
+    if delivery_type in PRODUCTS_WITH_DELIVERY:
+        product_item_type_codes = PRODUCTS_WITH_DELIVERY[delivery_type]
+        return item_type_code in product_item_type_codes
+
+    return False
 
 
 def format_aanvraag(date_decision, beschikt_product):
@@ -30,6 +40,7 @@ def format_aanvraag(date_decision, beschikt_product):
         beschikt_product, "toegewezenProduct", default=None
     )
     is_actual = dpath_util.get(toegewezen_product, "actueel", default=False)
+    date_end = dpath_util.get(toegewezen_product, "datumEindeGeldigheid", default=None)
 
     toewijzingen = dpath_util.get(toegewezen_product, "toewijzingen", default=[])
     # Take last toewijzing from incoming data
@@ -49,6 +60,8 @@ def format_aanvraag(date_decision, beschikt_product):
     if delivery_type is None:
         delivery_type = ""
 
+    service_date_start = dpath_util.get(levering, "begindatum", default=None)
+
     aanvraag = {
         # Beschikking
         "dateDecision": date_decision,
@@ -59,9 +72,7 @@ def format_aanvraag(date_decision, beschikt_product):
         "dateStart": dpath_util.get(
             toegewezen_product, "datumIngangGeldigheid", default=None
         ),
-        "dateEnd": dpath_util.get(
-            toegewezen_product, "datumEindeGeldigheid", default=None
-        ),
+        "dateEnd": date_end,
         "isActual": is_actual,
         "deliveryType": delivery_type,
         "supplier": dpath_util.get(
@@ -69,9 +80,19 @@ def format_aanvraag(date_decision, beschikt_product):
         ),
         # Levering
         "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht", default=None),
-        "serviceDateStart": dpath_util.get(levering, "begindatum", default=None),
+        "serviceDateStart": service_date_start,
         "serviceDateEnd": dpath_util.get(levering, "einddatum", default=None),
     }
+
+    # Voorzieningen without a delivery should be considered actual. The api data returns these items as not-actual.
+    # In the front-end we use the isActual boolean to determine if the voorziening is historic or present.
+    if (
+        is_product_with_delivery(aanvraag)
+        and not is_actual
+        and not date_end
+        and not service_date_start
+    ):
+        aanvraag["isActual"] = True
 
     return aanvraag
 
@@ -100,66 +121,14 @@ def format_aanvragen(aanvragen_source=[]):
     return aanvragen
 
 
-def format_aanvragen_v1(aanvragen_source=[]):
-    aanvragen = []
-
-    for aanvraag_source in aanvragen_source:
-        date_start = aanvraag_source.get("VoorzieningIngangsdatum")
-        date_end = aanvraag_source.get("VoorzieningEinddatum")
-
-        if date_end and to_date(date_end) < to_date(DATE_END_NOT_OLDER_THAN):
-            continue
-
-        date_decision = aanvraag_source.get("Beschikkingsdatum")
-        service_order_date = dpath_util.get(
-            aanvraag_source, "Levering/Opdrachtdatum", default=None
-        )
-        service_date_start = dpath_util.get(
-            aanvraag_source, "Levering/StartdatumLeverancier", default=None
-        )
-        service_date_end = dpath_util.get(
-            aanvraag_source, "Levering/EinddatumLeverancier", default=None
-        )
-
-        # TODO: Deze Flag moet aangepast worden in het geval van toegewezen beschikkingen zonder levering.
-        is_actual = aanvraag_source.get("Actueel")
-
-        aanvraag = {
-            "title": aanvraag_source.get("Omschrijving"),
-            "itemTypeCode": aanvraag_source.get("Voorzieningsoortcode"),
-            "dateStart": to_date(date_start) if date_start else None,
-            "dateEnd": to_date(date_end) if date_end else None,
-            "isActual": is_actual,
-            "deliveryType": aanvraag_source.get("Leveringsvorm"),
-            "supplier": aanvraag_source.get("Leverancier"),
-            "dateDecision": to_date(date_decision) if date_decision else None,
-            "serviceOrderDate": to_date(service_order_date)
-            if service_order_date
-            else None,
-            "serviceDateStart": to_date(service_date_start)
-            if service_date_start
-            else None,
-            "serviceDateEnd": to_date(service_date_end) if service_date_end else None,
-        }
-
-        aanvragen.append(aanvraag)
-
-    return aanvragen
-
-
 def get_aanvragen(bsn, query_params=None):
 
     headers = None
     cert = None
 
-    if WMONED_API_V2_ENABLED:
-        headers = {"Token": WMONED_API_TOKEN}
-        cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
-        url = f"{WMONED_API_URL_V2}/gemeenten/{WMONED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}/aanvragen"
-    else:
-        url = (
-            f"{WMONED_API_URL}/getvoorzieningen?token={quote(WMONED_API_KEY)}&bsn={bsn}"
-        )
+    headers = {"Token": WMONED_API_TOKEN}
+    cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
+    url = f"{WMONED_API_URL_V2}/gemeenten/{WMONED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}/aanvragen"
 
     res = requests.get(
         url,
@@ -169,19 +138,12 @@ def get_aanvragen(bsn, query_params=None):
         params=query_params,
     )
 
-    # Weird use of http status codes in V1 api. The 404 is returned in the case a user doesn't have any content in the remote system.
-    if res.status_code == 404 and not WMONED_API_V2_ENABLED:
-        return []
-
     response_data = res.json()
 
     logging.debug(json.dumps(response_data, indent=4))
 
-    if WMONED_API_V2_ENABLED:
-        response_aanvragen = response_data["_embedded"]["aanvraag"]
-        return format_aanvragen(response_aanvragen)
-    else:
-        return format_aanvragen_v1(response_data)
+    response_aanvragen = response_data["_embedded"]["aanvraag"]
+    return format_aanvragen(response_aanvragen)
 
 
 def has_start_date_in_past(aanvraag_source):
@@ -191,31 +153,11 @@ def has_start_date_in_past(aanvraag_source):
     )
 
 
-def is_valid_product(aanvraag_source):
-    delivery_type = aanvraag_source.get("deliveryType", "").upper()
-    item_type_code = aanvraag_source.get("itemTypeCode", "").upper()
-
-    # Check de producten die een levering zouden moeten hebben om als "toegewezen voorziening" bestempeld te kunnen worden
-    # Een product kan toegewezen zijn maar nog geen geaccepteerde levering bevatten. In dit geval tonen wij deze nog niet.
-    # B.v in het geval van een woonruimteaanpassing kun je je afvragen, is deze huidig als de aanpassing nog niet is uitgevoerd?
-    for delivery_combo in PRODUCTS_WITH_DELIVERY:
-        product_item_type_codes = delivery_combo.get(delivery_type)
-        if product_item_type_codes:
-            if item_type_code in product_item_type_codes:
-                return True if aanvraag_source.get("serviceDateStart") else False
-
-    # Alle andere producten mogen door, ongeacht deze een levering hebben.
-    return True
-
-
 def get_voorzieningen(bsn):
-    query_params = None
-
-    if WMONED_API_V2_ENABLED:
-        query_params = {
-            "maxeinddatum": DATE_END_NOT_OLDER_THAN,
-            "regeling": REGELING_IDENTIFICATIE,
-        }
+    query_params = {
+        "maxeinddatum": DATE_END_NOT_OLDER_THAN,
+        "regeling": REGELING_IDENTIFICATIE,
+    }
 
     aanvragen = get_aanvragen(bsn, query_params)
 
@@ -225,9 +167,7 @@ def get_voorzieningen(bsn):
         # De toegwezen voorzieningen worden gefilterd op basis van de volgende 2 selecteicriteria:
         # 1. Is er een startdatum van toewijzing en ligt deze in het verleden
         # 2. Is de status van de aanvraag procedure compleet genoeg om te tonen
-        if has_start_date_in_past(aanvraag_source) and is_valid_product(
-            aanvraag_source
-        ):
+        if has_start_date_in_past(aanvraag_source):
             voorzieningen.append(aanvraag_source)
 
     return voorzieningen
