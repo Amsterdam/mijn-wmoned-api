@@ -15,7 +15,6 @@ with patch.dict(os.environ, MOCK_ENV_VARIABLES):
     from app import config
 
     BASE_PATH = config.BASE_PATH
-    config.WMONED_API_V2_ENABLED = True
     from app.server import app
 
 
@@ -103,6 +102,19 @@ class TestAPI(FlaskServerTMATestCase):
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "driewielfiets 5-9 jr",
+                },
+                {
+                    "dateDecision": "2021-08-26",
+                    "dateEnd": None,
+                    "dateStart": "2021-08-24",
+                    "deliveryType": "ZIN",
+                    "isActual": True,
+                    "itemTypeCode": "ROL",
+                    "serviceDateEnd": None,
+                    "serviceDateStart": None,
+                    "serviceOrderDate": "2021-08-30",
+                    "supplier": "Welzorg",
+                    "title": "handbewogen kinderrolstoel",
                 },
                 {
                     "dateDecision": "2018-04-25",

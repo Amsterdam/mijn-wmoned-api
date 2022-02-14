@@ -9,13 +9,11 @@ from app.test_server import ZorgnedApiMock
 from app.zorgned_service import (
     format_aanvraag,
     format_aanvragen,
-    format_aanvragen_v1,
     get_aanvragen,
     get_voorzieningen,
 )
 
 BASE_PATH = config.BASE_PATH
-config.WMONED_API_V2_ENABLED = True
 
 
 class ZorgnedServiceTest(TestCase):
@@ -330,27 +328,15 @@ class ZorgnedServiceTest(TestCase):
         self.assertEqual(voorzieningen2, [])
 
         voorzieningen3 = get_voorzieningen(123)
+        # Does not have serviceDateStart but is considered actual
         self.assertEqual(
             voorzieningen3,
-            [],
+            [
+                {
+                    "isActual": True,
+                    "dateDecision": "2017-01-01",
+                    "serviceDateStart": None,
+                    "dateStart": "2022-02-01",
+                }
+            ],
         )
-
-    def test_format_voorzieningen_v1(self):
-
-        self.maxDiff = None
-
-        with open(f"{BASE_PATH}/fixtures/v1_old.json", "r") as file_contents:
-            input = json.load(file_contents)
-
-        def defaultconverter(o):
-            if isinstance(o, datetime.date):
-                return o.__str__()
-
-        output_formatted = json.loads(
-            json.dumps(format_aanvragen_v1(input), default=defaultconverter)
-        )
-
-        with open(f"{BASE_PATH}/fixtures/v1_new.json", "r") as file_contents:
-            expected_output = json.load(file_contents)
-
-        self.assertEqual(output_formatted, expected_output)

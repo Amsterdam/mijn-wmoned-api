@@ -28,11 +28,6 @@ ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", "1")
 
 # WMONED specific config
 WMONED_API_REQUEST_TIMEOUT_SECONDS = 30
-# V1
-WMONED_API_KEY = os.getenv("WMO_NED_API_KEY")
-WMONED_API_URL = os.getenv("WMO_NED_API_URL")
-# V2
-WMONED_API_V2_ENABLED = not IS_PRODUCTION
 WMONED_GEMEENTE_CODE = "0363"
 WMONED_API_TOKEN = os.getenv("WMO_NED_API_TOKEN")
 WMONED_API_URL_V2 = os.getenv("WMO_NED_API_URL_V2")
@@ -41,8 +36,24 @@ REGELING_IDENTIFICATIE = "wmo"
 BESCHIKT_PRODUCT_RESULTAAT = ["toegewezen"]
 DATE_END_NOT_OLDER_THAN = "2018-01-01"
 
-PRODUCTEN_A = {
+PRODUCTS_WITH_DELIVERY = {
     "ZIN": [
+        "ZIN",
+        "WRA",
+        "WRA1",
+        "WRA2",
+        "WRA3",
+        "WRA4",
+        "WRA5",
+        "AAN",
+        "AUT",
+        "FIE",
+        "GBW",
+        "OVE",
+        "ROL",
+        "RWD",
+        "RWT",
+        "SCO",
         "AO1",
         "AO2",
         "AO3",
@@ -60,19 +71,8 @@ PRODUCTEN_A = {
         "MAO",
         "WMH",
     ],
-    "": ["AO2", "AO5", "DBS", "KVB", "WMH"],
+    "": ["AO2", "AO5", "DBS", "KVB", "WMH", "AAN", "FIE"],
 }
-
-PRODUCTEN_B = {
-    "ZIN": ["AAN", "AUT", "FIE", "GBW", "OVE", "ROL", "RWD", "RWT", "SCO"],
-    "": ["AAN", "FIE"],
-}
-
-PRODUCTEN_C = {
-    "ZIN": ["ZIN", "WRA", "WRA1", "WRA2", "WRA3", "WRA4", "WRA5"],
-}
-
-PRODUCTS_WITH_DELIVERY = [PRODUCTEN_A, PRODUCTEN_B, PRODUCTEN_C]
 
 # Server security / certificates
 SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
