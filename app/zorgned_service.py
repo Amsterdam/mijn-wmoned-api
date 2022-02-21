@@ -1,24 +1,23 @@
-from datetime import date, datetime
 import json
 import logging
+from datetime import date
 
 import requests
 from dpath import util as dpath_util
 
 from app.config import (
-    PRODUCTS_WITH_DELIVERY,
     BESCHIKT_PRODUCT_RESULTAAT,
     DATE_END_NOT_OLDER_THAN,
+    PRODUCTS_WITH_DELIVERY,
     REGELING_IDENTIFICATIE,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
-    WMONED_API_URL_V2,
     WMONED_API_REQUEST_TIMEOUT_SECONDS,
     WMONED_API_TOKEN,
+    WMONED_API_URL_V2,
     WMONED_GEMEENTE_CODE,
 )
-from app.helpers import to_date, to_date_time
-from urllib.parse import quote
+from app.helpers import to_date
 
 
 def is_product_with_delivery(aanvraag_formatted):
@@ -34,6 +33,9 @@ def is_product_with_delivery(aanvraag_formatted):
 
 
 def format_aanvraag(date_decision, beschikt_product):
+
+    if not beschikt_product or not date_decision:
+        return None
 
     toegewezen_product = dpath_util.get(
         beschikt_product, "toegewezenProduct", default=None

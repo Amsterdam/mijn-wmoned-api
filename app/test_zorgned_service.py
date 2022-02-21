@@ -38,40 +38,43 @@ class ZorgnedServiceTest(TestCase):
         with self.assertRaises(TypeError):
             get_aanvragen(123)
 
-    def format_aanvraag_partial(self):
+    def test_format_aanvraag_partial(self):
 
         self.maxDiff = None
 
-        source1 = {"beschikking": {"beschikteProducten": []}}
-        source1_formatted = format_aanvraag(source1)
+        source1_formatted = format_aanvraag("2022-01-01", None)
         self.assertEqual(source1_formatted, None)
 
         source2 = {
-            "beschikking": {
-                "beschikteProducten": [
-                    {
-                        "toegewezenProduct": {
-                            "datumIngangGeldigheid": None,
-                            "datumEindeGeldigheid": None,
-                            "actueel": False,
-                            "leveringsvorm": None,
-                            "leverancier": {"omschrijving": None},
-                            "toewijzingen": [],
-                        }
-                    }
-                ]
+            "toegewezenProduct": {
+                "datumIngangGeldigheid": None,
+                "datumEindeGeldigheid": None,
+                "actueel": False,
+                "leveringsvorm": None,
+                "leverancier": {"omschrijving": None},
+                "toewijzingen": [],
             }
         }
 
         with self.assertRaises(KeyError):
-            format_aanvraag(source2)
+            format_aanvraag("2022-01-01", source2)
 
-        source3 = source2
-        source3["beschikking"]["beschikteProducten"][0]["product"] = {
-            "omschrijving": "een WMO product",
-            "productsoortCode": "abc",
+    def test_format_aanvraag_partial2(self):
+        source3 = {
+            "toegewezenProduct": {
+                "datumIngangGeldigheid": None,
+                "datumEindeGeldigheid": None,
+                "actueel": False,
+                "leveringsvorm": None,
+                "leverancier": {"omschrijving": None},
+                "toewijzingen": [],
+            },
+            "product": {
+                "omschrijving": "een WMO product",
+                "productsoortCode": "abc",
+            },
         }
-        source3_formatted = format_aanvraag(source3)
+        source3_formatted = format_aanvraag("2022-01-01", source3)
 
         self.assertEqual(
             source3_formatted,
@@ -83,59 +86,51 @@ class ZorgnedServiceTest(TestCase):
                 "isActual": False,
                 "deliveryType": "",
                 "supplier": None,
-                "dateDecision": None,
+                "dateDecision": "2022-01-01",
                 "serviceOrderDate": None,
                 "serviceDateStart": None,
                 "serviceDateEnd": None,
             },
         )
 
-    def format_aanvraag_complete(self):
+    def test_format_aanvraag_complete(self):
         source1 = {
-            "beschikking": {
-                "datumAfgifte": "2012-11-30",
-                "beschikteProducten": [
+            "product": {
+                "productsoortCode": "OVE",
+                "omschrijving": "autozitje",
+            },
+            "toegewezenProduct": {
+                "actueel": True,
+                "leveringsvorm": "zin",
+                "leverancier": {"omschrijving": "Welzorg"},
+                "datumIngangGeldigheid": "2014-07-03",
+                "datumEindeGeldigheid": "2014-09-03",
+                "toewijzingen": [
                     {
-                        "product": {
-                            "productsoortCode": "OVE",
-                            "omschrijving": "autozitje",
-                        },
-                        "toegewezenProduct": {
-                            "actueel": True,
-                            "leveringsvorm": "zin",
-                            "leverancier": {"omschrijving": "Welzorg"},
-                            "datumIngangGeldigheid": "2014-07-03",
-                            "datumEindeGeldigheid": "2014-09-03",
-                            "toewijzingen": [
-                                {
-                                    "datumOpdracht": "2012-12-04",
-                                    "leverancier": {"omschrijving": "Welzorg"},
-                                    "leveringen": [
-                                        {
-                                            "begindatum": "2014-04-01",
-                                            "einddatum": "2017-05-31",
-                                        }
-                                    ],
-                                },
-                                {
-                                    "datumOpdracht": "2017-05-01",
-                                    "leverancier": {"omschrijving": "Welzorg"},
-                                    "leveringen": [
-                                        {
-                                            "begindatum": "2017-06-01",
-                                            "einddatum": "2018-02-23",
-                                        }
-                                    ],
-                                },
-                            ],
-                        },
-                    }
+                        "datumOpdracht": "2012-12-04",
+                        "leverancier": {"omschrijving": "Welzorg"},
+                        "leveringen": [
+                            {
+                                "begindatum": "2014-04-01",
+                                "einddatum": "2017-05-31",
+                            }
+                        ],
+                    },
+                    {
+                        "datumOpdracht": "2017-05-01",
+                        "leverancier": {"omschrijving": "Welzorg"},
+                        "leveringen": [
+                            {
+                                "begindatum": "2017-06-01",
+                                "einddatum": "2018-02-23",
+                            }
+                        ],
+                    },
                 ],
             },
-            "documenten": [],
         }
 
-        source1_formatted = format_aanvraag(source1)
+        source1_formatted = format_aanvraag("2012-11-30", source1)
         source1_formatted_expected = {
             "title": "autozitje",
             "itemTypeCode": "OVE",
@@ -149,6 +144,72 @@ class ZorgnedServiceTest(TestCase):
             "serviceDateStart": "2017-06-01",
             "serviceDateEnd": "2018-02-23",
         }
+        self.assertEqual(source1_formatted, source1_formatted_expected)
+
+    def test_format_aanvraag_complete_2(self):
+
+        source1 = {
+            "identificatie": "785401",
+            "externe_identificatie": None,
+            "product": {
+                "identificatie": "12281",
+                "productCode": "12281",
+                "productsoortCode": "FIE",
+                "omschrijving": "rolstoelfiets met hulpmotor",
+            },
+            "productCategorie": {
+                "code": "12",
+                "omschrijving": "Vervoervoorzieningen",
+            },
+            "resultaat": "toegewezen",
+            "toegewezenProduct": {
+                "datumIngangGeldigheid": "2022-02-11",
+                "datumEindeGeldigheid": None,
+                "datumCheck": None,
+                "actueel": False,
+                "omvang": {
+                    "volume": 1,
+                    "eenheid": {
+                        "code": "82",
+                        "omschrijving": "Stuks (output)",
+                    },
+                    "frequentie": {
+                        "code": "6",
+                        "omschrijving": "Per beschikking",
+                    },
+                    "omschrijving": "1 stuks (output) per beschikking",
+                },
+                "leveringsvorm": "zin",
+                "leverancier": {
+                    "identificatie": "76087055",
+                    "agbcode": "76087055",
+                    "kvk": None,
+                    "omschrijving": "Medipoint",
+                },
+                "toelichting": None,
+                "toewijzingen": [
+                    {
+                        "toewijzingNummer": "1817681",
+                        "toewijzingsDatumTijd": "2022-02-13T22:22:02",
+                        "ingangsdatum": "2022-02-11",
+                        "einddatum": None,
+                        "datumOpdracht": "2022-02-13",
+                        "leverancier": {
+                            "identificatie": "76087055",
+                            "agbcode": "76087055",
+                            "kvk": None,
+                            "omschrijving": "Medipoint",
+                        },
+                        "referentieAanbieder": None,
+                        "redenWijziging": None,
+                        "leveringen": [],
+                    }
+                ],
+            },
+        }
+
+        source1_formatted = format_aanvraag("2022-02-13", source1)
+        source1_formatted_expected = {}
         self.assertEqual(source1_formatted, source1_formatted_expected)
 
     def test_format_aanvragen(self):
