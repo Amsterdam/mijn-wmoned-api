@@ -209,7 +209,19 @@ class ZorgnedServiceTest(TestCase):
         }
 
         source1_formatted = format_aanvraag("2022-02-13", source1)
-        source1_formatted_expected = {}
+        source1_formatted_expected = {
+            "dateDecision": "2022-02-13",
+            "dateEnd": None,
+            "dateStart": "2022-02-11",
+            "deliveryType": "ZIN",
+            "isActual": True,
+            "itemTypeCode": "FIE",
+            "serviceDateEnd": None,
+            "serviceDateStart": None,
+            "serviceOrderDate": "2022-02-13",
+            "supplier": "Medipoint",
+            "title": "rolstoelfiets met hulpmotor",
+        }
         self.assertEqual(source1_formatted, source1_formatted_expected)
 
     def test_format_aanvragen(self):
