@@ -138,6 +138,8 @@ def send_api_request(bsn, operation="", query_params=None):
         params=query_params,
     )
 
+    res.raise_for_status()
+
     response_data = res.json()
 
     logging.debug(json.dumps(response_data, indent=4))

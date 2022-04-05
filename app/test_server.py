@@ -22,7 +22,7 @@ class ZorgnedApiMock:
     status_code = 200
     response_json = None
 
-    def __init__(self, response_json):
+    def __init__(self, response_json=None):
         if isinstance(response_json, str):
             with open(response_json, "r") as read_file:
                 self.response_json = json.load(read_file)
@@ -32,8 +32,12 @@ class ZorgnedApiMock:
     def json(self):
         return self.response_json
 
+    def raise_for_status(self):
+        if self.status_code != 200:
+            raise Exception("Request failed")
 
-class ZorgnedApiMockError:
+
+class ZorgnedApiMockError(ZorgnedApiMock):
     status_code = 500
 
     def json(self):
