@@ -35,11 +35,8 @@ def get_voorzieningen():
 
 
 @app.route("/status/health")
-@validate_openapi
 def health_check():
-    response = make_response(json.dumps("OK"))
-    response.headers["Content-type"] = "application/json"
-    return response
+    return success_response_json("OK")
 
 
 @app.errorhandler(Exception)
