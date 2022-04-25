@@ -1,4 +1,4 @@
-FROM amsterdam/python:3.9.6-slim-buster
+FROM amsterdam/python:3.9.6-buster
 
 RUN pip install uwsgi
 
