@@ -1,4 +1,3 @@
-import json
 import logging
 
 import sentry_sdk
