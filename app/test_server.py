@@ -2,11 +2,9 @@ import json
 import os
 from unittest.mock import patch
 
-from tma_saml import FlaskServerTMATestCase
-from tma_saml.for_tests.cert_and_key import server_crt
+from app.auth import FlaskServerTestCase
 
 MOCK_ENV_VARIABLES = {
-    "TMA_CERTIFICATE": __file__,  # any file, it should not be used
     "WMO_NED_API_TOKEN": "123123",
     "WMO_NED_API_URL_V2": "https://some-server",
 }
@@ -44,23 +42,16 @@ class ZorgnedApiMockError(ZorgnedApiMock):
         return None
 
 
-class TestAPI(FlaskServerTMATestCase):
+class TestAPI(FlaskServerTestCase):
 
+    app = app
     TEST_BSN = "111222333"
 
-    def setUp(self):
-        """Setup app for testing"""
-        self.client = self.get_tma_test_app(app)
-        self.maxDiff = None
-        return app
-
     @patch("app.zorgned_service.requests.get", autospec=True)
-    @patch("app.helpers.get_tma_certificate", lambda: server_crt)
     def test_get_voorzieningen(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMock(BASE_PATH + "/fixtures/aanvragen.json")
-        SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
 
-        res = self.client.get("/wmoned/voorzieningen", headers=SAML_HEADERS)
+        res = self.get_secure("/wmoned/voorzieningen")
 
         self.assertEqual(res.status_code, 200, res.data)
         self.assertEqual(res.json["status"], "OK")
@@ -137,38 +128,33 @@ class TestAPI(FlaskServerTMATestCase):
         )
 
     @patch("app.zorgned_service.requests.get", autospec=True)
-    @patch("app.helpers.get_tma_certificate", lambda: server_crt)
     def test_get_voorzieningen_2(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMock(
             BASE_PATH + "/fixtures/aanvragen-2.json"
         )
-        SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
 
-        res = self.client.get("/wmoned/voorzieningen", headers=SAML_HEADERS)
+        res = self.get_secure("/wmoned/voorzieningen")
 
         self.assertEqual(res.status_code, 200, res.data)
         self.assertEqual(res.json["status"], "OK")
 
     @patch("app.zorgned_service.requests.get", autospec=True)
-    @patch("app.helpers.get_tma_certificate", lambda: server_crt)
     def test_get_voorzieningen_error(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMockError()
-        SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
 
-        res = self.client.get("/wmoned/voorzieningen", headers=SAML_HEADERS)
+        res = self.get_secure("/wmoned/voorzieningen")
 
         self.assertEqual(res.status_code, 500, res.data)
         self.assertEqual(res.json["status"], "ERROR")
         self.assertTrue("content" not in res.json)
 
     @patch("app.zorgned_service.requests.get", autospec=True)
-    @patch("app.helpers.get_tma_certificate", lambda: server_crt)
-    def test_get_voorzieningen_saml_error(self, api_mocked):
+    def test_get_voorzieningen_token_error(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMock(None)
 
-        res = self.client.get("/wmoned/voorzieningen", headers={})
+        res = self.client.get("/wmoned/voorzieningen")
 
-        self.assertEqual(res.status_code, 400, res.data)
+        self.assertEqual(res.status_code, 401, res.data)
         self.assertEqual(res.json["status"], "ERROR")
 
     def test_health_page(self):

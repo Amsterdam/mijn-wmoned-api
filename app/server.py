@@ -1,20 +1,20 @@
 import json
 import logging
 
-import app.zorgned_service as zorgned
 import sentry_sdk
-from app.config import SENTRY_DSN, CustomJSONEncoder, TMAException
-from app.helpers import (
-    error_response_json,
-    get_tma_user,
-    success_response_json,
-    validate_openapi,
-    verify_tma_user,
-)
 from flask import Flask, make_response
 from requests.exceptions import HTTPError
 from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.exceptions import NotFound
+
+import app.zorgned_service as zorgned
+from app import auth
+from app.config import IS_DEV, SENTRY_DSN, CustomJSONEncoder
+from app.helpers import (
+    error_response_json,
+    success_response_json,
+    validate_openapi,
+)
 
 app = Flask(__name__)
 app.json_encoder = CustomJSONEncoder
@@ -26,10 +26,10 @@ if SENTRY_DSN:
 
 
 @app.route("/wmoned/voorzieningen", methods=["GET"])
-@verify_tma_user
+@auth.login_required
 @validate_openapi
 def get_voorzieningen():
-    user = get_tma_user()
+    user = auth.get_current_user()
     voorzieningen = zorgned.get_voorzieningen(user["id"])
     return success_response_json(voorzieningen)
 
@@ -44,22 +44,27 @@ def health_check():
 
 @app.errorhandler(Exception)
 def handle_error(error):
-    msg_tma_exception = "TMA error occurred"
+
+    error_message_original = f"{type(error)}:{str(error)}"
+
+    msg_auth_exception = "Auth error occurred"
     msg_request_http_error = "Request error occurred"
     msg_server_error = "Server error occurred"
-    msg_404_error = "Not found"
 
-    logging.exception(error)
+    logging.exception(error, extra={"error_message_original": error_message_original})
 
-    if isinstance(error, NotFound):
-        return error_response_json(msg_404_error, 404)
-    elif isinstance(error, HTTPError):
+    if IS_DEV:  # pragma: no cover
+        msg_auth_exception = error_message_original
+        msg_request_http_error = error_message_original
+        msg_server_error = error_message_original
+
+    if isinstance(error, HTTPError):
         return error_response_json(
             msg_request_http_error,
             error.response.status_code,
         )
-    elif isinstance(error, TMAException):
-        return error_response_json(msg_tma_exception, 400)
+    elif auth.is_auth_exception(error):
+        return error_response_json(msg_auth_exception, 401)
 
     return error_response_json(msg_server_error, 500)
 

@@ -1,16 +1,10 @@
-# flask and plugins
+coverage
+dpath
+flake8
 flask
+flask_httpauth
 Flask-Testing
 openapi-core
-
+pyjwt
 requests
-dpath
-
-# testing tools
-flake8
-coverage
-
-# error reporting
 sentry-sdk[flask]
-
-tma-saml>=0.4.2

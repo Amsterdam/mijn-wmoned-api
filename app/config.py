@@ -4,11 +4,6 @@ import os.path
 from datetime import date, time
 
 from flask.json import JSONEncoder
-from tma_saml.exceptions import (
-    InvalidBSNException,
-    SamlExpiredException,
-    SamlVerificationException,
-)
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -23,8 +18,7 @@ IS_AP = IS_PRODUCTION or IS_ACCEPTANCE
 IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
 
 # App constants
-TMAException = (SamlVerificationException, InvalidBSNException, SamlExpiredException)
-ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", "1")
+ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
 
 # WMONED specific config
 WMONED_API_REQUEST_TIMEOUT_SECONDS = 30

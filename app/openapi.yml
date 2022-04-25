@@ -10,9 +10,9 @@ info:
 paths:
   /wmoned/voorzieningen:
     parameters:
-      - name: x-saml-attribute-token1
+      - name: Authorization
         in: header
-        description: TMA encoded BSN
+        description: Bearer token
         required: true
         schema:
           type: string
