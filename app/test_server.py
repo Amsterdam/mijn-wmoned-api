@@ -159,4 +159,4 @@ class TestAPI(FlaskServerTestCase):
 
     def test_health_page(self):
         res = self.client.get("/status/health")
-        self.assertEqual(res.json, "OK")
+        self.assertEqual(res.json["status"], "OK")
