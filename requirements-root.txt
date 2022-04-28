@@ -4,7 +4,6 @@ dpath
 flake8
 flask
 flask_httpauth
-Flask-Testing
 openapi-core
 pyjwt
 requests
