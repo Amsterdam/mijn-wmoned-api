@@ -1,8 +1,8 @@
 FROM amsterdam/python:3.9.6-buster
 
-RUN adduser datapunt sudo
-
 WORKDIR /api
+
+RUN apt-get uppdate && apt-get install nano
 
 COPY app /api/app
 COPY scripts /api/scripts
