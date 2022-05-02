@@ -14,5 +14,5 @@ COPY .flake8 /api
 
 RUN pip install --no-cache-dir -r /api/requirements.txt
 
-# USER datapunt
+USER datapunt
 CMD uwsgi --ini /api/uwsgi.ini
