@@ -2,7 +2,7 @@ FROM amsterdam/python:3.9.6-buster
 
 WORKDIR /api
 
-RUN apt-get uppdate && apt-get install nano
+RUN apt-get update && apt-get install nano
 
 COPY app /api/app
 COPY scripts /api/scripts
