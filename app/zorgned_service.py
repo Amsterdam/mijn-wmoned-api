@@ -1,6 +1,7 @@
 import json
 import logging
 from datetime import date
+import os
 
 import requests
 from dpath import util as dpath_util
@@ -122,13 +123,13 @@ def format_aanvragen(aanvragen_source=[]):
     return aanvragen
 
 
-def send_api_request(bsn, operation="", query_params=None):
+def send_api_request(bsn, operation="", query_params=None, api_url=WMONED_API_URL_V2):
     headers = None
     cert = None
 
     headers = {"Token": WMONED_API_TOKEN}
     cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
-    url = f"{WMONED_API_URL_V2}/gemeenten/{WMONED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
+    url = f"{api_url}/gemeenten/{WMONED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
 
     res = requests.get(
         url,
@@ -149,7 +150,12 @@ def send_api_request(bsn, operation="", query_params=None):
 
 def get_aanvragen(bsn, query_params=None):
 
-    response_data = send_api_request(bsn, "/aanvragen", query_params)
+    response_data = send_api_request(
+        bsn,
+        "/aanvragen",
+        query_params,
+        api_url=os.getenv("ZORGNED_API_URL", WMONED_API_URL_V2),
+    )
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
     return format_aanvragen(response_aanvragen)
@@ -157,7 +163,12 @@ def get_aanvragen(bsn, query_params=None):
 
 def get_persoonsgegevens(bsn, query_params=None):
 
-    response_data = send_api_request(bsn, "/persoonsgegevens", query_params)
+    response_data = send_api_request(
+        bsn,
+        "/persoonsgegevens",
+        query_params,
+        api_url=os.getenv("ZORGNED_API_URL", WMONED_API_URL_V2),
+    )
 
     return response_data
 
