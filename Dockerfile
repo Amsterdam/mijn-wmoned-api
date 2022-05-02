@@ -2,8 +2,6 @@ FROM amsterdam/python:3.9.6-buster
 
 WORKDIR /api
 
-RUN adduser --system datapunt
-
 RUN apt-get update && apt-get install nano
 
 COPY app /api/app
@@ -16,5 +14,5 @@ COPY .flake8 /api
 
 RUN pip install --no-cache-dir -r /api/requirements.txt
 
-USER datapunt
+# USER datapunt
 CMD uwsgi --ini /api/uwsgi.ini
