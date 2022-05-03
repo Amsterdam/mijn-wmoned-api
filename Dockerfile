@@ -4,7 +4,8 @@ RUN adduser --system datapunt
 
 WORKDIR /api
 
-RUN apt-get install nano \
+RUN apt-get update \
+  && apt-get install nano \
   sudo
 
 COPY app /api/app
