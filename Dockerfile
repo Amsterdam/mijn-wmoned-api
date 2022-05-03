@@ -1,4 +1,4 @@
-FROM amsterdam/python:3.9.6-buster
+FROM amsterdam/python
 
 WORKDIR /api
 
