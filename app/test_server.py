@@ -8,7 +8,7 @@ from tma_saml.for_tests.cert_and_key import server_crt
 MOCK_ENV_VARIABLES = {
     "TMA_CERTIFICATE": __file__,  # any file, it should not be used
     "WMO_NED_API_TOKEN": "123123",
-    "WMO_NED_API_URL_V2": "https://some-server",
+    "WMO_NED_API_URL": "https://some-server",
 }
 
 with patch.dict(os.environ, MOCK_ENV_VARIABLES):
