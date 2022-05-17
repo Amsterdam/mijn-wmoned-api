@@ -12,10 +12,10 @@ from app.config import (
     REGELING_IDENTIFICATIE,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
-    WMONED_API_REQUEST_TIMEOUT_SECONDS,
-    WMONED_API_TOKEN,
-    WMONED_API_URL_V2,
-    WMONED_GEMEENTE_CODE,
+    ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
+    ZORGNED_API_TOKEN,
+    ZORGNED_API_URL,
+    ZORGNED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
 
@@ -126,13 +126,13 @@ def send_api_request(bsn, operation="", query_params=None):
     headers = None
     cert = None
 
-    headers = {"Token": WMONED_API_TOKEN}
+    headers = {"Token": ZORGNED_API_TOKEN}
     cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
-    url = f"{WMONED_API_URL_V2}/gemeenten/{WMONED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
+    url = f"{ZORGNED_API_URL}/gemeenten/{ZORGNED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
 
     res = requests.get(
         url,
-        timeout=WMONED_API_REQUEST_TIMEOUT_SECONDS,
+        timeout=ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
         headers=headers,
         cert=cert,
         params=query_params,
