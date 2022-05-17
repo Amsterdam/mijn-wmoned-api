@@ -6,7 +6,7 @@ from app.auth import FlaskServerTestCase
 
 MOCK_ENV_VARIABLES = {
     "WMO_NED_API_TOKEN": "123123",
-    "WMO_NED_API_URL_V2": "https://some-server",
+    "ZORGNED_API_URL": "https://some-server",
 }
 
 with patch.dict(os.environ, MOCK_ENV_VARIABLES):

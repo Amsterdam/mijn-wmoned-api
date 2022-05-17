@@ -13,10 +13,10 @@ from app.config import (
     REGELING_IDENTIFICATIE,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
-    WMONED_API_REQUEST_TIMEOUT_SECONDS,
-    WMONED_API_TOKEN,
-    WMONED_API_URL_V2,
-    WMONED_GEMEENTE_CODE,
+    ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
+    ZORGNED_API_TOKEN,
+    ZORGNED_API_URL,
+    ZORGNED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
 
@@ -123,17 +123,17 @@ def format_aanvragen(aanvragen_source=[]):
     return aanvragen
 
 
-def send_api_request(bsn, operation="", query_params=None, api_url=WMONED_API_URL_V2):
+def send_api_request(bsn, operation="", query_params=None, api_url=ZORGNED_API_URL):
     headers = None
     cert = None
 
-    headers = {"Token": WMONED_API_TOKEN}
+    headers = {"Token": ZORGNED_API_TOKEN}
     cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
-    url = f"{api_url}/gemeenten/{WMONED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
+    url = f"{api_url}/gemeenten/{ZORGNED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
 
     res = requests.get(
         url,
-        timeout=WMONED_API_REQUEST_TIMEOUT_SECONDS,
+        timeout=ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
         headers=headers,
         cert=cert,
         params=query_params,
@@ -154,7 +154,7 @@ def get_aanvragen(bsn, query_params=None):
         bsn,
         "/aanvragen",
         query_params,
-        api_url=os.getenv("ZORGNED_API_URL", WMONED_API_URL_V2),
+        api_url=os.getenv("ZORGNED_API_URL", ZORGNED_API_URL),
     )
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
@@ -167,7 +167,7 @@ def get_persoonsgegevens(bsn, query_params=None):
         bsn,
         "/persoonsgegevens",
         query_params,
-        api_url=os.getenv("ZORGNED_API_URL", WMONED_API_URL_V2),
+        api_url=os.getenv("ZORGNED_API_URL", ZORGNED_API_URL),
     )
 
     return response_data
