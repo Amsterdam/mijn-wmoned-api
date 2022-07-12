@@ -123,13 +123,13 @@ def format_aanvragen(aanvragen_source=[]):
     return aanvragen
 
 
-def send_api_request(bsn, operation="", query_params=None, api_url=ZORGNED_API_URL):
+def send_api_request(bsn, operation="", query_params=None):
     headers = None
     cert = None
 
     headers = {"Token": ZORGNED_API_TOKEN}
     cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
-    url = f"{api_url}/gemeenten/{ZORGNED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
+    url = f"{ZORGNED_API_URL}/gemeenten/{ZORGNED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
 
     res = requests.get(
         url,
@@ -154,7 +154,6 @@ def get_aanvragen(bsn, query_params=None):
         bsn,
         "/aanvragen",
         query_params,
-        api_url=os.getenv("ZORGNED_API_URL", ZORGNED_API_URL),
     )
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
@@ -167,7 +166,6 @@ def get_persoonsgegevens(bsn, query_params=None):
         bsn,
         "/persoonsgegevens",
         query_params,
-        api_url=os.getenv("ZORGNED_API_URL", ZORGNED_API_URL),
     )
 
     return response_data
