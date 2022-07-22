@@ -36,7 +36,7 @@ platformdirs==2.5.2
 pycodestyle==2.8.0
 pycparser==2.21
 pyflakes==2.4.0
-PyJWT==2.3.0
+PyJWT==2.4.0
 pyOpenSSL==20.0.1
 pyrsistent==0.18.1
 python-dateutil==2.8.2
