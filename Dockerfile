@@ -1,24 +1,16 @@
-FROM amsterdam/python
+FROM amsterdam/python:3.9.6-buster
 
-LABEL maintainer=datapunt@amsterdam.nl
+WORKDIR /api
 
-ENV PYTHONUNBUFFERED 1
+COPY app /api/app
+COPY scripts /api/scripts
+COPY requirements.txt /api
+COPY uwsgi.ini /api
 
-RUN apt-get update && apt-get install -y
-RUN pip install --upgrade pip
-RUN pip install uwsgi
+COPY /test.sh /api
+COPY .flake8 /api
 
-WORKDIR /app
-
-COPY app ./app
-COPY scripts ./scripts
-COPY requirements.txt .
-COPY uwsgi.ini .
-
-COPY test.sh .
-COPY .flake8 .
-
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install --no-cache-dir -r /api/requirements.txt
 
 USER datapunt
-CMD uwsgi --ini /app/uwsgi.ini
+CMD uwsgi --ini /api/uwsgi.ini

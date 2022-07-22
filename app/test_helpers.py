@@ -36,9 +36,9 @@ info:
 paths:
   /test:
     parameters:
-      - name: x-saml-attribute-token1
+      - name: Authorization
         in: header
-        description: TMA encoded BSN
+        description: Bearer token
         required: true
         schema:
           type: string
@@ -82,7 +82,7 @@ class RequestHelpersTest(TestCase):
         open_api_spec_mock.return_value = test_spec
 
         with app.test_request_context(
-            "/test", headers={"x-saml-attribute-token1": "saml-token"}
+            "/test", headers={"Authorization": "Bearer xxxxxx"}
         ):
 
             (route_ok, dummy_ok) = create_mock_dummy("OK")
@@ -95,7 +95,7 @@ class RequestHelpersTest(TestCase):
         open_api_spec_mock.return_value = test_spec
 
         with app.test_request_context(
-            "/test", headers={"x-saml-attribute-token1": "saml-token"}
+            "/test", headers={"Authorization": "Bearer xxxxxx"}
         ):
             (route_nok, dummy_nok) = create_mock_dummy("NOK")
             with self.assertRaises(InvalidSchemaValue):

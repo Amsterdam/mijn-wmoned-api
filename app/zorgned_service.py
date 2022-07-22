@@ -1,6 +1,7 @@
 import json
 import logging
 from datetime import date
+import os
 
 import requests
 from dpath import util as dpath_util
@@ -149,7 +150,11 @@ def send_api_request(bsn, operation="", query_params=None):
 
 def get_aanvragen(bsn, query_params=None):
 
-    response_data = send_api_request(bsn, "/aanvragen", query_params)
+    response_data = send_api_request(
+        bsn,
+        "/aanvragen",
+        query_params,
+    )
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
     return format_aanvragen(response_aanvragen)
@@ -157,7 +162,11 @@ def get_aanvragen(bsn, query_params=None):
 
 def get_persoonsgegevens(bsn, query_params=None):
 
-    response_data = send_api_request(bsn, "/persoonsgegevens", query_params)
+    response_data = send_api_request(
+        bsn,
+        "/persoonsgegevens",
+        query_params,
+    )
 
     return response_data
 
