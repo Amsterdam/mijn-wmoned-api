@@ -33,7 +33,7 @@ def is_product_with_delivery(aanvraag_formatted):
     return False
 
 
-def format_aanvraag(date_decision, beschikt_product):
+def format_aanvraag(date_decision, beschikt_product, documenten):
 
     if not beschikt_product or not date_decision:
         return None
@@ -84,6 +84,7 @@ def format_aanvraag(date_decision, beschikt_product):
         "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht", default=None),
         "serviceDateStart": service_date_start,
         "serviceDateEnd": dpath_util.get(levering, "einddatum", default=None),
+        "documents": documenten
     }
 
     # Voorzieningen without a delivery should be considered actual. The api data returns these items as not-actual.
@@ -104,6 +105,7 @@ def format_aanvragen(aanvragen_source=[]):
 
     for aanvraag_source in aanvragen_source:
         beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
+        documenten = dpath_util.get(aanvraag_source, "documenten", default=None)
         date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
         beschikte_producten = dpath_util.get(
             beschikking, "beschikteProducten", default=None
@@ -114,7 +116,7 @@ def format_aanvragen(aanvragen_source=[]):
                 # Only select products with certain result
                 if beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT:
                     aanvraag_formatted = format_aanvraag(
-                        date_decision, beschikt_product
+                        date_decision, beschikt_product, documenten
                     )
 
                     if aanvraag_formatted:
