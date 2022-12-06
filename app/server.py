@@ -14,6 +14,7 @@ from app.helpers import (
     success_response_json,
     validate_openapi,
 )
+from app.crypto import decrypt
 
 app = Flask(__name__)
 app.json_encoder = CustomJSONEncoder
@@ -31,6 +32,16 @@ def get_voorzieningen():
     user = auth.get_current_user()
     voorzieningen = zorgned.get_voorzieningen(user["id"])
     return success_response_json(voorzieningen)
+
+
+@app.route("/wmoned/document/<string:encrypted_doc_id>", methods=["GET"])
+@auth.login_required
+@validate_openapi
+def get_document(encrypted_doc_id):
+    user = auth.get_current_user()
+    doc_id = decrypt(encrypted_doc_id)
+    document = zorgned.get_document(user["id"], doc_id)
+    return success_response_json(document)
 
 
 @app.route("/status/health")

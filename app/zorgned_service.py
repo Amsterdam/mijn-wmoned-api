@@ -19,7 +19,7 @@ from app.config import (
     ZORGNED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
-from pprint import pprint
+from app.crypto import encrypt
 
 
 def is_product_with_delivery(aanvraag_formatted):
@@ -42,7 +42,7 @@ def format_documenten(documenten):
         parsed_documents.append({
             "id": dpath_util.get(document, "documentidentificatie", None),
             "title": dpath_util.get(document, "omschrijving", None), 
-            "url": "#", 
+            "url": f"/wmoned/document/{encrypt(document['documentidentificatie'])}",
             "datePublished": dpath_util.get(document, "datumDefinitief", None) 
         })
     
@@ -210,3 +210,12 @@ def get_voorzieningen(bsn):
             voorzieningen.append(aanvraag_source)
 
     return voorzieningen
+
+def get_document(bsn, documentidentificatie):
+
+    response_data = send_api_request(
+        bsn,
+        f"/document/{documentidentificatie}"
+    )
+
+    return response_data
