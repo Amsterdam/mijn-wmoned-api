@@ -19,6 +19,7 @@ from app.config import (
     ZORGNED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
+from pprint import pprint
 
 
 def is_product_with_delivery(aanvraag_formatted):
@@ -32,6 +33,20 @@ def is_product_with_delivery(aanvraag_formatted):
 
     return False
 
+def format_documenten(documenten):
+    if not documenten:
+        return None
+
+    parsed_documents = []
+    for document in documenten:
+        parsed_documents.append({
+            "id": dpath_util.get(document, "documentidentificatie", None),
+            "title": dpath_util.get(document, "omschrijving", None), 
+            "url": "#", 
+            "datePublished": dpath_util.get(document, "datumDefinitief", None) 
+        })
+    
+    return parsed_documents
 
 def format_aanvraag(date_decision, beschikt_product, documenten):
 
@@ -84,7 +99,7 @@ def format_aanvraag(date_decision, beschikt_product, documenten):
         "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht", default=None),
         "serviceDateStart": service_date_start,
         "serviceDateEnd": dpath_util.get(levering, "einddatum", default=None),
-        "documents": documenten
+        "documents": format_documenten(documenten)
     }
 
     # Voorzieningen without a delivery should be considered actual. The api data returns these items as not-actual.

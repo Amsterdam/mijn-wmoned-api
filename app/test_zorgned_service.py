@@ -42,7 +42,7 @@ class ZorgnedServiceTest(TestCase):
 
         self.maxDiff = None
 
-        source1_formatted = format_aanvraag("2022-01-01", None)
+        source1_formatted = format_aanvraag("2022-01-01", None, None)
         self.assertEqual(source1_formatted, None)
 
         source2 = {
@@ -57,7 +57,7 @@ class ZorgnedServiceTest(TestCase):
         }
 
         with self.assertRaises(KeyError):
-            format_aanvraag("2022-01-01", source2)
+            format_aanvraag("2022-01-01", source2, None)
 
     def test_format_aanvraag_partial2(self):
         source3 = {
@@ -74,7 +74,7 @@ class ZorgnedServiceTest(TestCase):
                 "productsoortCode": "abc",
             },
         }
-        source3_formatted = format_aanvraag("2022-01-01", source3)
+        source3_formatted = format_aanvraag("2022-01-01", source3, None)
 
         self.assertEqual(
             source3_formatted,
@@ -90,6 +90,7 @@ class ZorgnedServiceTest(TestCase):
                 "serviceOrderDate": None,
                 "serviceDateStart": None,
                 "serviceDateEnd": None,
+                "documents": None,
             },
         )
 
@@ -130,7 +131,7 @@ class ZorgnedServiceTest(TestCase):
             },
         }
 
-        source1_formatted = format_aanvraag("2012-11-30", source1)
+        source1_formatted = format_aanvraag("2012-11-30", source1, None)
         source1_formatted_expected = {
             "title": "autozitje",
             "itemTypeCode": "OVE",
@@ -143,6 +144,7 @@ class ZorgnedServiceTest(TestCase):
             "serviceOrderDate": "2017-05-01",
             "serviceDateStart": "2017-06-01",
             "serviceDateEnd": "2018-02-23",
+            "documents": None,
         }
         self.assertEqual(source1_formatted, source1_formatted_expected)
 
@@ -208,7 +210,7 @@ class ZorgnedServiceTest(TestCase):
             },
         }
 
-        source1_formatted = format_aanvraag("2022-02-13", source1)
+        source1_formatted = format_aanvraag("2022-02-13", source1, None)
         source1_formatted_expected = {
             "dateDecision": "2022-02-13",
             "dateEnd": None,
@@ -221,6 +223,7 @@ class ZorgnedServiceTest(TestCase):
             "serviceOrderDate": "2022-02-13",
             "supplier": "Medipoint",
             "title": "rolstoelfiets met hulpmotor",
+            "documents": None,
         }
         self.assertEqual(source1_formatted, source1_formatted_expected)
 
@@ -313,7 +316,12 @@ class ZorgnedServiceTest(TestCase):
                         },
                     ],
                 },
-                "documenten": [],
+                "documenten": [{
+                    "documentidentificatie": "B744593",
+                    "omschrijving": "WRV rapport",
+                    "datumDefinitief": "2021-03-31T15:28:05",
+                    "zaakidentificatie": None
+                }],
             }
         ]
 
@@ -331,6 +339,12 @@ class ZorgnedServiceTest(TestCase):
             "serviceOrderDate": "2017-05-01",
             "serviceDateStart": "2017-06-01",
             "serviceDateEnd": "2018-02-23",
+            "documents": [{
+                "id": "B744593",
+                "title": "WRV rapport", 
+                "url": "#", 
+                "datePublished": "2021-03-31T15:28:05",
+            }]
         }
 
         aanvraag2 = {
@@ -345,6 +359,12 @@ class ZorgnedServiceTest(TestCase):
             "serviceOrderDate": "2017-05-01",
             "serviceDateStart": "2017-06-01",
             "serviceDateEnd": "2018-02-23",
+            "documents": [{
+                "id": "B744593",
+                "title": "WRV rapport", 
+                "url": "#", 
+                "datePublished": "2021-03-31T15:28:05",
+            }]
         }
 
         self.assertEqual(len(source1_formatted), 2)
