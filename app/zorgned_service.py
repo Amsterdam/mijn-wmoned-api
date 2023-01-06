@@ -19,6 +19,7 @@ from app.config import (
     ZORGNED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
+from sentry_sdk import capture_message
 
 
 def is_product_with_delivery(aanvraag_formatted):
@@ -221,6 +222,8 @@ def get_document(bsn, documentidentificatie):
         bsn,
         f"/document/{documentidentificatie}"
     )
+
+    capture_message(f"Content length of id {documentidentificatie} is {str(response_data.content.__len__)}")
 
     return {
         "Content-Type": response_data.headers["Content-Type"],
