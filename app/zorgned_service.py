@@ -158,6 +158,11 @@ def send_api_request(bsn, operation="", query_params=None):
 
     res.raise_for_status()
 
+    return res
+
+def send_api_request_json(bsn, operation="", query_params=None):
+    res = send_api_request(bsn, operation, query_params)
+
     response_data = res.json()
 
     logging.debug(json.dumps(response_data, indent=4))
@@ -167,7 +172,7 @@ def send_api_request(bsn, operation="", query_params=None):
 
 def get_aanvragen(bsn, query_params=None):
 
-    response_data = send_api_request(
+    response_data = send_api_request_json(
         bsn,
         "/aanvragen",
         query_params,
@@ -179,7 +184,7 @@ def get_aanvragen(bsn, query_params=None):
 
 def get_persoonsgegevens(bsn, query_params=None):
 
-    response_data = send_api_request(
+    response_data = send_api_request_json(
         bsn,
         "/persoonsgegevens",
         query_params,

@@ -40,8 +40,11 @@ def get_voorzieningen():
 def get_document(encrypted_doc_id):
     user = auth.get_current_user()
     doc_id = decrypt(encrypted_doc_id)
-    document = zorgned.get_document(user["id"], doc_id)
-    return success_response_json(document)
+    document_response = zorgned.get_document(user["id"], doc_id)
+    return {
+        "Content-Type": document_response.headers["Content-Type"],
+        "file_data": document_response.content,
+    }
 
 
 @app.route("/status/health")
