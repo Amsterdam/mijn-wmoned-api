@@ -41,11 +41,11 @@ def format_documenten(documenten):
     for document in documenten:
         parsed_documents.append({
             "id": dpath_util.get(document, "documentidentificatie", None),
-            "title": dpath_util.get(document, "omschrijving", None), 
+            "title": dpath_util.get(document, "omschrijving", None),
             "url": f"/wmoned/document/{document['documentidentificatie']}",
-            "datePublished": dpath_util.get(document, "datumDefinitief", None) 
+            "datePublished": dpath_util.get(document, "datumDefinitief", None)
         })
-    
+
     return parsed_documents
 
 def format_aanvraag(date_decision, beschikt_product, documenten):
