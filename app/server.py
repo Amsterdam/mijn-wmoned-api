@@ -14,7 +14,6 @@ from app.helpers import (
     success_response_json,
     validate_openapi,
 )
-from app.crypto import decrypt
 
 app = Flask(__name__)
 app.json_encoder = CustomJSONEncoder
