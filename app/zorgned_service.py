@@ -41,7 +41,7 @@ def format_documenten(documenten):
         parsed_documents.append({
             "id": dpath_util.get(document, "documentidentificatie", None),
             "title": dpath_util.get(document, "omschrijving", None), 
-            "url": f"/wmoned/document/{encrypt(document['documentidentificatie'])}",
+            "url": f"/wmoned/document/{document['documentidentificatie']}",
             "datePublished": dpath_util.get(document, "datumDefinitief", None) 
         })
     
