@@ -19,7 +19,6 @@ from app.config import (
     ZORGNED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
-from app.crypto import encrypt
 
 
 def is_product_with_delivery(aanvraag_formatted):
@@ -223,4 +222,7 @@ def get_document(bsn, documentidentificatie):
         f"/document/{documentidentificatie}"
     )
 
-    return response_data
+    return {
+        "Content-Type": response_data.headers["Content-Type"],
+        "file_data": response_data.content,
+    }
