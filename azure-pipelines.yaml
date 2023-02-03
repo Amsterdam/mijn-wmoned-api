@@ -31,7 +31,8 @@ parameters:
 
 variables:
   - ${{ if eq(variables['Build.SourceBranchName'], 'testen') }}:
-      - group: MAPipelineVariables-t
+      - group: InfraVariables-t
+      - group: WMOConfigVariables-t
       - name: dtapName
         value: t
   - name: dockerImageName

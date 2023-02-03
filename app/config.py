@@ -5,6 +5,16 @@ from datetime import date, time
 
 from flask.json import JSONEncoder
 
+
+from azure.keyvault.secrets import SecretClient
+from azure.identity import DefaultAzureCredential
+
+keyVaultName = os.getenv("keyvaultName")
+KVUri = f"https://{keyVaultName}.vault.azure.net"
+
+credential = DefaultAzureCredential()
+client = SecretClient(vault_url=KVUri, credential=credential)
+
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 # Sentry configuration.
@@ -23,7 +33,7 @@ ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
 # ZORGNED specific config
 ZORGNED_API_REQUEST_TIMEOUT_SECONDS = 30
 ZORGNED_GEMEENTE_CODE = "0363"
-ZORGNED_API_TOKEN = os.getenv("WMO_NED_API_TOKEN")
+ZORGNED_API_TOKEN = client.get_secret("ZORGNED-API-TOKEN")
 ZORGNED_API_URL = os.getenv("ZORGNED_API_URL")
 
 REGELING_IDENTIFICATIE = "wmo"
