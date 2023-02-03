@@ -342,7 +342,7 @@ class ZorgnedServiceTest(TestCase):
             "documents": [{
                 "id": "B744593",
                 "title": "WRV rapport",
-                "url": "#",
+                "url": "/wmoned/document/B744593",
                 "datePublished": "2021-03-31T15:28:05",
             }]
         }
@@ -362,7 +362,7 @@ class ZorgnedServiceTest(TestCase):
             "documents": [{
                 "id": "B744593",
                 "title": "WRV rapport",
-                "url": "#",
+                "url": "/wmoned/document/B744593",
                 "datePublished": "2021-03-31T15:28:05",
             }]
         }
