@@ -231,6 +231,7 @@ class ZorgnedServiceTest(TestCase):
         source1 = [
             {
                 "regeling": {"identificatie": "WMO", "omschrijving": "WMO"},
+                "datumAanvraag": "2022-01-02",
                 "beschikking": {
                     "datumAfgifte": "2012-11-30",
                     "beschikteProducten": [
