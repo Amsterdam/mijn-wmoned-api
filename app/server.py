@@ -1,7 +1,7 @@
 import logging
 
 import sentry_sdk
-from flask import Flask, make_response
+from flask import Flask
 from requests.exceptions import HTTPError
 from sentry_sdk.integrations.flask import FlaskIntegration
 from werkzeug.exceptions import NotFound
