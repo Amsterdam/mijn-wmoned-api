@@ -33,6 +33,19 @@ def get_voorzieningen():
     return success_response_json(voorzieningen)
 
 
+@app.route("/wmoned/document/<string:doc_id>", methods=["GET"])
+@auth.login_required
+@validate_openapi
+def get_document(doc_id):
+    user = auth.get_current_user()
+    document_response = zorgned.get_document(user["id"], doc_id)
+
+    new_response = make_response(document_response["file_data"])
+    new_response.headers["Content-Type"] = document_response["Content-Type"]
+
+    return new_response
+
+
 @app.route("/status/health")
 def health_check():
     return success_response_json("OK")
