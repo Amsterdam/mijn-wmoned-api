@@ -1,7 +1,8 @@
 import json
 import logging
-from datetime import date
 import os
+from datetime import date
+import base64
 
 import requests
 from dpath import util as dpath_util
@@ -19,7 +20,6 @@ from app.config import (
     ZORGNED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
-from sentry_sdk import capture_message
 
 
 def is_product_with_delivery(aanvraag_formatted):
@@ -33,20 +33,24 @@ def is_product_with_delivery(aanvraag_formatted):
 
     return False
 
+
 def format_documenten(documenten):
     if not documenten:
         return None
 
     parsed_documents = []
     for document in documenten:
-        parsed_documents.append({
-            "id": dpath_util.get(document, "documentidentificatie", None),
-            "title": dpath_util.get(document, "omschrijving", None),
-            "url": f"/wmoned/document/{document['documentidentificatie']}",
-            "datePublished": dpath_util.get(document, "datumDefinitief", None)
-        })
+        parsed_documents.append(
+            {
+                "id": dpath_util.get(document, "documentidentificatie", None),
+                "title": dpath_util.get(document, "omschrijving", None),
+                "url": f"/wmoned/document/{document['documentidentificatie']}",
+                "datePublished": dpath_util.get(document, "datumDefinitief", None),
+            }
+        )
 
     return parsed_documents
+
 
 def format_aanvraag(date_decision, beschikt_product, documenten):
 
@@ -99,7 +103,7 @@ def format_aanvraag(date_decision, beschikt_product, documenten):
         "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht", default=None),
         "serviceDateStart": service_date_start,
         "serviceDateEnd": dpath_util.get(levering, "einddatum", default=None),
-        "documents": format_documenten(documenten)
+        "documents": format_documenten(documenten),
     }
 
     # Voorzieningen without a delivery should be considered actual. The api data returns these items as not-actual.
@@ -160,6 +164,7 @@ def send_api_request(bsn, operation="", query_params=None):
 
     return res
 
+
 def send_api_request_json(bsn, operation="", query_params=None):
     res = send_api_request(bsn, operation, query_params)
 
@@ -216,16 +221,16 @@ def get_voorzieningen(bsn):
 
     return voorzieningen
 
+
 def get_document(bsn, documentidentificatie):
 
-    response_data = send_api_request(
-        bsn,
-        f"/document/{documentidentificatie}"
-    )
+    response_data = send_api_request_json(bsn, f"/document/{documentidentificatie}")
 
-    capture_message(f"Content length of id {documentidentificatie} is {str(response_data.content.__len__)}")
+    logging.debug(response_data)
+
+    message_bytes = base64.b64decode(response_data["inhoud"])
 
     return {
-        "Content-Type": response_data.headers["Content-Type"],
-        "file_data": response_data.content,
+        "Content-Type": response_data["mimetype"],
+        "file_data": message_bytes,
     }
