@@ -81,10 +81,6 @@ logging.basicConfig(
 )
 
 
-def get_encrytion_key():
-    return os.getenv("WMO_NED_API_TOKEN")
-
-
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, time):
