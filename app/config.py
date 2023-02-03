@@ -29,7 +29,7 @@ ZORGNED_API_URL = os.getenv("ZORGNED_API_URL")
 REGELING_IDENTIFICATIE = "wmo"
 BESCHIKT_PRODUCT_RESULTAAT = ["toegewezen"]
 DATE_END_NOT_OLDER_THAN = "2018-01-01"
-MINIMUM_REQUEST_DATE_FOR_DOCUMENTS = date(2022,1,1) # After this date documents are WCAG proof.
+MINIMUM_REQUEST_DATE_FOR_DOCUMENTS = date(2022,1,1)  # After this date documents are WCAG proof.
 
 PRODUCTS_WITH_DELIVERY = {
     "ZIN": [
