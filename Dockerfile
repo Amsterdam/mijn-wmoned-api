@@ -47,3 +47,7 @@ COPY conf/sshd_config /etc/ssh/
 RUN chmod u+x /api/docker-entrypoint.sh
 
 ENTRYPOINT [ "/bin/sh", "/api/docker-entrypoint.sh"]
+
+FROM publish as publish-final
+
+COPY /files /app/files
