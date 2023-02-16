@@ -49,5 +49,5 @@ tma-saml==0.4.2
 tomli==2.0.1
 typing_extensions==4.2.0
 urllib3==1.26.9
-Werkzeug==2.1.1
+Werkzeug==2.2.3
 zipp==3.8.0
