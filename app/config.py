@@ -29,6 +29,7 @@ IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
 
 # App constants
 ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
+VERIFY_JWT_SIGNATURE = os.getenv("VERIFY_JWT_SIGNATURE", IS_AP)
 
 # ZORGNED specific config
 ZORGNED_API_REQUEST_TIMEOUT_SECONDS = 30
