@@ -1,7 +1,8 @@
 import json
 import logging
-from datetime import date
 import os
+from datetime import date
+import base64
 
 import requests
 from dpath import util as dpath_util
@@ -17,6 +18,7 @@ from app.config import (
     ZORGNED_API_TOKEN,
     ZORGNED_API_URL,
     ZORGNED_GEMEENTE_CODE,
+    MINIMUM_REQUEST_DATE_FOR_DOCUMENTS,
 )
 from app.helpers import to_date
 
@@ -33,7 +35,25 @@ def is_product_with_delivery(aanvraag_formatted):
     return False
 
 
-def format_aanvraag(date_decision, beschikt_product):
+def format_documenten(documenten):
+    if not documenten:
+        return None
+
+    parsed_documents = []
+    for document in documenten:
+        parsed_documents.append(
+            {
+                "id": dpath_util.get(document, "documentidentificatie", None),
+                "title": dpath_util.get(document, "omschrijving", None),
+                "url": f"/wmoned/document/{document['documentidentificatie']}",
+                "datePublished": dpath_util.get(document, "datumDefinitief", None),
+            }
+        )
+
+    return parsed_documents
+
+
+def format_aanvraag(date_decision, beschikt_product, documenten):
 
     if not beschikt_product or not date_decision:
         return None
@@ -84,6 +104,7 @@ def format_aanvraag(date_decision, beschikt_product):
         "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht", default=None),
         "serviceDateStart": service_date_start,
         "serviceDateEnd": dpath_util.get(levering, "einddatum", default=None),
+        "documents": format_documenten(documenten),
     }
 
     # Voorzieningen without a delivery should be considered actual. The api data returns these items as not-actual.
@@ -104,17 +125,22 @@ def format_aanvragen(aanvragen_source=[]):
 
     for aanvraag_source in aanvragen_source:
         beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
+        date_request = dpath_util.get(aanvraag_source, "datumAanvraag", default=None)
+        should_show_documents = to_date(date_request) >= MINIMUM_REQUEST_DATE_FOR_DOCUMENTS
         date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
         beschikte_producten = dpath_util.get(
             beschikking, "beschikteProducten", default=None
         )
+        documenten = []
+        if should_show_documents:
+            documenten = dpath_util.get(aanvraag_source, "documenten", default=None)
 
         if beschikte_producten:
             for beschikt_product in beschikte_producten:
                 # Only select products with certain result
                 if beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT:
                     aanvraag_formatted = format_aanvraag(
-                        date_decision, beschikt_product
+                        date_decision, beschikt_product, documenten
                     )
 
                     if aanvraag_formatted:
@@ -141,6 +167,12 @@ def send_api_request(bsn, operation="", query_params=None):
 
     res.raise_for_status()
 
+    return res
+
+
+def send_api_request_json(bsn, operation="", query_params=None):
+    res = send_api_request(bsn, operation, query_params)
+
     response_data = res.json()
 
     logging.debug(json.dumps(response_data, indent=4))
@@ -150,7 +182,7 @@ def send_api_request(bsn, operation="", query_params=None):
 
 def get_aanvragen(bsn, query_params=None):
 
-    response_data = send_api_request(
+    response_data = send_api_request_json(
         bsn,
         "/aanvragen",
         query_params,
@@ -162,7 +194,7 @@ def get_aanvragen(bsn, query_params=None):
 
 def get_persoonsgegevens(bsn, query_params=None):
 
-    response_data = send_api_request(
+    response_data = send_api_request_json(
         bsn,
         "/persoonsgegevens",
         query_params,
@@ -193,3 +225,17 @@ def get_voorzieningen(bsn):
             voorzieningen.append(aanvraag_source)
 
     return voorzieningen
+
+
+def get_document(bsn, documentidentificatie):
+
+    response_data = send_api_request_json(bsn, f"/document/{documentidentificatie}")
+
+    logging.debug(response_data)
+
+    message_bytes = base64.b64decode(response_data["inhoud"])
+
+    return {
+        "Content-Type": response_data["mimetype"],
+        "file_data": message_bytes,
+    }

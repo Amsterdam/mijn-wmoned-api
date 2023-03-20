@@ -71,6 +71,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "autozitje",
+                    'documents': None,
                 },
                 {
                     "dateDecision": "2013-06-17",
@@ -84,6 +85,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "buggy",
+                    'documents': None,
                 },
                 {
                     "dateDecision": "2015-02-16",
@@ -97,6 +99,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "driewielfiets 5-9 jr",
+                    'documents': None,
                 },
                 {
                     "dateDecision": "2021-08-26",
@@ -110,6 +113,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2021-08-30",
                     "supplier": "Welzorg",
                     "title": "handbewogen kinderrolstoel",
+                    'documents': None,
                 },
                 {
                     "dateDecision": "2018-04-25",
@@ -123,6 +127,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2018-04-26",
                     "supplier": "Welzorg",
                     "title": "woonruimteaanpassing",
+                    'documents': None,
                 },
             ],
         )
