@@ -29,24 +29,10 @@ parameters:
     type: boolean
     default: true
 
-variables:
-  - ${{ if eq(variables['Build.SourceBranchName'], 'testen') }}:
-      - group: InfraVariables-t
-      - group: WMOConfigVariables-t
-      - name: dtapName
-        value: t
-  - name: dockerImageName
-    value: mams-wmo
-  - name: dockerImage
-    value: $(dockerACRUrl)/${{ variables.dockerImageName }}
-
 jobs:
   - template: pipelines/jobs/apps/btd-koppel-api.yaml@MamsInfra
     parameters:
-      serviceConnectionName: $(serviceConnectionName)
-      appServiceName: $(appServiceNameWMO)
-      dockerImageName: ${{ variables.dockerImageName }}
-      dockerImage: $(dockerACRUrl)/${{ variables.dockerImageName }}
+      appServiceShortName: wmo
       dtapName: ${{ variables.dtapName }}
       btdBuild: ${{ parameters.btdBuild }}
       btdTest: ${{ parameters.btdTest }}
