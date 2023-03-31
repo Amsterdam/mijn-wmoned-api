@@ -14,7 +14,7 @@ flake8==4.0.1
 Flask==2.1.1
 Flask-HTTPAuth==4.6.0
 Flask-Testing==0.8.1
-future==0.18.2
+future==0.18.3
 idna==3.3
 importlib-metadata==4.11.3
 isodate==0.6.1
