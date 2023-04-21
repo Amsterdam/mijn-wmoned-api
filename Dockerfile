@@ -1,4 +1,4 @@
-FROM amsterdam/python:latest as base
+FROM python:latest as base
 
 WORKDIR /api
 
@@ -16,6 +16,8 @@ RUN pip install -r requirements.txt
 COPY ./scripts /api/scripts
 COPY ./app /api/app
 
+RUN pip install --upgrade pip \
+  && pip install uwsgi
 
 FROM base as tests
 
@@ -25,7 +27,6 @@ COPY .flake8 /api/
 RUN chmod u+x /api/test.sh
 
 ENTRYPOINT [ "/bin/sh", "/api/test.sh"]
-
 
 FROM base as publish
 
