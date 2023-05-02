@@ -11,13 +11,14 @@ ENV LANGUAGE nl_NL:nl
 ENV LC_ALL nl_NL.UTF-8
 
 COPY requirements.txt /api
-RUN pip install -r requirements.txt
+
+RUN pip install --upgrade pip \
+  && pip install uwsgi \
+  && pip install -r requirements.txt
 
 COPY ./scripts /api/scripts
 COPY ./app /api/app
 
-RUN pip install --upgrade pip \
-  && pip install uwsgi
 
 FROM base as tests
 
