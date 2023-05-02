@@ -24,12 +24,13 @@ SENTRY_ENV = os.getenv("SENTRY_ENVIRONMENT")
 # Environment determination
 IS_PRODUCTION = SENTRY_ENV == "production"
 IS_ACCEPTANCE = SENTRY_ENV == "acceptance"
-IS_AP = IS_PRODUCTION or IS_ACCEPTANCE
-IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
+IS_TEST = SENTRY_ENV == "test"
+IS_TAP = IS_PRODUCTION or IS_ACCEPTANCE or IS_TEST
+IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_TAP
 
 # App constants
-ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
-VERIFY_JWT_SIGNATURE = os.getenv("VERIFY_JWT_SIGNATURE", IS_AP)
+ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_TAP)
+VERIFY_JWT_SIGNATURE = os.getenv("VERIFY_JWT_SIGNATURE", IS_TAP)
 
 # ZORGNED specific config
 ZORGNED_API_REQUEST_TIMEOUT_SECONDS = 30
@@ -40,7 +41,9 @@ ZORGNED_API_URL = os.getenv("ZORGNED_API_URL")
 REGELING_IDENTIFICATIE = "wmo"
 BESCHIKT_PRODUCT_RESULTAAT = ["toegewezen"]
 DATE_END_NOT_OLDER_THAN = "2018-01-01"
-MINIMUM_REQUEST_DATE_FOR_DOCUMENTS = date(2022,1,1)  # After this date documents are WCAG proof.
+MINIMUM_REQUEST_DATE_FOR_DOCUMENTS = date(
+    2022, 1, 1
+)  # After this date documents are WCAG proof.
 
 PRODUCTS_WITH_DELIVERY = {
     "ZIN": [

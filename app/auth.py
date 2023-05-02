@@ -5,7 +5,7 @@ from unittest.mock import patch
 from flask_httpauth import HTTPTokenAuth
 import jwt
 
-from app.config import IS_ACCEPTANCE, IS_AP, VERIFY_JWT_SIGNATURE
+from app.config import VERIFY_JWT_SIGNATURE
 
 auth = HTTPTokenAuth(scheme="Bearer")
 
