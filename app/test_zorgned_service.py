@@ -1,11 +1,8 @@
-import datetime
-import json
 from unittest import TestCase
 from unittest.mock import patch
 
 from app import config
 from app.test_server import ZorgnedApiMock
-
 from app.zorgned_service import (
     format_aanvraag,
     format_aanvragen,
@@ -39,7 +36,6 @@ class ZorgnedServiceTest(TestCase):
             get_aanvragen(123)
 
     def test_format_aanvraag_partial(self):
-
         self.maxDiff = None
 
         source1_formatted = format_aanvraag("2022-01-01", None, None)
@@ -149,7 +145,6 @@ class ZorgnedServiceTest(TestCase):
         self.assertEqual(source1_formatted, source1_formatted_expected)
 
     def test_format_aanvraag_complete_2(self):
-
         source1 = {
             "identificatie": "785401",
             "externe_identificatie": None,
@@ -317,12 +312,14 @@ class ZorgnedServiceTest(TestCase):
                         },
                     ],
                 },
-                "documenten": [{
-                    "documentidentificatie": "B744593",
-                    "omschrijving": "WRV rapport",
-                    "datumDefinitief": "2021-03-31T15:28:05",
-                    "zaakidentificatie": None
-                }],
+                "documenten": [
+                    {
+                        "documentidentificatie": "B744593",
+                        "omschrijving": "WRV rapport",
+                        "datumDefinitief": "2021-03-31T15:28:05",
+                        "zaakidentificatie": None,
+                    }
+                ],
             }
         ]
 
@@ -340,12 +337,14 @@ class ZorgnedServiceTest(TestCase):
             "serviceOrderDate": "2017-05-01",
             "serviceDateStart": "2017-06-01",
             "serviceDateEnd": "2018-02-23",
-            "documents": [{
-                "id": "B744593",
-                "title": "WRV rapport",
-                "url": "/wmoned/document/B744593",
-                "datePublished": "2021-03-31T15:28:05",
-            }]
+            "documents": [
+                {
+                    "id": "B744593",
+                    "title": "WRV rapport",
+                    "url": "/wmoned/document/B744593",
+                    "datePublished": "2021-03-31T15:28:05",
+                }
+            ],
         }
 
         aanvraag2 = {
@@ -360,12 +359,14 @@ class ZorgnedServiceTest(TestCase):
             "serviceOrderDate": "2017-05-01",
             "serviceDateStart": "2017-06-01",
             "serviceDateEnd": "2018-02-23",
-            "documents": [{
-                "id": "B744593",
-                "title": "WRV rapport",
-                "url": "/wmoned/document/B744593",
-                "datePublished": "2021-03-31T15:28:05",
-            }]
+            "documents": [
+                {
+                    "id": "B744593",
+                    "title": "WRV rapport",
+                    "url": "/wmoned/document/B744593",
+                    "datePublished": "2021-03-31T15:28:05",
+                }
+            ],
         }
 
         self.assertEqual(len(source1_formatted), 2)
@@ -402,7 +403,6 @@ class ZorgnedServiceTest(TestCase):
         ],
     )
     def test_get_voorzieningen(self, *mocks):
-
         voorzieningen0 = get_voorzieningen(123)
         self.assertEqual(voorzieningen0, [])
 
