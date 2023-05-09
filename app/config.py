@@ -3,7 +3,7 @@ import os
 import os.path
 from datetime import date, time
 
-from flask.json import JSONEncoder
+from json import JSONEncoder
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
