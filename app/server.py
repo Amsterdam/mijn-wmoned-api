@@ -4,11 +4,10 @@ import sentry_sdk
 from flask import Flask, make_response
 from requests.exceptions import HTTPError
 from sentry_sdk.integrations.flask import FlaskIntegration
-from werkzeug.exceptions import NotFound
 
 import app.zorgned_service as zorgned
 from app import auth
-from app.config import IS_DEV, SENTRY_DSN, CustomJSONEncoder
+from app.config import IS_DEV, SENTRY_DSN, UpdatedJSONProvider
 from app.helpers import (
     error_response_json,
     success_response_json,
@@ -16,7 +15,7 @@ from app.helpers import (
 )
 
 app = Flask(__name__)
-app.json_encoder = CustomJSONEncoder
+app.json = UpdatedJSONProvider(app)
 
 if SENTRY_DSN:
     sentry_sdk.init(
