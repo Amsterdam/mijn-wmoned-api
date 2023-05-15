@@ -5,16 +5,6 @@ from datetime import date, time
 
 from flask.json.provider import DefaultJSONProvider
 
-
-from azure.keyvault.secrets import SecretClient
-from azure.identity import DefaultAzureCredential
-
-# keyVaultName = os.getenv("keyvaultName")
-# KVUri = f"https://{keyVaultName}.vault.azure.net"
-
-# credential = DefaultAzureCredential()
-# client = SecretClient(vault_url=KVUri, credential=credential)
-
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 # Sentry configuration.
