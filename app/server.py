@@ -1,4 +1,5 @@
 import logging
+import requests
 
 import sentry_sdk
 from flask import Flask, make_response
@@ -48,6 +49,15 @@ def get_document(doc_id):
 @app.route("/status/health")
 def health_check():
     return success_response_json("OK")
+
+
+@app.route("/status/ip")
+def ip():
+    res = requests.get(
+        "https://mams-t-appservice-bff.azurewebsites.net/api/v1/whatismyip",
+    )
+
+    return res.content
 
 
 @app.errorhandler(Exception)
