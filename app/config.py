@@ -3,7 +3,7 @@ import os
 import os.path
 from datetime import date, time
 
-from flask.json import JSONEncoder
+from flask.json.provider import DefaultJSONProvider
 
 
 from azure.keyvault.secrets import SecretClient
@@ -96,11 +96,10 @@ logging.basicConfig(
 )
 
 
-class CustomJSONEncoder(JSONEncoder):
+class UpdatedJSONProvider(DefaultJSONProvider):
     def default(self, obj):
         if isinstance(obj, time):
             return obj.isoformat(timespec="minutes")
         if isinstance(obj, date):
             return obj.isoformat()
-
-        return JSONEncoder.default(self, obj)
+        return super().default(obj)
