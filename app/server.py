@@ -1,5 +1,4 @@
 import logging
-import requests
 
 import sentry_sdk
 from flask import Flask, make_response
@@ -9,11 +8,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 import app.zorgned_service as zorgned
 from app import auth
 from app.config import IS_DEV, SENTRY_DSN, UpdatedJSONProvider
-from app.helpers import (
-    error_response_json,
-    success_response_json,
-    validate_openapi,
-)
+from app.helpers import error_response_json, success_response_json, validate_openapi
 
 app = Flask(__name__)
 app.json = UpdatedJSONProvider(app)
@@ -49,15 +44,6 @@ def get_document(doc_id):
 @app.route("/status/health")
 def health_check():
     return success_response_json("OK")
-
-
-@app.route("/status/ip")
-def ip():
-    res = requests.get(
-        "https://mams-t-appservice-bff.azurewebsites.net/api/v1/whatismyip",
-    )
-
-    return res.content
 
 
 @app.errorhandler(Exception)
