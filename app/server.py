@@ -7,7 +7,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 
 import app.zorgned_service as zorgned
 from app import auth
-from app.config import IS_DEV, SENTRY_DSN, UpdatedJSONProvider
+from app.config import IS_OT, SENTRY_DSN, UpdatedJSONProvider
 from app.helpers import error_response_json, success_response_json, validate_openapi
 
 app = Flask(__name__)
@@ -57,7 +57,7 @@ def handle_error(error):
 
     logging.exception(error, extra={"error_message_original": error_message_original})
 
-    if IS_DEV:  # pragma: no cover
+    if IS_OT:  # pragma: no cover
         msg_auth_exception = error_message_original
         msg_request_http_error = error_message_original
         msg_server_error = error_message_original
