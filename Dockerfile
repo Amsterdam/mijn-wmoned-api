@@ -1,16 +1,29 @@
-FROM amsterdam/python:3.9.6-buster
+FROM python:latest as base
+
+ENV PYTHONUNBUFFERED=1 \
+  PIP_NO_CACHE_DIR=off
 
 WORKDIR /api
 
-COPY app /api/app
-COPY scripts /api/scripts
-COPY requirements.txt /api
-COPY uwsgi.ini /api
+RUN apt-get update \
+  && apt-get dist-upgrade -y \
+  && apt-get autoremove -y \
+  && apt-get install --no-install-recommends -y \
+  nano \
+  && rm -rf /var/lib/apt/lists/* /var/cache/debconf/*-old \
+  && pip install --upgrade pip \
+  && pip install uwsgi
 
-COPY /test.sh /api
+COPY requirements.txt /api
+
+RUN pip install -r requirements.txt
+
+COPY ./scripts /api/scripts
+COPY ./app /api/app
+COPY ./uwsgi.ini /api
+COPY ./test.sh /api
 COPY .flake8 /api
 
-RUN pip install --no-cache-dir -r /api/requirements.txt
+RUN chmod u+x /api/test.sh
 
-USER datapunt
-CMD uwsgi --ini /api/uwsgi.ini
+CMD uwsgi --uid www-data --gid www-data --ini /api/uwsgi.ini
