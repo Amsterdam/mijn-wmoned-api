@@ -1,8 +1,7 @@
+import base64
 import json
 import logging
-import os
 from datetime import date
-import base64
 
 import requests
 from dpath import util as dpath_util
@@ -10,16 +9,17 @@ from dpath import util as dpath_util
 from app.config import (
     BESCHIKT_PRODUCT_RESULTAAT,
     DATE_END_NOT_OLDER_THAN,
+    IS_PRODUCTION,
+    MINIMUM_REQUEST_DATE_FOR_DOCUMENTS,
     PRODUCTS_WITH_DELIVERY,
     REGELING_IDENTIFICATIE,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
+    ZORGNED_AANVRAAG_DOCUMENTS_ACTIVE,
     ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
     ZORGNED_API_TOKEN,
     ZORGNED_API_URL,
     ZORGNED_GEMEENTE_CODE,
-    MINIMUM_REQUEST_DATE_FOR_DOCUMENTS,
-    IS_PRODUCTION
 )
 from app.helpers import to_date
 
@@ -55,7 +55,6 @@ def format_documenten(documenten):
 
 
 def format_aanvraag(date_decision, beschikt_product, documenten):
-
     if not beschikt_product or not date_decision:
         return None
 
@@ -127,7 +126,10 @@ def format_aanvragen(aanvragen_source=[]):
     for aanvraag_source in aanvragen_source:
         beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
         date_request = dpath_util.get(aanvraag_source, "datumAanvraag", default=None)
-        should_show_documents = not IS_PRODUCTION and to_date(date_request) >= MINIMUM_REQUEST_DATE_FOR_DOCUMENTS
+        should_show_documents = (
+            to_date(date_request) >= MINIMUM_REQUEST_DATE_FOR_DOCUMENTS
+            and ZORGNED_AANVRAAG_DOCUMENTS_ACTIVE
+        )
         date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
         beschikte_producten = dpath_util.get(
             beschikking, "beschikteProducten", default=None
@@ -182,7 +184,6 @@ def send_api_request_json(bsn, operation="", query_params=None):
 
 
 def get_aanvragen(bsn, query_params=None):
-
     response_data = send_api_request_json(
         bsn,
         "/aanvragen",
@@ -194,7 +195,6 @@ def get_aanvragen(bsn, query_params=None):
 
 
 def get_persoonsgegevens(bsn, query_params=None):
-
     response_data = send_api_request_json(
         bsn,
         "/persoonsgegevens",
@@ -229,7 +229,6 @@ def get_voorzieningen(bsn):
 
 
 def get_document(bsn, documentidentificatie):
-
     response_data = send_api_request_json(bsn, f"/document/{documentidentificatie}")
 
     logging.debug(response_data)
