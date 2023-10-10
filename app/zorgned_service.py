@@ -20,7 +20,7 @@ from app.config import (
     ZORGNED_DOCUMENT_ATTACHMENTS_ACTIVE,
     ZORGNED_GEMEENTE_CODE,
 )
-from app.helpers import to_date
+from app.helpers import encrypt, to_date
 
 
 def is_product_with_delivery(aanvraag_formatted):
@@ -41,11 +41,12 @@ def format_documenten(documenten):
 
     parsed_documents = []
     for document in documenten:
+        id_encrypted = encrypt(document["documentidentificatie"])
         parsed_documents.append(
             {
-                "id": dpath.get(document, "documentidentificatie", None),
+                "id": id_encrypted,
                 "title": dpath.get(document, "omschrijving", None),
-                "url": f"/wmoned/document/{document['documentidentificatie']}",
+                "url": f"/wmoned/document/{id_encrypted}",
                 "datePublished": dpath.get(document, "datumDefinitief", None),
             }
         )
@@ -127,7 +128,6 @@ def format_aanvragen(aanvragen_source=[]):
             to_date(date_request) >= MINIMUM_REQUEST_DATE_FOR_DOCUMENTS
             and ZORGNED_DOCUMENT_ATTACHMENTS_ACTIVE
         )
-        print("should_show_documents", should_show_documents)
         date_decision = dpath.get(beschikking, "datumAfgifte", default=None)
         beschikte_producten = dpath.get(beschikking, "beschikteProducten", default=None)
         documenten = []

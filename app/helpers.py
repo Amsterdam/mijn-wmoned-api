@@ -3,16 +3,20 @@ from datetime import date, datetime
 from functools import wraps
 
 import yaml
+from cryptography.fernet import Fernet
 from flask import g, request
 from flask.helpers import make_response
 from openapi_core import create_spec
 from openapi_core.contrib.flask import FlaskOpenAPIRequest, FlaskOpenAPIResponse
 from openapi_core.validation.request.validators import RequestValidator
 from openapi_core.validation.response.validators import ResponseValidator
-
 from yaml import load
 
-from app.config import BASE_PATH, ENABLE_OPENAPI_VALIDATION
+from app.config import (
+    BASE_PATH,
+    ENABLE_OPENAPI_VALIDATION,
+    WMONED_FERNET_ENCRYPTION_KEY,
+)
 
 openapi_spec = None
 
@@ -30,7 +34,6 @@ def get_openapi_spec():
 def validate_openapi(function):
     @wraps(function)
     def validate(*args, **kwargs):
-
         if ENABLE_OPENAPI_VALIDATION:
             spec = get_openapi_spec()
             openapi_request = FlaskOpenAPIRequest(request)
@@ -77,3 +80,13 @@ def to_date_time(date_input):
         return date_input
 
     return datetime.strptime(date_input, "%Y-%m-%dT%H:%M:%S")
+
+
+def encrypt(inputUnencrypted: str) -> str:
+    f = Fernet(WMONED_FERNET_ENCRYPTION_KEY)
+    return f.encrypt(inputUnencrypted.encode()).decode()
+
+
+def decrypt(inputEncrypted: str) -> tuple:
+    f = Fernet(WMONED_FERNET_ENCRYPTION_KEY)
+    return f.decrypt(inputEncrypted.encode(), ttl=60 * 60).decode()
