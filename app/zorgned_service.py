@@ -4,21 +4,20 @@ import logging
 from datetime import date
 
 import requests
-from dpath import util as dpath_util
+import dpath
 
 from app.config import (
     BESCHIKT_PRODUCT_RESULTAAT,
     DATE_END_NOT_OLDER_THAN,
-    IS_PRODUCTION,
     MINIMUM_REQUEST_DATE_FOR_DOCUMENTS,
     PRODUCTS_WITH_DELIVERY,
     REGELING_IDENTIFICATIE,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
-    ZORGNED_AANVRAAG_DOCUMENTS_ACTIVE,
     ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
     ZORGNED_API_TOKEN,
     ZORGNED_API_URL,
+    ZORGNED_DOCUMENT_ATTACHMENTS_ACTIVE,
     ZORGNED_GEMEENTE_CODE,
 )
 from app.helpers import to_date
@@ -44,10 +43,10 @@ def format_documenten(documenten):
     for document in documenten:
         parsed_documents.append(
             {
-                "id": dpath_util.get(document, "documentidentificatie", None),
-                "title": dpath_util.get(document, "omschrijving", None),
+                "id": dpath.get(document, "documentidentificatie", None),
+                "title": dpath.get(document, "omschrijving", None),
                 "url": f"/wmoned/document/{document['documentidentificatie']}",
-                "datePublished": dpath_util.get(document, "datumDefinitief", None),
+                "datePublished": dpath.get(document, "datumDefinitief", None),
             }
         )
 
@@ -58,52 +57,50 @@ def format_aanvraag(date_decision, beschikt_product, documenten):
     if not beschikt_product or not date_decision:
         return None
 
-    toegewezen_product = dpath_util.get(
-        beschikt_product, "toegewezenProduct", default=None
-    )
-    is_actual = dpath_util.get(toegewezen_product, "actueel", default=False)
-    date_end = dpath_util.get(toegewezen_product, "datumEindeGeldigheid", default=None)
+    toegewezen_product = dpath.get(beschikt_product, "toegewezenProduct", default=None)
+    is_actual = dpath.get(toegewezen_product, "actueel", default=False)
+    date_end = dpath.get(toegewezen_product, "datumEindeGeldigheid", default=None)
 
-    toewijzingen = dpath_util.get(toegewezen_product, "toewijzingen", default=[])
+    toewijzingen = dpath.get(toegewezen_product, "toewijzingen", default=[])
     # Take last toewijzing from incoming data
     toewijzing = toewijzingen.pop() if toewijzingen else None
 
-    leveringen = dpath_util.get(toewijzing, "leveringen", default=[])
+    leveringen = dpath.get(toewijzing, "leveringen", default=[])
     # Take last levering from incoming data
     levering = leveringen.pop() if leveringen else None
 
-    item_type_code = dpath_util.get(beschikt_product, "product/productsoortCode")
+    item_type_code = dpath.get(beschikt_product, "product/productsoortCode")
     if item_type_code:
         item_type_code = item_type_code.upper()
 
-    delivery_type = dpath_util.get(toegewezen_product, "leveringsvorm", default="")
+    delivery_type = dpath.get(toegewezen_product, "leveringsvorm", default="")
     if delivery_type:
         delivery_type = delivery_type.upper()
     if delivery_type is None:
         delivery_type = ""
 
-    service_date_start = dpath_util.get(levering, "begindatum", default=None)
+    service_date_start = dpath.get(levering, "begindatum", default=None)
 
     aanvraag = {
         # Beschikking
         "dateDecision": date_decision,
         # Product
-        "title": dpath_util.get(beschikt_product, "product/omschrijving"),
+        "title": dpath.get(beschikt_product, "product/omschrijving"),
         "itemTypeCode": item_type_code,
         # Toegewezen product
-        "dateStart": dpath_util.get(
+        "dateStart": dpath.get(
             toegewezen_product, "datumIngangGeldigheid", default=None
         ),
         "dateEnd": date_end,
         "isActual": is_actual,
         "deliveryType": delivery_type,
-        "supplier": dpath_util.get(
+        "supplier": dpath.get(
             toegewezen_product, "leverancier/omschrijving", default=None
         ),
         # Levering
-        "serviceOrderDate": dpath_util.get(toewijzing, "datumOpdracht", default=None),
+        "serviceOrderDate": dpath.get(toewijzing, "datumOpdracht", default=None),
         "serviceDateStart": service_date_start,
-        "serviceDateEnd": dpath_util.get(levering, "einddatum", default=None),
+        "serviceDateEnd": dpath.get(levering, "einddatum", default=None),
         "documents": format_documenten(documenten),
     }
 
@@ -124,19 +121,18 @@ def format_aanvragen(aanvragen_source=[]):
     aanvragen = []
 
     for aanvraag_source in aanvragen_source:
-        beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
-        date_request = dpath_util.get(aanvraag_source, "datumAanvraag", default=None)
+        beschikking = dpath.get(aanvraag_source, "beschikking", default=None)
+        date_request = dpath.get(aanvraag_source, "datumAanvraag", default=None)
         should_show_documents = (
             to_date(date_request) >= MINIMUM_REQUEST_DATE_FOR_DOCUMENTS
-            and ZORGNED_AANVRAAG_DOCUMENTS_ACTIVE
+            and ZORGNED_DOCUMENT_ATTACHMENTS_ACTIVE
         )
-        date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
-        beschikte_producten = dpath_util.get(
-            beschikking, "beschikteProducten", default=None
-        )
+        print("should_show_documents", should_show_documents)
+        date_decision = dpath.get(beschikking, "datumAfgifte", default=None)
+        beschikte_producten = dpath.get(beschikking, "beschikteProducten", default=None)
         documenten = []
         if should_show_documents:
-            documenten = dpath_util.get(aanvraag_source, "documenten", default=None)
+            documenten = dpath.get(aanvraag_source, "documenten", default=None)
 
         if beschikte_producten:
             for beschikt_product in beschikte_producten:
