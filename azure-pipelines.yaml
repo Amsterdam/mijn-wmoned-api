@@ -21,7 +21,7 @@ variables:
   - ${{ if eq(variables['Build.SourceBranchName'], 'ontwikkelen') }}:
       - name: dtapName
         value: o
-  - ${{ if eq(variables['Build.SourceBranchName'], 'testen') }}:
+  - ${{ if and(eq(variables['Build.SourceBranchName'], 'testen'), eq(variables['Build.Reason'], 'PullRequest')) }}:
       - name: dtapName
         value: t
 
