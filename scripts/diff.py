@@ -1,13 +1,14 @@
 # standard library
 import json
-import pkg_resources
 import urllib.request
 from collections import namedtuple
 from contextlib import suppress
 from distutils.version import StrictVersion
-from subprocess import check_output
-from typing import Iterable, NamedTuple, List
 from pathlib import Path
+from subprocess import check_output
+from typing import Iterable, List, NamedTuple
+
+import pkg_resources
 
 
 def git_diff(cwd) -> Iterable[str]:
@@ -86,7 +87,7 @@ def parse_diff(diff: Iterable[str]) -> List[PackageChange]:
     ]
 
 
-def post_package_updates_to_slack(project_package_changes: List):
+def print_package_version_update_message(project_package_changes: List):
     """
     Create threads on slack which show the major dependency upgrades
     and the projects that are affected.
@@ -108,10 +109,8 @@ def post_package_updates_to_slack(project_package_changes: List):
                 )
 
             if package_change.from_version < package_change.to_version:
-                icon_emoji = ":arrow_up:"
                 message = f"{package_change.from_version} ➩ {package_change.to_version}"
             else:
-                icon_emoji = ":arrow_down:"
                 message = f"{package_change.from_version} ➩ {package_change.to_version}"
 
             if show_message:
@@ -123,4 +122,4 @@ def post_package_updates_to_slack(project_package_changes: List):
 if __name__ == "__main__":
     path = Path(__file__).parent.parent
     diff = parse_diff(git_diff(path))
-    post_package_updates_to_slack(diff)
+    print_package_version_update_message(diff)
