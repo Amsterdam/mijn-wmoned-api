@@ -19,6 +19,7 @@ from app.config import (
     ZORGNED_API_URL,
     ZORGNED_GEMEENTE_CODE,
     MINIMUM_REQUEST_DATE_FOR_DOCUMENTS,
+    IS_PRODUCTION
 )
 from app.helpers import to_date
 
@@ -126,7 +127,7 @@ def format_aanvragen(aanvragen_source=[]):
     for aanvraag_source in aanvragen_source:
         beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
         date_request = dpath_util.get(aanvraag_source, "datumAanvraag", default=None)
-        should_show_documents = to_date(date_request) >= MINIMUM_REQUEST_DATE_FOR_DOCUMENTS
+        should_show_documents = not IS_PRODUCTION and to_date(date_request) >= MINIMUM_REQUEST_DATE_FOR_DOCUMENTS
         date_decision = dpath_util.get(beschikking, "datumAfgifte", default=None)
         beschikte_producten = dpath_util.get(
             beschikking, "beschikteProducten", default=None
