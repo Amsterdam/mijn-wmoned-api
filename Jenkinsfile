@@ -34,7 +34,7 @@ node {
 
     stage("Build image") {
         docker.withRegistry(DOCKER_REGISTRY_HOST, "docker_registry_auth") {
-            def image = docker.build(IMAGE_TAG, "--target=publish")
+            def image = docker.build(IMAGE_TAG, "--target=publish .")
             image.push()
         }
     }
