@@ -222,7 +222,11 @@ class ZorgnedServiceTest(TestCase):
         }
         self.assertEqual(source1_formatted, source1_formatted_expected)
 
-    def test_format_aanvragen(self):
+    @patch("app.zorgned_service.encrypt")
+    def test_format_aanvragen(self, encrypt_mock):
+        id_encrypted_mock = "xx1234567890xx"
+        encrypt_mock.return_value = id_encrypted_mock
+
         source1 = [
             {
                 "regeling": {"identificatie": "WMO", "omschrijving": "WMO"},
@@ -339,9 +343,9 @@ class ZorgnedServiceTest(TestCase):
             "serviceDateEnd": "2018-02-23",
             "documents": [
                 {
-                    "id": "B744593",
+                    "id": id_encrypted_mock,
                     "title": "WRV rapport",
-                    "url": "/wmoned/document/B744593",
+                    "url": f"/wmoned/document/{id_encrypted_mock}",
                     "datePublished": "2021-03-31T15:28:05",
                 }
             ],
@@ -361,9 +365,9 @@ class ZorgnedServiceTest(TestCase):
             "serviceDateEnd": "2018-02-23",
             "documents": [
                 {
-                    "id": "B744593",
+                    "id": id_encrypted_mock,
                     "title": "WRV rapport",
-                    "url": "/wmoned/document/B744593",
+                    "url": f"/wmoned/document/{id_encrypted_mock}",
                     "datePublished": "2021-03-31T15:28:05",
                 }
             ],
