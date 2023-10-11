@@ -11,6 +11,7 @@ def retagAndPush(String imageName, String currentTag, String newTag)
 String BRANCH = "${env.BRANCH_NAME}"
 String IMAGE_NAME = "mijnams/wmoned"
 String IMAGE_TAG = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
+String IMAGE_TEST = "${IMAGE_NAME}:test-${env.BUILD_NUMBER}"
 String CMDB_ID = "app_mijn-wmoned"
 
 node {
@@ -31,8 +32,11 @@ if (BRANCH != "test-acc") {
     node {
         stage("Test") {
             docker.withRegistry(DOCKER_REGISTRY_HOST, "docker_registry_auth") {
-                docker.image(IMAGE_TAG).pull()
-                sh "docker run --rm ${IMAGE_TAG} /api/test.sh"
+                sh "docker build -t ${IMAGE_TEST} " +
+                    "--target=tests " +
+                    "--shm-size 1G " +
+                    "."
+                sh "docker run --rm ${IMAGE_TEST}"
             }
         }
     }
