@@ -1,9 +1,9 @@
-import os
 from datetime import date, datetime
-from functools import wraps
-from cryptography.fernet import Fernet
 
+from cryptography.fernet import Fernet
 from flask.helpers import make_response
+
+from app.config import WMONED_FERNET_ENCRYPTION_KEY
 
 
 def success_response_json(response_content):
