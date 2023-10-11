@@ -8,7 +8,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 import app.zorgned_service as zorgned
 from app import auth
 from app.config import IS_OT, SENTRY_DSN, UpdatedJSONProvider
-from app.helpers import error_response_json, success_response_json, validate_openapi
+from app.helpers import error_response_json, success_response_json
 
 app = Flask(__name__)
 app.json = UpdatedJSONProvider(app)
@@ -21,7 +21,6 @@ if SENTRY_DSN:
 
 @app.route("/wmoned/voorzieningen", methods=["GET"])
 @auth.login_required
-@validate_openapi
 def get_voorzieningen():
     user = auth.get_current_user()
     voorzieningen = zorgned.get_voorzieningen(user["id"])
@@ -30,7 +29,6 @@ def get_voorzieningen():
 
 @app.route("/wmoned/document/<string:doc_id>", methods=["GET"])
 @auth.login_required
-@validate_openapi
 def get_document(doc_id):
     user = auth.get_current_user()
     document_response = zorgned.get_document(user["id"], doc_id)
