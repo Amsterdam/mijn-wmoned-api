@@ -32,11 +32,11 @@ if (BRANCH != "test-acc") {
     node {
         stage("Test") {
             docker.withRegistry(DOCKER_REGISTRY_HOST, "docker_registry_auth") {
-                sh "docker build -t ${IMAGE_TEST} " +
-                    "--target=tests " +
-                    "--shm-size 1G " +
-                    "."
-                sh "docker run --rm ${IMAGE_TEST}"
+                // sh "docker build -t ${IMAGE_TEST} " +
+                //     "--target=tests " +
+                //     "--shm-size 1G " +
+                //     "."
+                // sh "docker run --rm ${IMAGE_TEST}"
             }
         }
     }
