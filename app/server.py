@@ -46,7 +46,6 @@ def get_document(doc_id_encrypted):
 def health_check():
     return success_response_json(
         {
-            "status": "OK",
             "gitSha": os.getenv("MA_GIT_SHA", -1),
             "buildId": os.getenv("MA_BUILD_ID", -1),
             "otapEnv": os.getenv("MA_OTAP_ENV", None),
