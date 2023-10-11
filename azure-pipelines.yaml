@@ -49,3 +49,4 @@ jobs:
       btdTest: ${{ parameters.btdTest }}
       btdDeploy: ${{ parameters.btdDeploy }}
       updateAppSettings: ${{ parameters.updateAppSettings }}
+      aquaScan: ${{ eq(variables['Build.Reason'], 'PullRequest') }}
