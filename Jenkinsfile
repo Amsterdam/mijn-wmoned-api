@@ -19,17 +19,8 @@ node {
         checkout scm
     }
 
-    stage("Build image") {
-        docker.withRegistry(DOCKER_REGISTRY_HOST, "docker_registry_auth") {
-            def image = docker.build(IMAGE_TAG)
-            image.push()
-        }
-    }
-}
-
-// Skipping tests for the test branch
-if (BRANCH != "test-acc") {
-    node {
+    // Skipping tests for the test branch
+    if (BRANCH != "test-acc") {
         stage("Test") {
             docker.withRegistry(DOCKER_REGISTRY_HOST, "docker_registry_auth") {
                 sh "docker build -t ${IMAGE_TEST} " +
@@ -40,19 +31,22 @@ if (BRANCH != "test-acc") {
             }
         }
     }
-}
 
-if (BRANCH == "test-acc" || BRANCH == "main") {
-    node {
+    stage("Build image") {
+        docker.withRegistry(DOCKER_REGISTRY_HOST, "docker_registry_auth") {
+            def image = docker.build(IMAGE_TAG, "--target=publish")
+            image.push()
+        }
+    }
+
+    if (BRANCH == "test-acc" || BRANCH == "main") {
         stage("Push acceptance image") {
             docker.withRegistry(DOCKER_REGISTRY_HOST, "docker_registry_auth") {
                 docker.image(IMAGE_TAG).pull()
                 retagAndPush(IMAGE_NAME, env.BUILD_NUMBER, "acceptance")
             }
         }
-    }
 
-    node {
         stage("Deploy to ACC") {
             build job: "Subtask_Openstack_Playbook",
                 parameters: [
@@ -62,23 +56,19 @@ if (BRANCH == "test-acc" || BRANCH == "main") {
                 ]
         }
     }
-}
 
-if (BRANCH == "production-release") {
-    stage("Waiting for approval") {
-        input "Deploy to Production?"
-    }
+    if (BRANCH == "production-release") {
+        stage("Waiting for approval") {
+            input "Deploy to Production?"
+        }
 
-    node {
         stage("Push production image") {
             docker.withRegistry(DOCKER_REGISTRY_HOST, "docker_registry_auth") {
                 docker.image(IMAGE_TAG).pull()
                 retagAndPush(IMAGE_NAME, env.BUILD_NUMBER, "production")
             }
         }
-    }
 
-    node {
         stage("Deploy") {
             build job: "Subtask_Openstack_Playbook",
             parameters: [
