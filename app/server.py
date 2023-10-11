@@ -1,6 +1,7 @@
 import logging
 
 import sentry_sdk
+import os
 from flask import Flask, make_response
 from requests.exceptions import HTTPError
 from sentry_sdk.integrations.flask import FlaskIntegration
@@ -43,7 +44,14 @@ def get_document(doc_id_encrypted):
 @app.route("/")
 @app.route("/status/health")
 def health_check():
-    return success_response_json("OK")
+    return success_response_json(
+        {
+            "status": "OK",
+            "gitSha": os.getenv("MA_GIT_SHA", -1),
+            "buildId": os.getenv("MA_BUILD_ID", -1),
+            "otapEnv": os.getenv("MA_OTAP_ENV", None),
+        }
+    )
 
 
 @app.errorhandler(Exception)
