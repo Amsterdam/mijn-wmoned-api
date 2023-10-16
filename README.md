@@ -2,7 +2,7 @@
 
 ### Updating dependencies
 
-Direct dependencies are specified in `requirements-root.txt`. These should not have pinned a version (except when needed)
+Direct dependencies are specified in `requirements-root.txt`. These packages usually do not have pinned versions so we can update versions easily.
 
-- `pip install -r requirements-root.txt`
-- `pip freeze > requirements.txt`
+- `make requirements`
+- `pip install -r requirements.txt`
