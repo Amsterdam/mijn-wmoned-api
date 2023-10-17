@@ -6,6 +6,5 @@ flake8
 flask
 flask_httpauth
 pyjwt
-pyopenssl
 requests
 sentry-sdk[flask]
