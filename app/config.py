@@ -79,6 +79,8 @@ PRODUCTS_WITH_DELIVERY = {
     ],
     "": ["AO2", "AO5", "DBS", "KVB", "WMH", "AAN", "FIE"],
 }
+
+# https://stackoverflow.com/a/46570364/756075
 # Server security / certificates
 cert = tempfile.NamedTemporaryFile(delete=False)
 cert.write(base64.b64decode(os.getenv("MIJN_DATA_CLIENT_CERT")))
