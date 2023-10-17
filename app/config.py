@@ -1,7 +1,9 @@
+import base64
 import logging
 import os
 import os.path
 from datetime import date, time
+import tempfile
 
 from flask.json.provider import DefaultJSONProvider
 
@@ -77,10 +79,17 @@ PRODUCTS_WITH_DELIVERY = {
     ],
     "": ["AO2", "AO5", "DBS", "KVB", "WMH", "AAN", "FIE"],
 }
-
 # Server security / certificates
-SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
-SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
+cert = tempfile.NamedTemporaryFile(delete=False)
+cert.write(base64.b64decode(os.getenv("MIJN_DATA_CLIENT_CERT")))
+cert.close()
+
+key = tempfile.NamedTemporaryFile(delete=False)
+key.write(base64.b64decode(os.getenv("MIJN_DATA_CLIENT_KEY")))
+key.close()
+
+SERVER_CLIENT_CERT = cert.name
+SERVER_CLIENT_KEY = key.name
 
 # Set-up logging
 LOG_LEVEL = os.getenv("LOG_LEVEL", "ERROR").upper()

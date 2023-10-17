@@ -5,9 +5,6 @@ from datetime import date
 
 import dpath
 import requests
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
-from patch_requests import patch_requests
 
 from app.config import (
     BESCHIKT_PRODUCT_RESULTAAT,
@@ -24,18 +21,6 @@ from app.config import (
     ZORGNED_GEMEENTE_CODE,
 )
 from app.helpers import encrypt, to_date
-
-CLIENT_CERT = serialization.load_pem_x509_certificate(
-    SERVER_CLIENT_CERT, default_backend()
-)
-CLIENT_KEY = serialization.load_pem_private_key(
-    SERVER_CLIENT_KEY, None, default_backend()
-)
-
-
-# monkey patch load_cert_chain to allow loading
-# cryptography certs and keys from memory
-patch_requests()
 
 
 def is_product_with_delivery(aanvraag_formatted):
@@ -168,7 +153,7 @@ def send_api_request(bsn, operation="", query_params=None):
     cert = None
 
     headers = {"Token": ZORGNED_API_TOKEN}
-    cert = (CLIENT_CERT, CLIENT_KEY)
+    cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
     url = f"{ZORGNED_API_URL}/gemeenten/{ZORGNED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
 
     res = requests.get(
