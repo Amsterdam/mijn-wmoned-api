@@ -25,7 +25,9 @@ click==8.1.7
 coverage==7.3.2
     # via -r requirements-root.txt
 cryptography==41.0.4
-    # via -r requirements-root.txt
+    # via
+    #   -r requirements-root.txt
+    #   pyopenssl
 dpath==2.1.6
     # via -r requirements-root.txt
 flake8==6.1.0
@@ -60,13 +62,15 @@ pathspec==0.11.2
     # via black
 platformdirs==3.11.0
     # via black
-pycodestyle==2.11.0
+pycodestyle==2.11.1
     # via flake8
 pycparser==2.21
     # via cffi
 pyflakes==3.1.0
     # via flake8
 pyjwt==2.8.0
+    # via -r requirements-root.txt
+pyopenssl==23.2.0
     # via -r requirements-root.txt
 requests==2.31.0
     # via -r requirements-root.txt
