@@ -3,8 +3,8 @@ import json
 import logging
 from datetime import date
 
-import requests
 import dpath
+import requests
 
 from app.config import (
     BESCHIKT_PRODUCT_RESULTAAT,
