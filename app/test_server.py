@@ -42,8 +42,15 @@ class ZorgnedApiMockError(ZorgnedApiMock):
         return None
 
 
+@patch.dict(
+    os.environ,
+    {
+        "MA_BUILD_ID": "999",
+        "MA_GIT_SHA": "abcdefghijk",
+        "MA_OTAP_ENV": "unittesting",
+    },
+)
 class TestAPI(FlaskServerTestCase):
-
     app = app
     TEST_BSN = "111222333"
 
@@ -71,7 +78,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "autozitje",
-                    'documents': None,
+                    "documents": None,
                 },
                 {
                     "dateDecision": "2013-06-17",
@@ -85,7 +92,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "buggy",
-                    'documents': None,
+                    "documents": None,
                 },
                 {
                     "dateDecision": "2015-02-16",
@@ -99,7 +106,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2017-06-01",
                     "supplier": "Welzorg",
                     "title": "driewielfiets 5-9 jr",
-                    'documents': None,
+                    "documents": None,
                 },
                 {
                     "dateDecision": "2021-08-26",
@@ -113,7 +120,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2021-08-30",
                     "supplier": "Welzorg",
                     "title": "handbewogen kinderrolstoel",
-                    'documents': None,
+                    "documents": None,
                 },
                 {
                     "dateDecision": "2018-04-25",
@@ -127,7 +134,7 @@ class TestAPI(FlaskServerTestCase):
                     "serviceOrderDate": "2018-04-26",
                     "supplier": "Welzorg",
                     "title": "woonruimteaanpassing",
-                    'documents': None,
+                    "documents": None,
                 },
             ],
         )
@@ -162,6 +169,10 @@ class TestAPI(FlaskServerTestCase):
         self.assertEqual(res.status_code, 401, res.data)
         self.assertEqual(res.json["status"], "ERROR")
 
-    def test_health_page(self):
-        res = self.client.get("/status/health")
-        self.assertEqual(res.json["status"], "OK")
+    def test_status(self):
+        response = self.client.get("/status/health")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.data.decode(),
+            '{"content":{"buildId":"999","gitSha":"abcdefghijk","otapEnv":"unittesting"},"status":"OK"}\n',
+        )
