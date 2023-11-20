@@ -329,6 +329,13 @@ class ZorgnedServiceTest(TestCase):
 
         source1_formatted = format_aanvragen(source1)
 
+        document = {
+            "id": id_encrypted_mock,
+            "title": "WRV rapport",
+            "url": f"/wmoned/document/{id_encrypted_mock}",
+            "datePublished": "2021-03-31T15:28:05",
+        }
+
         aanvraag1 = {
             "title": "autozitje",
             "itemTypeCode": "OVE",
@@ -341,14 +348,7 @@ class ZorgnedServiceTest(TestCase):
             "serviceOrderDate": "2017-05-01",
             "serviceDateStart": "2017-06-01",
             "serviceDateEnd": "2018-02-23",
-            "documents": [
-                {
-                    "id": id_encrypted_mock,
-                    "title": "WRV rapport",
-                    "url": f"/wmoned/document/{id_encrypted_mock}",
-                    "datePublished": "2021-03-31T15:28:05",
-                }
-            ],
+            "documents": None,
         }
 
         aanvraag2 = {
@@ -363,15 +363,14 @@ class ZorgnedServiceTest(TestCase):
             "serviceOrderDate": "2017-05-01",
             "serviceDateStart": "2017-06-01",
             "serviceDateEnd": "2018-02-23",
-            "documents": [
-                {
-                    "id": id_encrypted_mock,
-                    "title": "WRV rapport",
-                    "url": f"/wmoned/document/{id_encrypted_mock}",
-                    "datePublished": "2021-03-31T15:28:05",
-                }
-            ],
+            "documents": None,
         }
+
+        self.maxDiff = None
+
+        if config.ZORGNED_DOCUMENT_ATTACHMENTS_ACTIVE:
+            aanvraag1["documents"] = [document]
+            aanvraag2["documents"] = [document]
 
         self.assertEqual(len(source1_formatted), 2)
         self.assertEqual(source1_formatted, [aanvraag1, aanvraag2])
