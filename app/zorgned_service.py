@@ -148,7 +148,7 @@ def format_aanvragen(aanvragen_source=[]):
     return aanvragen
 
 
-def send_api_request(bsn, operation="", post_message=None):
+def send_api_request(bsn, operation="", post_message={}):
     headers = None
     cert = None
 
@@ -165,7 +165,7 @@ def send_api_request(bsn, operation="", post_message=None):
         timeout=ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
         headers=headers,
         cert=cert,
-        json=post_message | default_post_params
+        json={**default_post_params, **post_message}
     )
 
     res.raise_for_status()
@@ -173,7 +173,7 @@ def send_api_request(bsn, operation="", post_message=None):
     return res
 
 
-def send_api_request_json(bsn, operation="", post_message=None):
+def send_api_request_json(bsn, operation="", post_message={}):
     res = send_api_request(bsn, operation, post_message)
 
     response_data = res.json()
@@ -183,7 +183,7 @@ def send_api_request_json(bsn, operation="", post_message=None):
     return response_data
 
 
-def get_aanvragen(bsn, post_message=None):
+def get_aanvragen(bsn, post_message={}):
     response_data = send_api_request_json(
         bsn,
         "/aanvragen",
