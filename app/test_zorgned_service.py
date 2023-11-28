@@ -15,7 +15,7 @@ BASE_PATH = config.BASE_PATH
 
 class ZorgnedServiceTest(TestCase):
     @patch("app.zorgned_service.format_aanvragen")
-    @patch("app.zorgned_service.requests.get")
+    @patch("app.zorgned_service.requests.post")
     def test_get_aanvragen(self, get_mock, format_mock):
         get_mock.return_value = ZorgnedApiMock(
             {"_embedded": {"aanvraag": [{"foo": "bar"}]}}
@@ -28,7 +28,7 @@ class ZorgnedServiceTest(TestCase):
 
         format_mock.assert_called_with([{"foo": "bar"}])
 
-    @patch("app.zorgned_service.requests.get")
+    @patch("app.zorgned_service.requests.post")
     def test_get_aanvragen_fail(self, get_mock):
         get_mock.return_value = ZorgnedApiMock(None)
 

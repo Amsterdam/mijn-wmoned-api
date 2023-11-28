@@ -148,20 +148,24 @@ def format_aanvragen(aanvragen_source=[]):
     return aanvragen
 
 
-def send_api_request(bsn, operation="", query_params=None):
+def send_api_request(bsn, operation="", post_message={}):
     headers = None
     cert = None
 
     headers = {"Token": ZORGNED_API_TOKEN}
     cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
-    url = f"{ZORGNED_API_URL}/gemeenten/{ZORGNED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
+    url = f"{ZORGNED_API_URL}{operation}"
+    default_post_params = {
+        "burgerservicenummer": bsn,
+        "gemeentecode": ZORGNED_GEMEENTE_CODE,
+    }
 
-    res = requests.get(
+    res = requests.post(
         url,
         timeout=ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
         headers=headers,
         cert=cert,
-        params=query_params,
+        json={**default_post_params, **post_message}
     )
 
     res.raise_for_status()
@@ -169,8 +173,8 @@ def send_api_request(bsn, operation="", query_params=None):
     return res
 
 
-def send_api_request_json(bsn, operation="", query_params=None):
-    res = send_api_request(bsn, operation, query_params)
+def send_api_request_json(bsn, operation="", post_message={}):
+    res = send_api_request(bsn, operation, post_message)
 
     response_data = res.json()
 
@@ -179,25 +183,16 @@ def send_api_request_json(bsn, operation="", query_params=None):
     return response_data
 
 
-def get_aanvragen(bsn, query_params=None):
+def get_aanvragen(bsn, post_message={}):
     response_data = send_api_request_json(
         bsn,
         "/aanvragen",
-        query_params,
+        post_message
     )
+
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
     return format_aanvragen(response_aanvragen)
-
-
-def get_persoonsgegevens(bsn, query_params=None):
-    response_data = send_api_request_json(
-        bsn,
-        "/persoonsgegevens",
-        query_params,
-    )
-
-    return response_data
 
 
 def has_start_date_in_past(aanvraag_source):
@@ -208,12 +203,12 @@ def has_start_date_in_past(aanvraag_source):
 
 
 def get_voorzieningen(bsn):
-    query_params = {
+    post_message = {
         "maxeinddatum": DATE_END_NOT_OLDER_THAN,
         "regeling": REGELING_IDENTIFICATIE,
     }
 
-    aanvragen = get_aanvragen(bsn, query_params)
+    aanvragen = get_aanvragen(bsn, post_message)
 
     voorzieningen = []
 
@@ -225,7 +220,7 @@ def get_voorzieningen(bsn):
 
 
 def get_document(bsn, documentidentificatie):
-    response_data = send_api_request_json(bsn, f"/document/{documentidentificatie}")
+    response_data = send_api_request_json(bsn, "/document", {"documentidentificatie": documentidentificatie})
 
     logging.debug(response_data)
 
