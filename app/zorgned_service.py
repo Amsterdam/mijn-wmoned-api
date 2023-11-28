@@ -165,7 +165,7 @@ def send_api_request(bsn, operation="", post_message=None):
         timeout=ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
         headers=headers,
         cert=cert,
-        json= post_message | default_post_params
+        json=post_message | default_post_params
     )
 
     res.raise_for_status()
@@ -189,7 +189,7 @@ def get_aanvragen(bsn, post_message=None):
         "/aanvragen",
         post_message
     )
- 
+
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
     return format_aanvragen(response_aanvragen)
@@ -220,7 +220,7 @@ def get_voorzieningen(bsn):
 
 
 def get_document(bsn, documentidentificatie):
-    response_data = send_api_request_json(bsn, f"/document", { "documentidentificatie": documentidentificatie })
+    response_data = send_api_request_json(bsn, "/document", {"documentidentificatie": documentidentificatie})
 
     logging.debug(response_data)
 
