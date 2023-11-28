@@ -184,7 +184,7 @@ def send_api_request_json(bsn, operation="", post_message=None):
 
 
 def get_aanvragen(bsn, post_message=None):
-    response_data = send_api_request_json( 
+    response_data = send_api_request_json(
         bsn,
         "/aanvragen",
         post_message
