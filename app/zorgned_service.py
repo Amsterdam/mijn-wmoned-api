@@ -173,8 +173,8 @@ def send_api_request(bsn, operation="", post_message=None):
     return res
 
 
-def send_api_request_json(bsn, operation="", query_params=None):
-    res = send_api_request(bsn, operation, query_params)
+def send_api_request_json(bsn, operation="", post_message=None):
+    res = send_api_request(bsn, operation, post_message)
 
     response_data = res.json()
 
@@ -183,11 +183,11 @@ def send_api_request_json(bsn, operation="", query_params=None):
     return response_data
 
 
-def get_aanvragen(bsn, query_params=None):
+def get_aanvragen(bsn, post_message=None):
     response_data = send_api_request_json( 
         bsn,
         "/aanvragen",
-        query_params
+        post_message
     )
  
     response_aanvragen = response_data["_embedded"]["aanvraag"]
@@ -203,12 +203,12 @@ def has_start_date_in_past(aanvraag_source):
 
 
 def get_voorzieningen(bsn):
-    query_params = {
+    post_message = {
         "maxeinddatum": DATE_END_NOT_OLDER_THAN,
         "regeling": REGELING_IDENTIFICATIE,
     }
 
-    aanvragen = get_aanvragen(bsn, query_params)
+    aanvragen = get_aanvragen(bsn, post_message)
 
     voorzieningen = []
 
