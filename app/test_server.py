@@ -54,7 +54,7 @@ class TestAPI(FlaskServerTestCase):
     app = app
     TEST_BSN = "111222333"
 
-    @patch("app.zorgned_service.requests.get", autospec=True)
+    @patch("app.zorgned_service.requests.post", autospec=True)
     def test_get_voorzieningen(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMock(BASE_PATH + "/fixtures/aanvragen.json")
 
@@ -139,7 +139,7 @@ class TestAPI(FlaskServerTestCase):
             ],
         )
 
-    @patch("app.zorgned_service.requests.get", autospec=True)
+    @patch("app.zorgned_service.requests.post", autospec=True)
     def test_get_voorzieningen_2(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMock(
             BASE_PATH + "/fixtures/aanvragen-2.json"
@@ -150,7 +150,7 @@ class TestAPI(FlaskServerTestCase):
         self.assertEqual(res.status_code, 200, res.data)
         self.assertEqual(res.json["status"], "OK")
 
-    @patch("app.zorgned_service.requests.get", autospec=True)
+    @patch("app.zorgned_service.requests.post", autospec=True)
     def test_get_voorzieningen_error(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMockError()
 
@@ -160,7 +160,7 @@ class TestAPI(FlaskServerTestCase):
         self.assertEqual(res.json["status"], "ERROR")
         self.assertTrue("content" not in res.json)
 
-    @patch("app.zorgned_service.requests.get", autospec=True)
+    @patch("app.zorgned_service.requests.post", autospec=True)
     def test_get_voorzieningen_token_error(self, api_mocked):
         api_mocked.return_value = ZorgnedApiMock(None)
 
