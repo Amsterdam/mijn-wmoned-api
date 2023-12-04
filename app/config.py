@@ -80,11 +80,12 @@ PRODUCTS_WITH_DELIVERY = {
     "": ["AO2", "AO5", "DBS", "KVB", "WMH", "AAN", "FIE"],
 }
 
+# Server security / certificates for ZorgNed
 SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
 SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
 
 # TODO: Add other AZ env conditions after migration.
-if IS_TEST:
+if IS_TAP and SERVER_CLIENT_CERT is not None:
     # https://stackoverflow.com/a/46570364/756075
     # Server security / certificates
     cert = tempfile.NamedTemporaryFile(delete=False)
