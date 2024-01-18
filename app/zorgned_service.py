@@ -152,7 +152,10 @@ def send_api_request(bsn, operation="", post_message={}):
     headers = None
     cert = None
 
-    headers = {"Token": ZORGNED_API_TOKEN}
+    headers = {
+        "Token": ZORGNED_API_TOKEN,
+        "Content-type": "application/json; charset=utf-8",
+    }
     cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
     url = f"{ZORGNED_API_URL}{operation}"
     default_post_params = {
@@ -165,7 +168,7 @@ def send_api_request(bsn, operation="", post_message={}):
         timeout=ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
         headers=headers,
         cert=cert,
-        json={**default_post_params, **post_message}
+        json={**default_post_params, **post_message},
     )
 
     res.raise_for_status()
@@ -184,11 +187,7 @@ def send_api_request_json(bsn, operation="", post_message={}):
 
 
 def get_aanvragen(bsn, post_message={}):
-    response_data = send_api_request_json(
-        bsn,
-        "/aanvragen",
-        post_message
-    )
+    response_data = send_api_request_json(bsn, "/aanvragen", post_message)
 
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
@@ -220,7 +219,9 @@ def get_voorzieningen(bsn):
 
 
 def get_document(bsn, documentidentificatie):
-    response_data = send_api_request_json(bsn, "/document", {"documentidentificatie": documentidentificatie})
+    response_data = send_api_request_json(
+        bsn, "/document", {"documentidentificatie": documentidentificatie}
+    )
 
     logging.debug(response_data)
 
